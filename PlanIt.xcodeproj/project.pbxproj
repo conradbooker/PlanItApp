@@ -27,6 +27,8 @@
 		791F60542960BFA100076509 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60532960BFA100076509 /* __init__.py */; };
 		791F60562960BFA500076509 /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60552960BFA500076509 /* icsJSon.py */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
+		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
+		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				791F605E2960C93400076509 /* Python-iOS in Frameworks */,
+				791F605B2960C35300076509 /* PythonKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +185,10 @@
 			dependencies = (
 			);
 			name = PlanIt;
+			packageProductDependencies = (
+				791F605A2960C35300076509 /* PythonKit */,
+				791F605D2960C93400076509 /* Python-iOS */,
+			);
 			productName = PlanIt;
 			productReference = 791F601C2960BB4300076509 /* PlanIt.app */;
 			productType = "com.apple.product-type.application";
@@ -209,6 +217,10 @@
 				Base,
 			);
 			mainGroup = 791F60132960BB4300076509;
+			packageReferences = (
+				791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */,
+				791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */,
+			);
 			productRefGroup = 791F601D2960BB4300076509 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -466,6 +478,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pvieito/PythonKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/Python-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.59932;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		791F605A2960C35300076509 /* PythonKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */;
+			productName = PythonKit;
+		};
+		791F605D2960C93400076509 /* Python-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */;
+			productName = "Python-iOS";
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */ = {
