@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Assignment" representedClassName="Assignment" syncable="YES" codeGenerationType="class">
+        <attribute name="activeHours" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="activeMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="activeSeconds" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="assignmentType" attributeType="String" defaultValueString="Homework"/>
+        <attribute name="blue" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="course" attributeType="String" defaultValueString="&quot;History&quot;"/>
+        <attribute name="courseID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="dateCreated" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
+        <attribute name="dateFinished" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
+        <attribute name="datePlanned" attributeType="Date" defaultDateTimeInterval="694028820" usesScalarValueType="NO"/>
+        <attribute name="dubiousMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="due" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
+        <attribute name="green" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="hourStop" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isFinished" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isPlanned" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="minuteStop" attributeType="Integer 16" defaultValueString="45" usesScalarValueType="YES"/>
+        <attribute name="opacity" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="red" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="source" attributeType="String" defaultValueString=""/>
+        <attribute name="status" attributeType="String" defaultValueString="To Do"/>
+        <attribute name="summary" attributeType="String" defaultValueString=""/>
+        <attribute name="title" attributeType="String" defaultValueString="Assignment 5.4"/>
+        <attribute name="totalHours" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalSeconds" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Colors" representedClassName="Colors" syncable="YES" codeGenerationType="class">
+        <attribute name="hex" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+    </entity>
+    <entity name="Course" representedClassName="Course" syncable="YES" codeGenerationType="class">
+        <attribute name="blue" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="green" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="red" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="summary" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateFinished" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="priority" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+    </entity>
+</model>

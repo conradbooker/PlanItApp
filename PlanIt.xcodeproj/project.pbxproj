@@ -11,6 +11,21 @@
 		791F60222960BB4300076509 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60212960BB4300076509 /* ContentView.swift */; };
 		791F60242960BB4400076509 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 791F60232960BB4400076509 /* Assets.xcassets */; };
 		791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 791F60272960BB4400076509 /* Preview Assets.xcassets */; };
+		791F60372960BD6300076509 /* Planner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60322960BD6300076509 /* Planner.swift */; };
+		791F60382960BD6300076509 /* Due.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60332960BD6300076509 /* Due.swift */; };
+		791F60392960BD6300076509 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60342960BD6300076509 /* Settings.swift */; };
+		791F603A2960BD6300076509 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60352960BD6300076509 /* Home.swift */; };
+		791F603B2960BD6300076509 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60362960BD6300076509 /* New.swift */; };
+		791F603D2960BD7000076509 /* ExternalSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F603C2960BD7000076509 /* ExternalSource.swift */; };
+		791F60422960BE0600076509 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60412960BE0600076509 /* CoreDataManager.swift */; };
+		791F60442960BE2600076509 /* jsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60432960BE2600076509 /* jsonParser.swift */; };
+		791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */; };
+		791F60492960BE4900076509 /* AssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60482960BE4900076509 /* AssignmentView.swift */; };
+		791F604B2960BE5100076509 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604A2960BE5100076509 /* TimerView.swift */; };
+		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
+		791F604F2960BE8C00076509 /* data (5).json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data (5).json */; };
+		791F60542960BFA100076509 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60532960BFA100076509 /* __init__.py */; };
+		791F60562960BFA500076509 /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60552960BFA500076509 /* icsJSon.py */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +35,21 @@
 		791F60232960BB4400076509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		791F60252960BB4400076509 /* PlanIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlanIt.entitlements; sourceTree = "<group>"; };
 		791F60272960BB4400076509 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		791F60322960BD6300076509 /* Planner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Planner.swift; sourceTree = "<group>"; };
+		791F60332960BD6300076509 /* Due.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Due.swift; sourceTree = "<group>"; };
+		791F60342960BD6300076509 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		791F60352960BD6300076509 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		791F60362960BD6300076509 /* New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
+		791F603C2960BD7000076509 /* ExternalSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalSource.swift; sourceTree = "<group>"; };
+		791F60412960BE0600076509 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		791F60432960BE2600076509 /* jsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = jsonParser.swift; sourceTree = "<group>"; };
+		791F60462960BE3700076509 /* AssignmentModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AssignmentModel.xcdatamodel; sourceTree = "<group>"; };
+		791F60482960BE4900076509 /* AssignmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentView.swift; sourceTree = "<group>"; };
+		791F604A2960BE5100076509 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
+		791F604E2960BE8B00076509 /* data (5).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "data (5).json"; sourceTree = "<group>"; };
+		791F60532960BFA100076509 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		791F60552960BFA500076509 /* icsJSon.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSon.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +82,8 @@
 		791F601E2960BB4300076509 /* PlanIt */ = {
 			isa = PBXGroup;
 			children = (
+				791F603F2960BDF100076509 /* Data */,
+				791F602E2960BD1200076509 /* Views */,
 				791F601F2960BB4300076509 /* PlanItApp.swift */,
 				791F60212960BB4300076509 /* ContentView.swift */,
 				791F60232960BB4400076509 /* Assets.xcassets */,
@@ -67,6 +99,67 @@
 				791F60272960BB4400076509 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		791F602E2960BD1200076509 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				791F60312960BD3400076509 /* Supporting Views */,
+				791F60302960BD2000076509 /* Main Views */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		791F60302960BD2000076509 /* Main Views */ = {
+			isa = PBXGroup;
+			children = (
+				791F60332960BD6300076509 /* Due.swift */,
+				791F60352960BD6300076509 /* Home.swift */,
+				791F60362960BD6300076509 /* New.swift */,
+				791F60322960BD6300076509 /* Planner.swift */,
+				791F60342960BD6300076509 /* Settings.swift */,
+			);
+			name = "Main Views";
+			sourceTree = "<group>";
+		};
+		791F60312960BD3400076509 /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				791F603C2960BD7000076509 /* ExternalSource.swift */,
+				791F60482960BE4900076509 /* AssignmentView.swift */,
+				791F604A2960BE5100076509 /* TimerView.swift */,
+				791F604C2960BE6000076509 /* Tester.swift */,
+			);
+			name = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		791F603F2960BDF100076509 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				791F60522960BF7800076509 /* icsJSon */,
+				791F60432960BE2600076509 /* jsonParser.swift */,
+				791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */,
+				791F604E2960BE8B00076509 /* data (5).json */,
+				791F60402960BDF800076509 /* Managers */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		791F60402960BDF800076509 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				791F60412960BE0600076509 /* CoreDataManager.swift */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		791F60522960BF7800076509 /* icsJSon */ = {
+			isa = PBXGroup;
+			children = (
+				791F60532960BFA100076509 /* __init__.py */,
+				791F60552960BFA500076509 /* icsJSon.py */,
+			);
+			path = icsJSon;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,7 +221,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */,
+				791F604F2960BE8C00076509 /* data (5).json in Resources */,
+				791F60542960BFA100076509 /* __init__.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
+				791F60562960BFA500076509 /* icsJSon.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,8 +235,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				791F603B2960BD6300076509 /* New.swift in Sources */,
 				791F60222960BB4300076509 /* ContentView.swift in Sources */,
 				791F60202960BB4300076509 /* PlanItApp.swift in Sources */,
+				791F603D2960BD7000076509 /* ExternalSource.swift in Sources */,
+				791F60382960BD6300076509 /* Due.swift in Sources */,
+				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
+				791F604D2960BE6000076509 /* Tester.swift in Sources */,
+				791F60372960BD6300076509 /* Planner.swift in Sources */,
+				791F60442960BE2600076509 /* jsonParser.swift in Sources */,
+				791F60492960BE4900076509 /* AssignmentView.swift in Sources */,
+				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
+				791F603A2960BD6300076509 /* Home.swift in Sources */,
+				791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */,
+				791F60392960BD6300076509 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +462,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				791F60462960BE3700076509 /* AssignmentModel.xcdatamodel */,
+			);
+			currentVersion = 791F60462960BE3700076509 /* AssignmentModel.xcdatamodel */;
+			path = AssignmentModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 791F60142960BB4300076509 /* Project object */;
 }
