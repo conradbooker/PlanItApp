@@ -25,11 +25,12 @@
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data (5).json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data (5).json */; };
 		791F60542960BFA100076509 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60532960BFA100076509 /* __init__.py */; };
-		791F60562960BFA500076509 /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60552960BFA500076509 /* icsJSon.py */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
 		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
 		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
-		795958C22960D6EC00CA6CEF /* icsJSon Main in Resources */ = {isa = PBXBuildFile; fileRef = 795958C12960D6EC00CA6CEF /* icsJSon Main */; };
+		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
+		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
+		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,9 +54,10 @@
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
 		791F604E2960BE8B00076509 /* data (5).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "data (5).json"; sourceTree = "<group>"; };
 		791F60532960BFA100076509 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		791F60552960BFA500076509 /* icsJSon.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSon.py; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
-		795958C12960D6EC00CA6CEF /* icsJSon Main */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "icsJSon Main"; sourceTree = "<group>"; };
+		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
+		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
+		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = "PlanIt/Data/icsJSon Main/icsJSon/icsJSon.py"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +146,7 @@
 		791F603F2960BDF100076509 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				795958C12960D6EC00CA6CEF /* icsJSon Main */,
-				791F60522960BF7800076509 /* icsJSon */,
+				795958C32960D77000CA6CEF /* icsJSonMain */,
 				791F60432960BE2600076509 /* jsonParser.swift */,
 				791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */,
 				791F604E2960BE8B00076509 /* data (5).json */,
@@ -167,9 +168,19 @@
 			isa = PBXGroup;
 			children = (
 				791F60532960BFA100076509 /* __init__.py */,
-				791F60552960BFA500076509 /* icsJSon.py */,
+				795958C82960D79800CA6CEF /* icsJSon.py */,
 			);
 			path = icsJSon;
+			sourceTree = "<group>";
+		};
+		795958C32960D77000CA6CEF /* icsJSonMain */ = {
+			isa = PBXGroup;
+			children = (
+				795958C42960D78600CA6CEF /* icsJSonFinal.py */,
+				795958C62960D78900CA6CEF /* test.py */,
+				791F60522960BF7800076509 /* icsJSon */,
+			);
+			path = icsJSonMain;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,12 +249,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				795958C72960D78900CA6CEF /* test.py in Resources */,
 				791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */,
+				795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */,
 				791F604F2960BE8C00076509 /* data (5).json in Resources */,
+				795958C92960D79800CA6CEF /* icsJSon.py in Resources */,
 				791F60542960BFA100076509 /* __init__.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
-				791F60562960BFA500076509 /* icsJSon.py in Resources */,
-				795958C22960D6EC00CA6CEF /* icsJSon Main in Resources */,
 				791F60582960C1BE00076509 /* pullJSon.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
