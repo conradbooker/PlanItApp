@@ -29,6 +29,7 @@
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
 		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
 		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
+		795958C22960D6EC00CA6CEF /* icsJSon Main in Resources */ = {isa = PBXBuildFile; fileRef = 795958C12960D6EC00CA6CEF /* icsJSon Main */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		791F60532960BFA100076509 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		791F60552960BFA500076509 /* icsJSon.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSon.py; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
+		795958C12960D6EC00CA6CEF /* icsJSon Main */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "icsJSon Main"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 		791F603F2960BDF100076509 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				795958C12960D6EC00CA6CEF /* icsJSon Main */,
 				791F60522960BF7800076509 /* icsJSon */,
 				791F60432960BE2600076509 /* jsonParser.swift */,
 				791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */,
@@ -240,6 +243,7 @@
 				791F60542960BFA100076509 /* __init__.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
 				791F60562960BFA500076509 /* icsJSon.py in Resources */,
+				795958C22960D6EC00CA6CEF /* icsJSon Main in Resources */,
 				791F60582960C1BE00076509 /* pullJSon.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
