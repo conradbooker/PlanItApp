@@ -10,26 +10,26 @@ import SwiftUI
 struct ExternalSource: View {
     
     @State private var sourceURL: String = ""
-    
-/*
- BEGIN:VEVENT --- start
- UID:683747ac-fae0-418b-a77e-fd1b0de61e9c --- uuid
- DTSTART;VALUE=DATE:20221213 --- completion date
- DTEND;VALUE=DATE:20221214 --- due date
- DTSTAMP:20221229T213146 --- current date
- SUMMARY:INTEGRATED MATH 3 - C: HW #2 --- Class, section, assignment title
- DESCRIPTION:9, 10, 11, 12, 13 --- description (can be multiple lines)
- STATUS:CONFIRMED
- CLASS:PUBLIC
- PRIORITY:3
- CATEGORIES:podium,events
- END:VEVENT
-*/
-    
+    @State private var saveDisabled: Bool = true
+
     var body: some View {
-        TextField("Enter URL", text: $sourceURL)
-            .textFieldStyle(.roundedBorder)
-            .padding(.horizontal)
+        VStack {
+            TextField("Link", text: $sourceURL)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
+                .onChange(of: sourceURL) { _ in
+                    if sourceURL == "" { saveDisabled = true }
+                    else { saveDisabled = false }
+                }
+            Button("Save") {
+                if sourceURL.prefix(8) == "https://" {
+                    // save
+                } else {
+                    sourceURL = "https://" + sourceURL
+                }
+            }.disabled(saveDisabled)
+
+        }
     }
 }
 

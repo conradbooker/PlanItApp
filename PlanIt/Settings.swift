@@ -8,9 +8,21 @@
 import SwiftUI
 
 struct Settings: View {
+    @State private var link: String = ""
+    @State private var circle: Bool = false
+    
     var body: some View {
         NavigationView {
             Form {
+                Section(header: Text("Link from external source")) {
+                    TextField("Link", text: $link)
+                        .onSubmit {
+                            circle.toggle()
+                        }
+                }
+                if circle {
+                    Circle().frame(width: 20)
+                }
                 Section(header: Text("About You!")) {
                     Text("Name")
                     Text("Year")
