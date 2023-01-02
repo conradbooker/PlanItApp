@@ -24,13 +24,15 @@
 		791F604B2960BE5100076509 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604A2960BE5100076509 /* TimerView.swift */; };
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data (5).json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data (5).json */; };
-		791F60542960BFA100076509 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60532960BFA100076509 /* __init__.py */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
 		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
 		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
 		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
 		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
 		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
+		795958CB2960EBEB00CA6CEF /* pythonSwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */; };
+		795958CD2960F23000CA6CEF /* Testpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795958CC2960F23000CA6CEF /* Testpy.swift */; };
+		795958CF2960F32A00CA6CEF /* Example.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958CE2960F32A00CA6CEF /* Example.py */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,11 +55,13 @@
 		791F604A2960BE5100076509 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
 		791F604E2960BE8B00076509 /* data (5).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "data (5).json"; sourceTree = "<group>"; };
-		791F60532960BFA100076509 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
 		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
 		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
-		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = "PlanIt/Data/icsJSon Main/icsJSon/icsJSon.py"; sourceTree = SOURCE_ROOT; };
+		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = PlanIt/Data/icsJSonMain/icsJSon.py; sourceTree = SOURCE_ROOT; };
+		795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pythonSwiftBridge.swift; sourceTree = "<group>"; };
+		795958CC2960F23000CA6CEF /* Testpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testpy.swift; sourceTree = "<group>"; };
+		795958CE2960F32A00CA6CEF /* Example.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Example.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 				791F60482960BE4900076509 /* AssignmentView.swift */,
 				791F604A2960BE5100076509 /* TimerView.swift */,
 				791F604C2960BE6000076509 /* Tester.swift */,
+				795958CC2960F23000CA6CEF /* Testpy.swift */,
 			);
 			name = "Supporting Views";
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 			children = (
 				795958C32960D77000CA6CEF /* icsJSonMain */,
 				791F60432960BE2600076509 /* jsonParser.swift */,
+				795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */,
 				791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */,
 				791F604E2960BE8B00076509 /* data (5).json */,
 				791F60402960BDF800076509 /* Managers */,
@@ -167,8 +173,9 @@
 		791F60522960BF7800076509 /* icsJSon */ = {
 			isa = PBXGroup;
 			children = (
-				791F60532960BFA100076509 /* __init__.py */,
-				795958C82960D79800CA6CEF /* icsJSon.py */,
+				795958C42960D78600CA6CEF /* icsJSonFinal.py */,
+				795958C62960D78900CA6CEF /* test.py */,
+				795958CE2960F32A00CA6CEF /* Example.py */,
 			);
 			path = icsJSon;
 			sourceTree = "<group>";
@@ -176,8 +183,7 @@
 		795958C32960D77000CA6CEF /* icsJSonMain */ = {
 			isa = PBXGroup;
 			children = (
-				795958C42960D78600CA6CEF /* icsJSonFinal.py */,
-				795958C62960D78900CA6CEF /* test.py */,
+				795958C82960D79800CA6CEF /* icsJSon.py */,
 				791F60522960BF7800076509 /* icsJSon */,
 			);
 			path = icsJSonMain;
@@ -254,8 +260,8 @@
 				795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */,
 				791F604F2960BE8C00076509 /* data (5).json in Resources */,
 				795958C92960D79800CA6CEF /* icsJSon.py in Resources */,
-				791F60542960BFA100076509 /* __init__.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
+				795958CF2960F32A00CA6CEF /* Example.py in Resources */,
 				791F60582960C1BE00076509 /* pullJSon.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				795958CD2960F23000CA6CEF /* Testpy.swift in Sources */,
 				791F603B2960BD6300076509 /* New.swift in Sources */,
 				791F60222960BB4300076509 /* ContentView.swift in Sources */,
 				791F60202960BB4300076509 /* PlanItApp.swift in Sources */,
@@ -275,6 +282,7 @@
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
 				791F604D2960BE6000076509 /* Tester.swift in Sources */,
 				791F60372960BD6300076509 /* Planner.swift in Sources */,
+				795958CB2960EBEB00CA6CEF /* pythonSwiftBridge.swift in Sources */,
 				791F60442960BE2600076509 /* jsonParser.swift in Sources */,
 				791F60492960BE4900076509 /* AssignmentView.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,

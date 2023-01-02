@@ -1,5 +1,7 @@
 from urllib.request import Request, urlopen
 from io import StringIO
+import ssl
+import certifi
 import json
 
 # jicson.py by CalyFactory (git: https://github.com/CalyFactory/python-jicson)
@@ -9,6 +11,8 @@ import json
 class StreamObject:
 
     def __init__(self, type, url = None, auth = None, filePath = None, text = None):
+        context = ssl.create_default_context(cafile=certifi.where())
+
         self.type = type 
         self.url = url 
         self.auth = auth
@@ -18,7 +22,7 @@ class StreamObject:
         if self.type == "web":
             request = Request(url)
             request.add_header("Authorization", "Basic "+ str(auth))
-            self.response = urlopen(request)    
+            self.response = urlopen(request,context=context)    
         elif self.type == "file":
             self.file = open(filePath)
         elif self.type == "text":
@@ -124,3 +128,18 @@ def parseChild(json, fileObject):
                 if json.get("EXTRADESCRIPTION") == None:
                     json["EXTRADESCRIPTION"] = ""
 
+def returnicsJSon(path, type = "web"):
+
+    if path == None:
+        return "\nError: path must be specified.\n"
+
+    if type == "web":
+        result = [fromWeb(path)]
+
+    elif type == "file":
+        result = [fromFile(path)]
+
+    else:
+        result = [fromText(path)]
+
+    return(json.dumps(result, indent=3, separators=(", ", ": ")))

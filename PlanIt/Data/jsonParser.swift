@@ -57,7 +57,7 @@ struct IndividualOnlineAssignmets: Decodable {
  */
 
 var onlineAssignmentData: [ICSCal] = load("data (5).json")
-//var onlineAssignmentData: [ICSCal] = load("data (5).json")
+//var onlineAssignmentData: [ICSCal] = runPythonICSJSon("https://trinityschoolnyc.myschoolapp.com/podium/feed/iCal.aspx?z=HdbCT3ZaWBaxtYaG0jy3COOOHSIw9SwPejVt1ZiRL0e%2f1LkExSAan453LoSYfB4QMIeAjRyRcFPyvvRbCsQ7QA%3d%3d")
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data

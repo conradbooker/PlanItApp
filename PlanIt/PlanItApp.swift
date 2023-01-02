@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import PythonSupport
+
+
 
 @main
 struct PlanItApp: App {
@@ -15,6 +18,9 @@ struct PlanItApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
+                .onAppear {
+                    PythonSupport.initialize()
+                }
         }
     }
 }

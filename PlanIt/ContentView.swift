@@ -46,7 +46,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            Tester(individualOnlineAssignment: onlineAssignmentData[0].VCALENDAR[0].VEVENT[0])
+            Testpy()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.2")
                 }

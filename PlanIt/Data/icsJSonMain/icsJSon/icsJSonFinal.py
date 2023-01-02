@@ -1,6 +1,6 @@
 import icsJSon
 import json 
-import pyperclip
+# import pyperclip
 # import requests
 
 
