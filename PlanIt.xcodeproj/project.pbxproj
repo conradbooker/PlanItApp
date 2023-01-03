@@ -23,7 +23,7 @@
 		791F60492960BE4900076509 /* AssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60482960BE4900076509 /* AssignmentView.swift */; };
 		791F604B2960BE5100076509 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604A2960BE5100076509 /* TimerView.swift */; };
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
-		791F604F2960BE8C00076509 /* data (5).json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data (5).json */; };
+		791F604F2960BE8C00076509 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data.json */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
 		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
 		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
@@ -54,7 +54,7 @@
 		791F60482960BE4900076509 /* AssignmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentView.swift; sourceTree = "<group>"; };
 		791F604A2960BE5100076509 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
-		791F604E2960BE8B00076509 /* data (5).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "data (5).json"; sourceTree = "<group>"; };
+		791F604E2960BE8B00076509 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
 		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
 		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 				791F60432960BE2600076509 /* jsonParser.swift */,
 				795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */,
 				791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */,
-				791F604E2960BE8B00076509 /* data (5).json */,
+				791F604E2960BE8B00076509 /* data.json */,
 				791F60402960BDF800076509 /* Managers */,
 				791F60572960C1BE00076509 /* pullJSon.py */,
 			);
@@ -258,7 +258,7 @@
 				795958C72960D78900CA6CEF /* test.py in Resources */,
 				791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */,
 				795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */,
-				791F604F2960BE8C00076509 /* data (5).json in Resources */,
+				791F604F2960BE8C00076509 /* data.json in Resources */,
 				795958C92960D79800CA6CEF /* icsJSon.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
 				795958CF2960F32A00CA6CEF /* Example.py in Resources */,

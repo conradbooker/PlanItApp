@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ExternalSource: View {
     
-    @State private var sourceURL: String = ""
     @State private var saveDisabled: Bool = true
-
+    @AppStorage("sourceURL") var sourceURL: String = ""
+    var individualOnlineAssignment: IndividualOnlineAssignmets
+    
     var body: some View {
         VStack {
             TextField("Link", text: $sourceURL)
@@ -23,11 +24,14 @@ struct ExternalSource: View {
                 }
             Button("Save") {
                 if sourceURL.prefix(8) == "https://" {
-                    // save
+                    loadJSonURL(sourceURL)
                 } else {
                     sourceURL = "https://" + sourceURL
+                    loadJSonURL(sourceURL)
                 }
             }.disabled(saveDisabled)
+            
+            Text(individualOnlineAssignment.SUMMARY)
 
         }
     }
@@ -35,6 +39,6 @@ struct ExternalSource: View {
 
 struct ExternalSource_Previews: PreviewProvider {
     static var previews: some View {
-        ExternalSource()
+        ExternalSource(individualOnlineAssignment: onlineAssignmentData[0].VCALENDAR[0].VEVENT[46])
     }
 }

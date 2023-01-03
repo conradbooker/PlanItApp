@@ -38,7 +38,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            Due()
+            ExternalSource(individualOnlineAssignment: onlineAssignmentData[0].VCALENDAR[0].VEVENT[0])
                 .tabItem {
                     Label("Due", systemImage: "exclamationmark.triangle.fill")
                 }
