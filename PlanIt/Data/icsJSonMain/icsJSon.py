@@ -13,8 +13,8 @@ class StreamObject:
     def __init__(self, type, url = None, auth = None, filePath = None, text = None):
         context = ssl.create_default_context(cafile=certifi.where())
 
-        self.type = type 
-        self.url = url 
+        self.type = type
+        self.url = url
         self.auth = auth
         self.filePath = filePath
         self.text = text
@@ -22,7 +22,7 @@ class StreamObject:
         if self.type == "web":
             request = Request(url)
             request.add_header("Authorization", "Basic "+ str(auth))
-            self.response = urlopen(request,context=context)    
+            self.response = urlopen(request,context=context)
         elif self.type == "file":
             self.file = open(filePath)
         elif self.type == "text":
@@ -67,9 +67,11 @@ def fromText(icsFileText):
     return (parseChild({}, streamObject))
 
 def parseChild(json, fileObject):
+   
     while True:
         line = fileObject.readline()
-        if not line: 
+
+        if not line:
             return json
 
         line = line.rstrip('\n\r')
@@ -95,6 +97,8 @@ def parseChild(json, fileObject):
             else:
                 value = line[1:]
 
+        line = line.replace("&amp;","")
+
 
         if key == "BEGIN":
             if value not in json:
@@ -103,30 +107,17 @@ def parseChild(json, fileObject):
         elif key == "END":
             return json
         elif line[0] == " " or line[1] == " ":
-            #'add extra summary + extra description'
 
             if json.get("DESCRIPTION") == None and json.get("SUMMARY") != None:
-                if json.get("EXTRASUMMARY") == None:
-                    json["EXTRASUMMARY"] = ""
-                    json["EXTRASUMMARY"] += value
+                json["SUMMARY"] += value
             else:
-                if json.get("EXTRADESCRIPTION") == None:
-                    json["EXTRADESCRIPTION"] = ""
-                    json["EXTRADESCRIPTION"] += value
-                else:
-                    json["EXTRADESCRIPTION"] += value
-            # if json.get("DESCRIPTION") == None:
-            #     json["DESCRIPTION"] = ""
+                json["DESCRIPTION"] += value
 
         else:
             json[key] = value
 
-            if json.get("DESCRIPTION") == None:
-                json["DESCRIPTION"] = ""
-                if json.get("EXTRASUMMARY") == None:
-                    json["EXTRASUMMARY"] = ""
-                if json.get("EXTRADESCRIPTION") == None:
-                    json["EXTRADESCRIPTION"] = ""
+            if json.get("STATUS") != None and json.get("DESCRIPTION") == None:
+                json["DESCRIPTION"] = "No description."
 
 def returnicsJSon(path, type = "web"):
 

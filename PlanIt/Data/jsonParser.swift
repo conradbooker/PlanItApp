@@ -84,8 +84,6 @@ struct ICSCal: Decodable {
 struct IndividualOnlineAssignmets: Decodable {
     var UID: String
     var DESCRIPTION: String
-    var EXTRASUMMARY: String
-    var EXTRADESCRIPTION: String
     var DTSTART: String
     var DTEND: String
     var DTSTAMP: String
@@ -111,15 +109,20 @@ struct IndividualOnlineAssignmets: Decodable {
  then format the data to make sure everythings is correct
  */
 
-func returnString(_ URL: String) -> String {
+func returnString() -> String {
     PythonSupport.initialize()
     @AppStorage("pyJSonData") var pyJSonData: String = ""
     @AppStorage("sourceURL") var sourceURL: String = ""
+    var pyString = ""
     
     // in the future this will load on saving the data and on update, so here, in the future, loading from string should be from the @AppStorage("pyJSonData")
-    var pyString = String(runPythonICSJSon(sourceURL))
+    if sourceURL.contains("iCal") || sourceURL.contains("ical") || sourceURL.contains(".ics") {
+        pyString = String(runPythonICSJSon(sourceURL)) ?? defaultJSon
+    } else {
+        pyString = defaultJSon
+    }
     
-    if !pyString!.contains("VEVENT") || pyString == """
+    if !pyString.contains("VEVENT") || pyString == "{}" || pyString == """
     [
        {}
     ]
@@ -127,14 +130,14 @@ func returnString(_ URL: String) -> String {
         pyString = defaultJSon
     }
     
-    pyJSonData = pyString ?? defaultJSon
+    pyJSonData = pyString
     
-    return(pyString ?? defaultJSon)
+    return(pyString)
 }
 
 //var onlineAssignmentData: [ICSCal] = load("data.json")
 
-var onlineAssignmentData: [ICSCal]  = (returnString("https://trinityschoolnyc.myschoolapp.com/podium/feed/iCal.aspx?z=HdbCT3ZaWBaxtYaG0jy3COOOHSIw9SwPejVt1ZiRL0e%2f1LkExSAan453LoSYfB4QMIeAjRyRcFPyvvRbCsQ7QA%3d%3d")).decodeJson([ICSCal].self)
+var onlineAssignmentData: [ICSCal]  = returnString().decodeJson([ICSCal].self)
 
 //let menuItems = try! JSONDecoder().decode([ICSCal].self, from: jsonData)
 //let
@@ -161,27 +164,15 @@ extension String {
          return result
       }
       catch {
-         fatalError("err:\(error)")
+          fatalError("err:\(error)")
       }
    }
 }
 
 
 
-func loadJSonURL(_ URL: String) {
-    let jsonString = String(runPythonICSJSon(URL)) ?? ""
-    let filename = "data.json"
-    let file = Bundle.main.url(forResource: filename, withExtension: nil)
-
-    if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-        let pathWithFilename = documentDirectory.appendingPathComponent("data.json")
-        do {
-            try jsonString.write(to: pathWithFilename, atomically: true, encoding: .utf8)
-            print("success")
-        } catch {
-            print("oop error")
-        }
-    }
+func loadJSonURL() {
+    onlineAssignmentData = returnString().decodeJson([ICSCal].self)
 }
 
 func load<T: Decodable>(_ filename: String) -> T {

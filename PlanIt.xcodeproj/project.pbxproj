@@ -33,6 +33,7 @@
 		795958CB2960EBEB00CA6CEF /* pythonSwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */; };
 		795958CD2960F23000CA6CEF /* Testpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795958CC2960F23000CA6CEF /* Testpy.swift */; };
 		795958CF2960F32A00CA6CEF /* Example.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958CE2960F32A00CA6CEF /* Example.py */; };
+		79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7965646F296A35DA003D230F /* AssignmentViewNew.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		795958CA2960EBEB00CA6CEF /* pythonSwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pythonSwiftBridge.swift; sourceTree = "<group>"; };
 		795958CC2960F23000CA6CEF /* Testpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testpy.swift; sourceTree = "<group>"; };
 		795958CE2960F32A00CA6CEF /* Example.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Example.py; sourceTree = "<group>"; };
+		7965646F296A35DA003D230F /* AssignmentViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewNew.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				791F603C2960BD7000076509 /* ExternalSource.swift */,
 				791F60482960BE4900076509 /* AssignmentView.swift */,
+				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
 				791F604A2960BE5100076509 /* TimerView.swift */,
 				791F604C2960BE6000076509 /* Tester.swift */,
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
@@ -287,6 +290,7 @@
 				791F60492960BE4900076509 /* AssignmentView.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
+				79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */,
 				791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */,
 				791F60392960BD6300076509 /* Settings.swift in Sources */,
 			);

@@ -35,18 +35,17 @@ struct PlanItApp: App {
             ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
                 .onAppear {
                     PythonSupport.initialize()
-                    @AppStorage("pyJSonData") var pyJSonData: String = ""
-                    pyJSonData = String(runPythonICSJSon("https://trinityschoolnyc.myschoolapp.com/podium/feed/iCal.aspx?z=HdbCT3ZaWBaxtYaG0jy3COOOHSIw9SwPejVt1ZiRL0e%2f1LkExSAan453LoSYfB4QMIeAjRyRcFPyvvRbCsQ7QA%3d%3d")) ?? "Error"
-                    if pyJSonData == "Error" || pyJSonData == """
-                    [
-                       {}
-                    ]
-                    """
-                    {
-                        print("Error loading JSon")
-                    }
+//                    @AppStorage("pyJSonData") var pyJSonData: String = ""
+//                    pyJSonData = String(runPythonICSJSon("https://trinityschoolnyc.myschoolapp.com/podium/feed/iCal.aspx?z=HdbCT3ZaWBaxtYaG0jy3COOOHSIw9SwPejVt1ZiRL0e%2f1LkExSAan453LoSYfB4QMIeAjRyRcFPyvvRbCsQ7QA%3d%3d")) ?? "Error"
+//                    if pyJSonData == "Error" || pyJSonData == """
+//                    [
+//                       {}
+//                    ]
+//                    """
+//                    {
+//                        print("Error loading JSon")
+//                    }
                     print("hiii")
-                    onlineAssignmentData = (pyJSonData).decodeJson([ICSCal].self)
                 }
         }
     }

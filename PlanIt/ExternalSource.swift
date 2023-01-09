@@ -23,11 +23,14 @@ struct ExternalSource: View {
                     else { saveDisabled = false }
                 }
             Button("Save") {
-                if sourceURL.prefix(8) == "https://" {
-                    loadJSonURL(sourceURL)
+                if sourceURL.contains("https://") && !sourceURL.contains("webcal://") {
+                    loadJSonURL()
+                } else if sourceURL.contains("webcal://") {
+                    sourceURL = sourceURL.replacingOccurrences(of: "webcal://", with: "")
+                    loadJSonURL()
                 } else {
                     sourceURL = "https://" + sourceURL
-                    loadJSonURL(sourceURL)
+                    loadJSonURL()
                 }
             }.disabled(saveDisabled)
             
