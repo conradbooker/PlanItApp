@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct Planner: View {
+    
+    let assignments = onlineAssignmentData[0].VCALENDAR[0].VEVENT
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            List(assignments, id: \.SUMMARY) { assign in
+                Text(assign.SUMMARY)
+            }
+        }
     }
 }
 

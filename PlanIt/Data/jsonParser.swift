@@ -63,8 +63,11 @@ var defaultJSon = """
 
 """
 
-struct AssignmentOnline: Decodable {
+struct AssignmentOnline: Decodable, Hashable, Identifiable {
     
+    var id: String {
+        self.VERSION
+    }
     var VERSION: String
     var METHOD: String
     var PRODID: String
@@ -77,11 +80,19 @@ struct AssignmentOnline: Decodable {
         
 }
 
-struct ICSCal: Decodable {
+struct ICSCal: Decodable, Hashable, Identifiable {
     var VCALENDAR: [AssignmentOnline]
+    var id: [AssignmentOnline] {
+        self.VCALENDAR
+    }
 }
 
-struct IndividualOnlineAssignmets: Decodable {
+struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
+    
+    var id: String {
+        self.SUMMARY + self.DTEND
+    }
+
     var UID: String
     var DESCRIPTION: String
     var DTSTART: String

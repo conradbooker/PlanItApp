@@ -48,7 +48,7 @@ struct Home: View {
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status != "Finished!" {
-                                        AssignmentView(assignment: assign).frame(width: geometry.size.width, height: 200).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: 200).environment(\.managedObjectContext, persistedContainer.viewContext)
                                     }
                                 }
                             }
@@ -90,7 +90,6 @@ struct Home: View {
                                         .shadow(radius: 2)
                                     HStack(spacing: 0) {
                                         Text(selectedDate.formatted(.dateTime.weekday(.wide)) + ", ")
-                                        //calendar.dateComponents([.day], from: selectedDate).day ?? 0
                                         Text(selectedDate, style: .date)
                                     }
                                     .allowsHitTesting(false)
