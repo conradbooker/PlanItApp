@@ -13,8 +13,11 @@ struct Planner: View {
     
     var body: some View {
         VStack {
-            List(assignments, id: \.SUMMARY) { assign in
-                Text(assign.SUMMARY)
+            List(assignments, id: \.self) { assign in
+                Text("\(assign.course) || \(assign.title)")
+                Text("\(assign.description)")
+                    .font(.system(size: 8))
+                Text(assign.dueDate, style: .date)
             }
         }
     }

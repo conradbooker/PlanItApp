@@ -92,6 +92,115 @@ struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
     var id: String {
         self.SUMMARY + self.DTEND
     }
+    
+    var course: String {
+        let firstIndex = String(SUMMARY.split(separator: " - ", maxSplits: 1)[0])
+        let lastIndex = String(SUMMARY.split(separator: " - ", maxSplits: 1)[1])
+        let section = lastIndex.split(separator: ": ", maxSplits: 1)[0]
+        
+        let classed = "\(firstIndex) - \(section)"
+//        (String(firstIndex) + " - " + String(section))
+        
+        return classed
+    }
+    
+    var description: String {
+        var desc = DESCRIPTION.replacingOccurrences(of: "&amp;", with: "&")
+        desc = desc.replacingOccurrences(of: "  ", with: "\n")
+        
+        var instances = desc.split(separator: "&#")
+        var finalString = ""
+        
+        if instances.count < 2 {
+            return DESCRIPTION
+        } else {
+            finalString += instances[0]
+            instances.remove(at:0)
+            
+            for instance in instances {
+                let instanceSplit = instance.split(separator: ";", maxSplits: 1)
+                if instanceSplit.count > 1 {
+                    let ascii = String(instanceSplit[0])
+                    let rest = String(instanceSplit[1])
+                    if ascii == "160" {
+                        finalString += " "
+                    } else {
+                        finalString += String(UnicodeScalar(Int(ascii) ?? 225)!)
+                    }
+                    finalString += rest
+                } else {
+                    finalString += String(UnicodeScalar(Int(instanceSplit[0]) ?? 225)!)
+                }
+                
+            }
+            finalString = finalString.replacingOccurrences(of: " 1. ", with: "\n 1. ")
+            finalString = finalString.replacingOccurrences(of: " 2. ", with: "\n 2. ")
+            finalString = finalString.replacingOccurrences(of: " 3. ", with: "\n 3. ")
+            finalString = finalString.replacingOccurrences(of: " 4. ", with: "\n 4. ")
+            finalString = finalString.replacingOccurrences(of: " 5. ", with: "\n 5. ")
+            finalString = finalString.replacingOccurrences(of: " 6. ", with: "\n 6. ")
+            finalString = finalString.replacingOccurrences(of: " 7. ", with: "\n 7. ")
+            finalString = finalString.replacingOccurrences(of: " 8. ", with: "\n 8. ")
+            finalString = finalString.replacingOccurrences(of: " 9. ", with: "\n 9. ")
+            finalString = finalString.replacingOccurrences(of: " 10. ", with: "\n 10. ")
+            finalString = finalString.replacingOccurrences(of: " 11. ", with: "\n 11. ")
+            finalString = finalString.replacingOccurrences(of: "      ", with: "\n")
+            finalString = finalString.replacingOccurrences(of: "     ", with: "\n")
+            finalString = finalString.replacingOccurrences(of: "    ", with: "\n")
+            finalString = finalString.replacingOccurrences(of: "   ", with: "\n")
+            finalString = finalString.replacingOccurrences(of: "  ", with: "\n")
+            finalString = finalString.replacingOccurrences(of: " — ", with: "\n — ")
+        }
+        return finalString
+    }
+        
+    var title: String {
+        let first = SUMMARY.replacingOccurrences(of: "&amp;", with: "&")
+        let lastIndex = String(first.split(separator: " - ", maxSplits: 1)[1])
+        let section = lastIndex.split(separator: ": ", maxSplits: 1)[1]
+        
+        var desc = String(section).replacingOccurrences(of: "&amp;", with: "&")
+        
+        var instances = desc.split(separator: "&#")
+        var finalString = ""
+        
+        if instances.count < 2 {
+            return String(section)
+        } else {
+            finalString += instances[0]
+            instances.remove(at:0)
+            
+            for instance in instances {
+                let instanceSplit = instance.split(separator: ";", maxSplits: 1)
+                if instanceSplit.count > 1 {
+                    let ascii = String(instanceSplit[0])
+                    let rest = String(instanceSplit[1])
+                    if ascii == "160" {
+                        finalString += " "
+                    } else {
+                        finalString += String(UnicodeScalar(Int(ascii) ?? 225)!)
+                    }
+                    finalString += rest
+                } else {
+                    finalString += String(UnicodeScalar(Int(instanceSplit[0]) ?? 225)!)
+                }
+                
+            }
+        }
+        return String(finalString)
+    }
+    
+//    let strI = "Hello Swift! Programmers!"
+//    let first = strI.firstIndex(of: "!")!
+//    let strJ = strI[...first]print(strJ)
+
+    var dueDate: Date {
+        let dateString = DTSTART.split(separator: ":", maxSplits: 1)[1]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = dateFormatter.date(from: String(dateString))!
+        return date
+    }
 
     var UID: String
     var DESCRIPTION: String
@@ -206,5 +315,23 @@ func load<T: Decodable>(_ filename: String) -> T {
         return try decoder.decode(T.self, from: data)
     } catch {
         fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+    }
+}
+
+extension String {
+    func indicesOf(string: String) -> [Int] {
+        var indices = [Int]()
+        var searchStartIndex = self.startIndex
+
+        while searchStartIndex < self.endIndex,
+            let range = self.range(of: string, range: searchStartIndex..<self.endIndex),
+            !range.isEmpty
+        {
+            let index = distance(from: self.startIndex, to: range.lowerBound)
+            indices.append(index)
+            searchStartIndex = range.upperBound
+        }
+
+        return indices
     }
 }
