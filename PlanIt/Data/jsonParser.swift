@@ -159,7 +159,7 @@ struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
         let lastIndex = String(first.split(separator: " - ", maxSplits: 1)[1])
         let section = lastIndex.split(separator: ": ", maxSplits: 1)[1]
         
-        var desc = String(section).replacingOccurrences(of: "&amp;", with: "&")
+        let desc = String(section).replacingOccurrences(of: "&amp;", with: "&")
         
         var instances = desc.split(separator: "&#")
         var finalString = ""

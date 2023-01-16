@@ -38,7 +38,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            ExternalSource(individualOnlineAssignment: onlineAssignmentData[0].VCALENDAR[0].VEVENT[0])
+            ExternalSource()
                 .tabItem {
                     Label("Due", systemImage: "exclamationmark.triangle.fill")
                 }
@@ -46,7 +46,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            Testpy()
+            Settings()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.2")
                 }

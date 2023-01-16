@@ -37,23 +37,30 @@ extension Color {
 
 struct New: View {
     
+    /// Dynamic variables
     @State private var newType: String = "Assignment"
-    var types = ["Assignment","Course"]
-    
     @State private var title: String = ""
     @State private var summary: String = ""
     @State private var assignmentType: String = "Homework"
-    var assignmentTypes = ["Homework", "Project", "Assessment", "Paper"]
     @State private var course: String = "Biology"
     @State private var due: Date = Date()
     @State private var planned: Date = Date()
     @State private var color: Color = .red
-    
-    var courses = ["Hey","dasdfa","poop","Math"]
-    
     @State var hourStop: String = "0"
     @State var minuteStop: String = "45"
     
+    @State private var assessmentType: String = "Quiz"
+    
+    @State private var multiStepAssignments: Any = []
+
+    
+    /// Static vars
+    let assignmentTypes = ["Homework", "Project", "Assessment", "Paper"]
+    let types = ["Assignment","Course"]
+    let assessmentTypes = ["Quiz","Quest","Test"]
+
+    
+    /// Alerts
     @State var showAlert: Bool = false
     @State var showAlertDupe: Bool = false
     
@@ -178,12 +185,12 @@ struct New: View {
         return .green
     }
 
-
-
     
     var body: some View {
         NavigationView {
             VStack {
+                
+                /// Top picker
                 Picker("New Type", selection: $newType) {
                     ForEach(types, id: \.self) { type in
                         Text(type).tag(type)
@@ -192,16 +199,21 @@ struct New: View {
                 .pickerStyle(.segmented)
                 .padding([.leading, .bottom, .trailing])
                 
+                /// If user wants new assignment, eventually add task too
                 if newType == "Assignment" {
                     Group {
                         Group {
-                            
+                            /// Title
                             TextField("Enter title", text: $title)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
+                            
+                            /// Description
                             TextField("Enter description", text: $summary)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
+                            
+                            ///Assignment Type
                             Picker("Assignment Type", selection: $assignmentType) {
                                 ForEach(assignmentTypes, id: \.self) { assignmentType in
                                     Text(assignmentType).tag(assignmentType)
@@ -210,13 +222,18 @@ struct New: View {
                             .pickerStyle(.segmented)
                             .padding(.horizontal)
                             
-//                            Picker("Class", selection: $course) {
-//                                ForEach(courses, id: \.self) { course in
-//                                    Text(course).tag(course)
-//                                }
-//                            }
-//                            .padding(.horizontal)
-                            
+                            if assignmentType == "Assessment" {
+                                /// Assessment Type (Quiz, Test, Quest)
+                                Picker("AssessmentTypes", selection: $assessmentType) {
+                                    ForEach(assessmentTypes, id: \.self) { type in
+                                        Text(type).tag(type)
+                                    }
+                                }
+                                .pickerStyle(.segmented)
+                                .padding([.leading, .bottom, .trailing])
+                            }
+
+                            /// Pick which course assignment is to
                             Picker("Classes", selection: $course) {
                                 ForEach(allCourses, id: \.self) { course in
                                     Text(course.title ?? "").tag(course.title ?? "")
@@ -226,30 +243,62 @@ struct New: View {
 
                             
                         }
-                        Group {
+                        Group { /// Date and time
+                            /// Due Date
                             
-                            Group {
-                                
+                            if assignmentType != "Assessment" {
                                 DatePicker("Due Date:", selection: $due, displayedComponents: [.date])
                                     .padding(.horizontal)
-                                DatePicker("Planned Date:", selection: $planned, displayedComponents: [.date])
+                            } else {
+                                DatePicker("\(assessmentType) Date:", selection: $due, displayedComponents: [.date])
                                     .padding(.horizontal)
                             }
                             
-                            Text("")
-                                .padding()
-                                .background(getColor(course))
-
-                            TextField("Enter Minute Stop", text: $minuteStop)
-                                .textFieldStyle(.roundedBorder)
+                            if assignmentType == "Homework" {
+                            /// Planned date
+                            DatePicker("What day will you do this?", selection: $planned, displayedComponents: [.date])
                                 .padding(.horizontal)
                             
-                            TextField("Enter Hour Stop", text: $hourStop)
-                                .textFieldStyle(.roundedBorder)
-                                .padding(.horizontal)
+                            /// Assignment length
+                                HStack(spacing: 0) {
+                                    Text("How long will this take?")
+                                    TextField("h", text: $hourStop)
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding(.horizontal)
+                                        .frame(width: 80)
+                                        .multilineTextAlignment(.center)
+                                    if Int(hourStop) ?? 0 == 1 {
+                                        Text("hour")
+                                    } else {
+                                        Text("hours")
+                                    }
+                                    TextField("m", text: $minuteStop)
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding(.horizontal)
+                                        .frame(width: 80)
+                                        .multilineTextAlignment(.center)
+                                    if Int(minuteStop) ?? 0 == 1 {
+                                        Text("min")
+                                    } else {
+                                        Text("mins")
+                                    }
+                                    
+                                }
+                            } else if assignmentType == "Project" {
+                                
+                                /// Add days for working on project
+                                Text("Add days which you will work on the project:")
+                            } else if assignmentType == "Assessment" {
+                                /// Add days for studying
+                                Text("Add days which you will study for your \(assessmentType.lowercased()):")
+                                
+                                // TODO: make button to add multistepassignmet to [multiStepAssignments]
+                            }
                         }
+                        
+                        /// Save button
                         Button(action: {
-                            if title == "" || summary == "" || minuteStop == ""  || hourStop == "" {
+                            if title == "" || minuteStop == ""  || hourStop == "" {
                                 showAlert = true
                             } else {
                                 saveAssignment()
@@ -276,7 +325,7 @@ struct New: View {
                         }
                     }
                     
-                } else {
+                } else { /// if user wants a new course
                     Group {
                         TextField("Enter title", text: $title)
                             .textFieldStyle(.roundedBorder)
@@ -340,6 +389,18 @@ struct New: View {
             .navigationTitle("New")
         }
     }
+}
+
+struct MultiStepAssignment {
+    var parentID: String
+    var plannedDate: Date
+    var minuteStop: Int
+    var hourStop: Int
+//    var dueDate: plannedDate + 1
+    var title: String
+// self.title = parenttitle
+    var description: String
+    var course: String
 }
 
 struct New_Previews: PreviewProvider {

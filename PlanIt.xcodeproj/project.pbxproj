@@ -15,7 +15,6 @@
 		791F60382960BD6300076509 /* Due.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60332960BD6300076509 /* Due.swift */; };
 		791F60392960BD6300076509 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60342960BD6300076509 /* Settings.swift */; };
 		791F603A2960BD6300076509 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60352960BD6300076509 /* Home.swift */; };
-		791F603B2960BD6300076509 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60362960BD6300076509 /* New.swift */; };
 		791F603D2960BD7000076509 /* ExternalSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F603C2960BD7000076509 /* ExternalSource.swift */; };
 		791F60422960BE0600076509 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60412960BE0600076509 /* CoreDataManager.swift */; };
 		791F60442960BE2600076509 /* jsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60432960BE2600076509 /* jsonParser.swift */; };
@@ -34,6 +33,7 @@
 		795958CD2960F23000CA6CEF /* Testpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795958CC2960F23000CA6CEF /* Testpy.swift */; };
 		795958CF2960F32A00CA6CEF /* Example.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958CE2960F32A00CA6CEF /* Example.py */; };
 		79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7965646F296A35DA003D230F /* AssignmentViewNew.swift */; };
+		796FFDF52974BC45007DF816 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796FFDF42974BC45007DF816 /* New.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +47,6 @@
 		791F60332960BD6300076509 /* Due.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Due.swift; sourceTree = "<group>"; };
 		791F60342960BD6300076509 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		791F60352960BD6300076509 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		791F60362960BD6300076509 /* New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
 		791F603C2960BD7000076509 /* ExternalSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalSource.swift; sourceTree = "<group>"; };
 		791F60412960BE0600076509 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		791F60432960BE2600076509 /* jsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = jsonParser.swift; sourceTree = "<group>"; };
@@ -64,6 +63,7 @@
 		795958CC2960F23000CA6CEF /* Testpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testpy.swift; sourceTree = "<group>"; };
 		795958CE2960F32A00CA6CEF /* Example.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Example.py; sourceTree = "<group>"; };
 		7965646F296A35DA003D230F /* AssignmentViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewNew.swift; sourceTree = "<group>"; };
+		796FFDF42974BC45007DF816 /* New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +131,6 @@
 			children = (
 				791F60332960BD6300076509 /* Due.swift */,
 				791F60352960BD6300076509 /* Home.swift */,
-				791F60362960BD6300076509 /* New.swift */,
 				791F60322960BD6300076509 /* Planner.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
 			);
@@ -143,6 +142,7 @@
 			children = (
 				791F603C2960BD7000076509 /* ExternalSource.swift */,
 				791F60482960BE4900076509 /* AssignmentView.swift */,
+				796FFDF42974BC45007DF816 /* New.swift */,
 				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
 				791F604A2960BE5100076509 /* TimerView.swift */,
 				791F604C2960BE6000076509 /* Tester.swift */,
@@ -277,7 +277,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				795958CD2960F23000CA6CEF /* Testpy.swift in Sources */,
-				791F603B2960BD6300076509 /* New.swift in Sources */,
 				791F60222960BB4300076509 /* ContentView.swift in Sources */,
 				791F60202960BB4300076509 /* PlanItApp.swift in Sources */,
 				791F603D2960BD7000076509 /* ExternalSource.swift in Sources */,
@@ -292,6 +291,7 @@
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
 				79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */,
 				791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */,
+				796FFDF52974BC45007DF816 /* New.swift in Sources */,
 				791F60392960BD6300076509 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

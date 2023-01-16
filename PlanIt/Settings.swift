@@ -9,35 +9,30 @@ import SwiftUI
 
 struct Settings: View {
     @State private var link: String = ""
-    @State private var circle: Bool = false
+    @State private var showSync: Bool = false
     
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Link from external source")) {
-                    TextField("Link", text: $link)
-                        .onSubmit {
-                            circle.toggle()
-                        }
-                }
-                if circle {
-                    Circle().frame(width: 20)
-                }
-                Section(header: Text("About You!")) {
-                    Text("Name")
-                    Text("Year")
-                    Text("School Start Time")
-                    Text("School Start")
-                    Text("School End")
-                }
+                Button(action: {
+                    showSync.toggle()
+                }, label: {
+                    Text("Sync Assignments from myschoolapp, or schology")
+                })
+                
                 Section(header: Text("General")) {
                     Text("Import Homework from external source")
+                    Text("Profile")
                     Text("Color Theme")
                     Text("Dark Mode")
                     Text("Language")
                     Text("Key")
                 }
-
+                Section(header: Text("Help")) {
+                    Text("Quick start guide")
+                    Text("How to use")
+                    Text("FAQ")
+                }
                 Section(header: Text("Notifications")) {
                     Text("Configure Notifications")
                     Text("View Notifications")
@@ -45,16 +40,15 @@ struct Settings: View {
                 Section(header: Text("ABOUT")) {
                     Text("About Schematica")
                     Text("Other Apps")
-                    Text("Info")
+                    Text("View socials")
                     Text("View Website")
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("0.1")
-                    }
+                    Text("Version: 0.1")
                 }
             }
             .navigationTitle("Settings")
+            .sheet(isPresented: $showSync) {
+                ExternalSource()
+            }
         }
     }
 }

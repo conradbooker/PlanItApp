@@ -10,11 +10,14 @@ import SwiftUI
 struct ExternalSource: View {
     
     @State private var saveDisabled: Bool = true
+    @State private var showErrorText: Bool = false
     @AppStorage("sourceURL") var sourceURL: String = ""
-    var individualOnlineAssignment: IndividualOnlineAssignmets
+    var mySchoolAppSchoolList: [String] = ["Trinity Schhol NYC","Dalton"]
     
     var body: some View {
         VStack {
+            Text("This app supports only 'Schoology', or Blackbaud's 'myschoolapp' for homework assignments. If you do not use either of these services, please go to [this form] for help.")
+                .padding()
             TextField("Link", text: $sourceURL)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
@@ -23,25 +26,31 @@ struct ExternalSource: View {
                     else { saveDisabled = false }
                 }
             Button("Save") {
-                if sourceURL.contains("https://") && !sourceURL.contains("webcal://") {
-                    loadJSonURL()
-                } else if sourceURL.contains("webcal://") {
-                    sourceURL = sourceURL.replacingOccurrences(of: "webcal://", with: "")
-                    loadJSonURL()
+                if sourceURL.contains("cal") || sourceURL.contains("iCal") || sourceURL.contains("ical") || sourceURL.contains(".ics") || sourceURL.contains("ics") || sourceURL == "" {
+                    if sourceURL.contains("https://") && !sourceURL.contains("webcal://") {
+                        loadJSonURL()
+                    } else if sourceURL.contains("webcal://") {
+                        sourceURL = sourceURL.replacingOccurrences(of: "webcal://", with: "")
+                        loadJSonURL()
+                    } else {
+                        sourceURL = "https://" + sourceURL
+                        loadJSonURL()
+                    }
                 } else {
-                    sourceURL = "https://" + sourceURL
-                    loadJSonURL()
+                    showErrorText = true
                 }
             }.disabled(saveDisabled)
             
-            Text(individualOnlineAssignment.SUMMARY)
-
+            if showErrorText {
+                Text("Error, not a valid URL. If this is a valid URL, click this button. If this is not a propper url, this will crash the app.")
+                    .padding()
+            }
         }
     }
 }
 
 struct ExternalSource_Previews: PreviewProvider {
     static var previews: some View {
-        ExternalSource(individualOnlineAssignment: onlineAssignmentData[0].VCALENDAR[0].VEVENT[46])
+        ExternalSource()
     }
 }
