@@ -35,7 +35,7 @@ struct AssignmentView: View {
                         Text("Due: ")
                             .padding(.leading)
                             .font(.system(size: 20))
-                        Text(assignment.due ?? Date(), style: .date)
+                        Text(assignment.dueDate ?? Date(), style: .date)
                             .font(.system(size: 20))
                         Spacer()
                     }

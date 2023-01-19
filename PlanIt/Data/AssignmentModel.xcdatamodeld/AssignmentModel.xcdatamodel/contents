@@ -4,22 +4,28 @@
         <attribute name="activeHours" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="activeMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="activeSeconds" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="assignmentID" attributeType="String" defaultValueString=""/>
         <attribute name="assignmentType" attributeType="String" defaultValueString="Homework"/>
         <attribute name="blue" attributeType="Float" defaultValueString="0.2392157" usesScalarValueType="YES"/>
         <attribute name="course" attributeType="String" defaultValueString="American History"/>
-        <attribute name="courseID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="courseID" attributeType="UUID" defaultValueString="E5BB4B1E-6493-4F51-AC65-74FA9043FF88" usesScalarValueType="NO"/>
         <attribute name="dateCreated" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="dateFinished" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="datePlanned" attributeType="Date" defaultDateTimeInterval="694028820" usesScalarValueType="NO"/>
         <attribute name="dubiousMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="due" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
+        <attribute name="dueDate" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="green" attributeType="Float" defaultValueString="0.23921569" usesScalarValueType="YES"/>
         <attribute name="hourStop" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="E5BB4B1E-6493-4F51-AC65-74FA9043FF88" usesScalarValueType="NO"/>
+        <attribute name="isChild" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isFinished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="isPlanned" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="isParent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isPlanned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="minuteStop" attributeType="Integer 16" defaultValueString="45" usesScalarValueType="YES"/>
         <attribute name="opacity" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="parentAssignmentTitle" attributeType="String" defaultValueString=""/>
+        <attribute name="parentCourse" attributeType="String" defaultValueString=""/>
+        <attribute name="parentID" attributeType="String" defaultValueString=""/>
         <attribute name="red" attributeType="Float" defaultValueString="0.92156863" usesScalarValueType="YES"/>
         <attribute name="source" attributeType="String" defaultValueString=""/>
         <attribute name="status" attributeType="String" defaultValueString="To Do"/>
@@ -38,7 +44,9 @@
         <attribute name="blue" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="green" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="onlineTitle" attributeType="String"/>
         <attribute name="red" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="section" attributeType="String"/>
         <attribute name="summary" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>

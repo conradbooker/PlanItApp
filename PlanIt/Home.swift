@@ -22,6 +22,13 @@ struct Home: View {
     
     let calendar = Calendar.current
     
+    private func findHeight(_ text: String) -> CGFloat {
+        if Double(text.count) / 45 < 1.5 {
+            return 109
+        }
+        return CGFloat((text.count / 45) * 17 + 119)
+    }
+
     
     var body: some View {
         GeometryReader { geometry in
@@ -40,30 +47,42 @@ struct Home: View {
                             }
                             
                             HStack {
-                                Text("Assignments to do heyyy")
+                                Text("Assignments in progress")
                                     .padding(.leading)
                                 Spacer()
                             }
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status != "Finished!" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: 200).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                    if assign.status == "In Progress" {
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
                                     }
                                 }
                             }
+                            HStack {
+                                Text("Assignments to do")
+                                    .padding(.leading)
+                                Spacer()
+                            }
                             
+                            ForEach(allAssignments) { assign in
+                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.status == "To Do" {
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                    }
+                                }
+                            }
+
                             HStack {
                                 Text("finished assignments")
                                     .padding(.leading)
                                 Spacer()
                             }
                             
-
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        AssignmentView(assignment: assign).frame(width: geometry.size.width, height: 200).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
                                     }
                                 }
                             }

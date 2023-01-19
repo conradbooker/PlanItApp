@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
+
     
     var body: some View {
         TabView {
@@ -38,7 +39,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            ExternalSource()
+            Due()
                 .tabItem {
                     Label("Due", systemImage: "exclamationmark.triangle.fill")
                 }

@@ -32,6 +32,31 @@ struct TimerView: View {
     
     @State var isFinished: Bool = false
     
+    @State var isDisabled: Bool = false
+    
+    @State var justStarted: Bool = true
+    
+    func successHaptics() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+    }
+    func resetHaptics() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error)
+    }
+    func mediumHaptics() {
+        let rigidImpact = UIImpactFeedbackGenerator(style: .rigid)
+        rigidImpact.impactOccurred()
+    }
+
+    var isStarted: Bool {
+        if hours * 3600 + minutes * 60 + seconds == 0 || status == "To Do" {
+            return false
+        }
+        return true
+    }
+    @State var isStarted1: Bool = false
+    
     @Environment(\.managedObjectContext) private var viewContext
     var assignment: Assignment
     
@@ -64,11 +89,9 @@ struct TimerView: View {
     
     private func updateTime(_ assignment: Assignment) {
         
-        assignment.activeHours = Int16(hours)
-        assignment.activeMinutes = Int16(minutes)
-        assignment.activeSeconds = Int16(seconds)
-        
         assignment.status = status
+        
+        assignment.isFinished = isFinished
         
         print("SAVING 1/2")
 
@@ -80,229 +103,244 @@ struct TimerView: View {
             print("Error")
         }
     }
-
     
+    private func changeStatus() {
+        if !isFinished {
+            isFinished = true
+            status = "Finished!"
+        } else {
+            isFinished = false
+            if !isStarted {
+                status = "To Do"
+            } else {
+                status = "In Progress"
+            }
+        }
+    }
+
+    private func done() {
+        self.stopTimer()
+        self.changeStatus()
+        self.updateTime(assignment)
+    }
+    private func changeTimerStatus() {
+        if !isStarted {
+            isStarted1 = true
+            status = "In Progress"
+        } else {
+            isStarted1 = false
+            status = "To Do"
+        }
+        assignment.status = status
+        
+        assignment.isFinished = isFinished
+        
+        print("starting time")
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+            print("Error")
+        }
+
+    }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 0) {
             /// The Main Timer
-            HStack {
-                HStack(spacing: 0) {
-                    Spacer().frame(width: 12)
-                    Text("\(status) - ")
-                    timerText(hours: hours, minutes: minutes, seconds: seconds, hoursStop: Int(assignment.hourStop), minutesStop: Int(assignment.minuteStop))
-                    Spacer().frame(width: 12)
-                }
-                .frame(height: 40)
-                .background(Color.yellow)
-                .fixedSize()
-                .cornerRadius(50)
-                .font(.system(size: fontSize))
-                .shadow(radius: 2)
-                .padding(.leading)
-                Spacer()
-            }
-            /// Buttons
-            HStack {
-                HStack {
-                    Button(action:{
-                        print("RESTART")
-                        self.stopTimer()
-                        self.resetTimer()
-                        status = "To Do"
-                        self.updateTime(assignment)
-                    }){
-                        Image(systemName: "arrow.counterclockwise")
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.black)
-                            .background(Color.yellow)
-                            .fixedSize()
-                            .cornerRadius(50)
+//            if !isFinished {
+                if !isStarted && !isStarted1 && status == "To Do"{
+                    HStack(spacing: 0) {
+                        Text("\(status) - ")
+                        FormattedTime(hourStop: Int(assignment.hourStop), minuteStop: Int(assignment.minuteStop))
                             .font(.system(size: 18))
-                            .fontWeight(.bold)
-                            .shadow(radius: 2)
-
+                        Spacer()
                     }
-
-                    Button(action:{
-                        print("PAUSE/PLAY")
-                        if timerIsPaused {
-                            self.startTimer()
-                        } else {
-                            self.stopTimer()
+                    .padding(.bottom, 4)
+                    
+                    HStack {
+                        if !assignment.isFinished {
+                            Button("Start") {
+                                timerIsPaused = false
+                                justStarted = true
+                                self.changeTimerStatus()
+                                self.startTimer()
+                                self.successHaptics()
+                                self.isDisabled = true
+                                print("START")
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerStart")))
+                            .disabled(isDisabled)
                         }
-                        self.updateTime(assignment)
-                                                
-                    }){
-                        if timerIsPaused {
-                            Image(systemName: "play.fill")
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.black)
-                                .background(Color.yellow)
-                                .fixedSize()
-                                .cornerRadius(50)
-                                .font(.system(size: fontSize))
-                                .fontWeight(.bold)
-                                .shadow(radius: 2)
-
-                        } else {
-                            Image(systemName: "pause.fill")
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.black)
-                                .background(Color.yellow)
-                                .fixedSize()
-                                .cornerRadius(50)
-                                .font(.system(size: fontSize))
-                                .fontWeight(.bold)
-                                .shadow(radius: 2)
+                        Button(action: {
+                            done()
+                            successHaptics()
+                            print("DONE")
+                        }) {
+                            if !assignment.isFinished {
+                                Image(systemName: "square")
+                                    .font(.system(size: 18))
+                            } else {
+                                Image(systemName: "checkmark.square.fill")
+                                    .font(.system(size: 18))
+                            }
                         }
-
+                        .buttonStyle(TimerButton(color: Color("timerDone")))
+                        
+                        Spacer()
                     }
-                    Button(action:{
-                        print("FINISHED")
-                        self.stopTimer()
-                        self.calculateTotal()
-                        
-                        if !isFinished {
-                            isFinished = true
-                        } else {
-                            isFinished = false
-                        }
-                        
-                        if isFinished {
-                            status = "Finished!"
-                        } else if hours * 3600 + minutes * 60 + seconds == 0  {
-                            status = "To Do"
-                        } else {
-                            status = "In Progress"
-                        }
-                        
-                        self.updateTime(assignment)
-                        
-                    }){
-                        if status == "Finished!" {
-                            Image(systemName: "checkmark.circle.fill")
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.black)
-                                .background(Color.yellow)
-                                .fixedSize()
-                                .cornerRadius(50)
-                                .font(.system(size: 25))
-                                .fontWeight(.bold)
-                                .shadow(radius: 2)
-
-                        } else {
-                            Image(systemName: "checkmark.circle")
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.black)
-                                .background(Color.yellow)
-                                .fixedSize()
-                                .cornerRadius(50)
-                                .font(.system(size: 25))
-                                .fontWeight(.bold)
-                                .shadow(radius: 2)
-
-                        }
-
+                } else {
+                    HStack(spacing: 0) {
+                        Text("\(status) - ")
+                        timerText(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), hoursStop: Int(assignment.hourStop), minutesStop: Int(assignment.minuteStop))
+                            .font(.system(size: 18))
+                        Spacer()
                     }
-                    Button(action:{
-                        print("ADD")
-                        addTimeBool = true
-                    }){
-                        Image(systemName: "plus")
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.black)
-                            .background(Color.yellow)
-                            .fixedSize()
-                            .cornerRadius(50)
-                            .font(.system(size: fontSize))
-                            .fontWeight(.bold)
-                            .shadow(radius: 2)
-                            /// Alert view to add hours and minutes
-                            .alert("Add Time", isPresented: $addTimeBool, actions: {
+                    .padding(.bottom, 4)
+                    
+                    HStack {
+                        if !assignment.isFinished {
+                            if timerIsPaused && !justStarted {
+                                Button("Continue") {
+                                    mediumHaptics()
+                                    self.startTimer()
+                                    timerIsPaused = false
+                                    print("CONTINUE")
+                                }
+                                .buttonStyle(TimerButton(color: Color("timerPause")))
+                            } else {
+                                Button(action: {
+                                    self.stopTimer()
+                                    mediumHaptics()
+                                    timerIsPaused = false
+                                    print("PAUSE")
+                                    justStarted = false
+                                }) {
+                                    Text("Pause")
+                                }
+                                .buttonStyle(TimerButton(color: Color("timerPause")))
+                            }
+                            Button("Restart") {
+                                self.stopTimer()
+                                self.resetTimer()
+                                timerIsPaused = true
+                                self.status = "To Do"
+                                self.updateTime(assignment)
+                                self.isDisabled = false
+                                print("RESTART")
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerStop")))
+                            
+                            Button("Add Time") {
+                                timerIsPaused = true
+                                mediumHaptics()
+                                addTimeBool = true
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerAddTime")))
+                            .alert("Add Time", isPresented: $addTimeBool) {
                                 TextField("Add Minutes", text: $addMinutes)
                                     .keyboardType(.decimalPad)
                                 TextField("Add Hours", text: $addHours)
                                     .keyboardType(.decimalPad)
-
+                                
                                 Button(action: {
+                                    timerIsPaused = false
                                     self.addTime()
                                     self.updateTime(assignment)
                                 }) {
                                     Text("OK")
                                 }
                                 Button("Cancel", role: .cancel) {}
-                            })
-
+                            }
+                        }
+                        Button(action: {
+                            successHaptics()
+                            done()
+                        }) {
+                            if !assignment.isFinished {
+                                Image(systemName: "square")
+                            } else {
+                                Image(systemName: "checkmark.square.fill")
+                            }
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerDone")))
+                        Spacer()
                     }
+                    
                 }
-                .padding(.leading)
-                Spacer()
-            }
-
+//            }
             
-
         }
+        .padding(.leading, 6)
     }
 
-    func startTimer(){
-        timerIsPaused = false
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ tempTimer in
-            if self.seconds == 59 {
-                self.seconds = 0
-                if self.minutes == 59 {
-                    self.minutes = 0
-                    self.hours = self.hours + 1
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { tempTimer in
+            print("timing")
+            if assignment.activeSeconds == 59 {
+                assignment.activeSeconds = 0
+                if assignment.activeMinutes == 59 {
+                    assignment.activeMinutes = 0
+                    assignment.activeHours = assignment.activeHours + 1
                 }
                 else {
-                    self.minutes = self.minutes + 1
+                    assignment.activeMinutes = assignment.activeMinutes + 1
                 }
             }
             else {
-              self.seconds = self.seconds + 1
+                assignment.activeSeconds = assignment.activeSeconds + 1
             }
-            if (hours * 60) + minutes >= (assignment.hourStop * 60) + assignment.minuteStop {
+            if (assignment.activeHours * 60) + assignment.activeMinutes >= (assignment.hourStop * 60) + assignment.minuteStop {
                 overTime = true
             }
-            
-            if hours * 3600 + minutes * 60 + seconds == 0 {
-                status = "To Do"
-            } else if !isFinished {
-                status = "In Progress"
+            do {
+                try viewContext.save()
+                print("SAVED TIME")
+            } catch {
+                print(error.localizedDescription)
+                print("Error")
             }
 
-            // Every 10 seconds update
-            
-            if seconds % 10 == 0 {
-                self.updateTime(assignment)
-            }
-             
-            
         }
     }
 
-    func stopTimer(){
-        timerIsPaused = true
+    private func stopTimer(){
         timer?.invalidate()
         timer = nil
     }
 
-    func resetTimer(){
-        timerIsPaused = true
-        hours = 0
-        minutes = 0
-        seconds = 0
-        overTime = false
+    private func resetTimer(){
+        isStarted1 = false
+        assignment.activeHours = 0
+        assignment.activeMinutes = 0
+        assignment.activeSeconds = 0
+        do {
+            try viewContext.save()
+            print("SAVING 2/2")
+        } catch {
+            print(error.localizedDescription)
+            print("Error")
+        }
     }
-    func calculateTotal() {
-        timerIsPaused = true
-        //Save to core data
-    }
-    func addTime() {
+    private func addTime() {
         hours += Int(addHours) ?? 0
         minutes += Int(addMinutes) ?? 0
         addHours = ""
         addMinutes = ""
+    }
+}
+
+struct TimerButton: ButtonStyle {
+    var color: Color
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .fontWeight(.semibold)
+            .padding(5.0)
+            .background(color)
+            .foregroundColor(.white)
+            .cornerRadius(4)
+            .shadow(radius: 2)
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
     }
 }
 

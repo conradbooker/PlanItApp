@@ -41,18 +41,22 @@ struct New: View {
     @State private var newType: String = "Assignment"
     @State private var title: String = ""
     @State private var summary: String = ""
-    @State private var assignmentType: String = "Homework"
-    @State private var course: String = "Biology"
-    @State private var due: Date = Date()
+    @State private var assignmentType: String = "Assessment"
+    @State private var course: String = ""
+    @State private var dueDate: Date = Date()
     @State private var planned: Date = Date()
     @State private var color: Color = .red
     @State var hourStop: String = "0"
     @State var minuteStop: String = "45"
     
-    @State private var assessmentType: String = "Quiz"
+    @State private var isParent: Bool = false
     
-    @State private var multiStepAssignments: Any = []
-
+    @State private var tapped: Bool = false
+    
+    var asd: [String] = []
+    
+    @State private var assessmentType: String = "Quiz"
+    @State private var childAssignments: [childAssignment] = []
     
     /// Static vars
     let assignmentTypes = ["Homework", "Project", "Assessment", "Paper"]
@@ -63,18 +67,35 @@ struct New: View {
     /// Alerts
     @State var showAlert: Bool = false
     @State var showAlertDupe: Bool = false
+    @State var showCourseEmptyAlert: Bool = false
     
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
     
+//    let firstCourse = allCourses[0]
+    
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
+    
+    private func tapCourse() -> String {
+        if !tapped {
+            let firstCourse = allCourses[0]
+            return firstCourse.title ?? "Error lol"
+        }
+        return course
+    }
 
         
     private func saveAssignment() {
+                
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYYMMdd"
         
-        //pass in the literal course
-        
+        var courseTitle = ""
+        if !allCourses.isEmpty {
+            courseTitle = tapCourse()
+        }
+
         let assignment = Assignment(context: viewContext)
         assignment.activeHours = 0
         assignment.activeMinutes = 0
@@ -86,17 +107,15 @@ struct New: View {
         assignment.totalMinutes = 0
         assignment.totalSeconds = 0
         
-        assignment.red = Float(getColor(course).components.red)
-        assignment.green = Float(getColor(course).components.green)
-        assignment.blue = Float(getColor(course).components.blue)
+        assignment.red = Float(getColor(courseTitle).components.red)
+        assignment.green = Float(getColor(courseTitle).components.green)
+        assignment.blue = Float(getColor(courseTitle).components.blue)
         assignment.opacity = 0.0
-        
-//        Course(entity: <#T##NSEntityDescription#>, insertInto: <#T##NSManagedObjectContext?#>)
-        
+                
         assignment.assignmentType = assignmentType
-        assignment.course = course
-        assignment.source = ""
-        assignment.status = ""
+        assignment.course = courseTitle
+        assignment.source = "fromSelf"
+        assignment.status = "To Do"
         assignment.summary = summary
         assignment.title = title
                     
@@ -104,13 +123,28 @@ struct New: View {
         assignment.dateFinished = Date()
         assignment.datePlanned = planned
         assignment.isPlanned = false
-        assignment.due = due
+        assignment.dueDate = dueDate
         
         assignment.courseID = UUID()
         assignment.id = UUID()
-        
+        assignment.assignmentID = title + dateFormatter.string(from: dueDate)
+
         assignment.isFinished = false
-                
+        
+        assignment.parentCourse = ""
+        assignment.isChild = false
+        assignment.isParent = isParent
+        
+        if assignmentType != "Homework" {
+            assignment.isParent = true
+            assignment.datePlanned = dueDate
+            assignment.isPlanned = true
+        }
+        
+        assignment.parentID = ""
+        assignment.parentAssignmentTitle = ""
+        
+
         do {
 //            assignment.isPlanned = false
 //            assignment.datePlanned = Date()
@@ -118,10 +152,75 @@ struct New: View {
             try viewContext.save()
         } catch {
             print(error.localizedDescription)
-            print("Error occured in saving!")
-//            let nserror = error as NSError
-//            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            print("Error occured in saving! (parent)")
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
+        
+        if !childAssignments.isEmpty {
+            for assign in childAssignments {
+                
+                var courseTitle = ""
+                if !allCourses.isEmpty {
+                    courseTitle = tapCourse()
+                }
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "YYYYMMdd"
+                
+                let assignment = Assignment(context: viewContext)
+                assignment.activeHours = 0
+                assignment.activeMinutes = 0
+                assignment.activeSeconds = 0
+                assignment.dubiousMinutes = 0
+                assignment.minuteStop = Int16(assign.minuteStop) ?? 0
+                assignment.hourStop = Int16(assign.hourStop) ?? 0
+                assignment.totalHours = 0
+                assignment.totalMinutes = 0
+                assignment.totalSeconds = 0
+                
+                assignment.red = Float(getColor(courseTitle).components.red)
+                assignment.green = Float(getColor(courseTitle).components.green)
+                assignment.blue = Float(getColor(courseTitle).components.blue)
+                assignment.opacity = 0.0
+                                
+                assignment.assignmentType = assign.assignmentType
+                assignment.course = courseTitle
+                assignment.source = "fromSelf"
+                assignment.status = "To Do"
+                assignment.summary = summary
+                assignment.title = assign.title
+                            
+                assignment.dateCreated = Date()
+                assignment.dateFinished = Date()
+                assignment.datePlanned = assign.plannedDate
+                assignment.isPlanned = false
+                assignment.dueDate = dueDate
+                
+                assignment.courseID = UUID()
+                assignment.id = UUID()
+                assignment.assignmentID = assign.title + dateFormatter.string(from: dueDate)
+
+                assignment.isFinished = false
+                
+                assignment.parentCourse = ""
+                assignment.isChild = true
+                
+                isParent = true
+                
+                assignment.isParent = false
+                assignment.parentID = title + dateFormatter.string(from: dueDate)
+                assignment.parentAssignmentTitle = ""
+                
+                do {
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                    print("Error occured in saving! (child)")
+                }
+            }
+        }
+
         
     }
     private func saveCourse() {
@@ -135,6 +234,9 @@ struct New: View {
             
             course.summary = summary
             course.title = title
+            
+            course.onlineTitle = ""
+            course.section = ""
                         
             course.dateCreated = Date()
                         
@@ -240,29 +342,34 @@ struct New: View {
                                 }
                             }
                             .padding(.horizontal)
+                            .onTapGesture {
+                                tapped = true
+                            }
 
                             
                         }
                         Group { /// Date and time
+
                             /// Due Date
-                            
-                            if assignmentType != "Assessment" {
-                                DatePicker("Due Date:", selection: $due, displayedComponents: [.date])
-                                    .padding(.horizontal)
-                            } else {
-                                DatePicker("\(assessmentType) Date:", selection: $due, displayedComponents: [.date])
-                                    .padding(.horizontal)
+                            Group {
+                                if assignmentType != "Assessment" {
+                                    DatePicker("Due Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
+                                        .padding(.horizontal)
+                                } else {
+                                    DatePicker("\(assessmentType) Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
+                                        .padding(.horizontal)
+                                }
                             }
                             
                             if assignmentType == "Homework" {
                             /// Planned date
-                            DatePicker("What day will you do this?", selection: $planned, displayedComponents: [.date])
+                                DatePicker("What day will you do this?", selection: $planned, in: ...dueDate, displayedComponents: [.date])
                                 .padding(.horizontal)
                             
                             /// Assignment length
                                 HStack(spacing: 0) {
                                     Text("How long will this take?")
-                                    TextField("h", text: $hourStop)
+                                    NumTextField(subText: "h", text: $hourStop)
                                         .textFieldStyle(.roundedBorder)
                                         .padding(.horizontal)
                                         .frame(width: 80)
@@ -272,7 +379,7 @@ struct New: View {
                                     } else {
                                         Text("hours")
                                     }
-                                    TextField("m", text: $minuteStop)
+                                    NumTextField(subText: "m", text: $minuteStop)
                                         .textFieldStyle(.roundedBorder)
                                         .padding(.horizontal)
                                         .frame(width: 80)
@@ -287,12 +394,49 @@ struct New: View {
                             } else if assignmentType == "Project" {
                                 
                                 /// Add days for working on project
-                                Text("Add days which you will work on the project:")
+                                Text("Which days will you work on the project?")
                             } else if assignmentType == "Assessment" {
                                 /// Add days for studying
-                                Text("Add days which you will study for your \(assessmentType.lowercased()):")
+                                HStack {
+                                    Text("Which days will you study for your \(assessmentType.lowercased())?")
+                                    Button(action: {
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "YYYYMMdd"
+                                        @ObservedObject var modeling = childAssignment()
+                                        
+                                        if assignmentType == "Assessment" {
+                                            modeling.title = "Study for " + self.title
+                                            modeling.assignmentType = "Studying"
+                                        } else {
+                                            modeling.title = "Work on " + title
+                                            if assignmentType == "Paper" {
+                                                modeling.assignmentType = "Writing"
+                                            } else {
+                                                modeling.assignmentType = "Project"
+                                            }
+                                        }
+                                        
+                                        childAssignments.append(modeling)
+
+                                    }, label: {
+                                        Image(systemName: "plus.circle.fill")
+                                    })
+                                }
                                 
-                                // TODO: make button to add multistepassignmet to [multiStepAssignments]
+                                if childAssignments.isEmpty {
+                                    Text("(press plus button to add assignments)")
+                                        .padding()
+                                } else {
+                                    ScrollView {
+                                        Spacer()
+                                        ForEach($childAssignments) { assign in
+                                            ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate).frame(height: 45)
+                                            // pass through the hourstop, minutestop, date
+                                        }
+                                    }.frame(height: 200)
+
+                                    // TODO: make button to add multistepassignmet to [childAssignments]
+                                }
                             }
                         }
                         
@@ -301,8 +445,13 @@ struct New: View {
                             if title == "" || minuteStop == ""  || hourStop == "" {
                                 showAlert = true
                             } else {
-                                saveAssignment()
+                                if allCourses.isEmpty {
+                                    showCourseEmptyAlert = true
+                                } else {
+                                    saveAssignment()
+                                }
                             }
+
                         }) {
                             Text("Save")
                                 .padding()
@@ -315,6 +464,13 @@ struct New: View {
                                         message: Text("Please fill all fields!")
                                     )
                                 }
+                                .alert(isPresented: $showCourseEmptyAlert) {
+                                    Alert(
+                                        title: Text("Error"),
+                                        message: Text("You have no classes! Please click on courses to add a new course.")
+                                    )
+                                }
+
                         }
                         List {
                             ForEach(allAssignments) { assignmentY in
@@ -386,21 +542,20 @@ struct New: View {
                 
                 
             }
-            .navigationTitle("New")
+//            .navigationTitle("New")
         }
     }
 }
 
-struct MultiStepAssignment {
-    var parentID: String
-    var plannedDate: Date
-    var minuteStop: Int
-    var hourStop: Int
-//    var dueDate: plannedDate + 1
-    var title: String
-// self.title = parenttitle
-    var description: String
-    var course: String
+public class childAssignment: ObservableObject, Identifiable {
+    @Published public var amount: Int = 1
+    @Published public var plannedDate: Date = Date()
+    @Published public var minuteStop: String = "30"
+    @Published public var hourStop: String = "0"
+    @Published public var title: String = ""
+    @Published public var description: String = ""
+    @Published public var course: String = ""
+    @Published public var assignmentType: String = ""
 }
 
 struct New_Previews: PreviewProvider {

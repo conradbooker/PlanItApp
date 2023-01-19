@@ -94,6 +94,10 @@ struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
     }
     
     var course: String {
+        let splitted = SUMMARY.split(separator: " - ", maxSplits: 1)
+        if splitted.count < 2 {
+            return SUMMARY
+        }
         let firstIndex = String(SUMMARY.split(separator: " - ", maxSplits: 1)[0])
         let lastIndex = String(SUMMARY.split(separator: " - ", maxSplits: 1)[1])
         let section = lastIndex.split(separator: ": ", maxSplits: 1)[0]
@@ -156,7 +160,15 @@ struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
         
     var title: String {
         let first = SUMMARY.replacingOccurrences(of: "&amp;", with: "&")
-        let lastIndex = String(first.split(separator: " - ", maxSplits: 1)[1])
+        
+        let splitted = first.split(separator: " - ", maxSplits: 1)
+        
+        if splitted.count < 2 || !first.contains("-") && !first.contains(":") {
+            return first
+        }
+        
+        let lastIndex = String(splitted[1])
+        
         let section = lastIndex.split(separator: ": ", maxSplits: 1)[1]
         
         let desc = String(section).replacingOccurrences(of: "&amp;", with: "&")
