@@ -20,6 +20,7 @@
         <attribute name="isChild" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isFinished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isParent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isPaused" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="isPlanned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="minuteStop" attributeType="Integer 16" defaultValueString="45" usesScalarValueType="YES"/>
         <attribute name="opacity" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>

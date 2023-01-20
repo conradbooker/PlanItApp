@@ -143,7 +143,7 @@ struct New: View {
         
         assignment.parentID = ""
         assignment.parentAssignmentTitle = ""
-        
+        assignment.isPaused = true
 
         do {
 //            assignment.isPlanned = false
@@ -211,7 +211,7 @@ struct New: View {
                 assignment.isParent = false
                 assignment.parentID = title + dateFormatter.string(from: dueDate)
                 assignment.parentAssignmentTitle = ""
-                
+                assignment.isPaused = true
                 do {
                     try viewContext.save()
                 } catch {
