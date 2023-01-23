@@ -11,7 +11,6 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
 
-    
     var body: some View {
         TabView {
             Home().environment(\.managedObjectContext, persistedContainer.viewContext)
@@ -31,7 +30,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            New().environment(\.managedObjectContext, persistedContainer.viewContext)
+            EditAssignment().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("New", systemImage: "plus.circle")
                 }
@@ -47,7 +46,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            Settings()
+            Settings().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.2")
                 }

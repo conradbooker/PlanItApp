@@ -7,108 +7,149 @@
 
 import SwiftUI
 
-struct Item: Identifiable {
-    var id: Int
-    var title: String
-    var color: Color
-    var date: Date
-}
-
-class Store: ObservableObject {
-    @Published var items: [Item]
-    
-    let colors: [Color] = [.red, .orange, .blue, .teal, .mint, .green, .gray, .indigo, .black]
-    
-
-    // dummy data
-    init() {
-        items = []
-        for i in 0...7 {
-            let new = Item(id: i, title: "Item \(i)", color: colors[i], date: Date())
-            items.append(new)
-        }
-    }
-}
-
-
 struct Due: View {
     
-    @StateObject var store = Store()
-    @State private var snappedItem = 0.0
-    @State private var draggingItem = 0.0
-    @State private var touches = 0
-    @State private var relativeRotations = 0
+    @Environment(\.managedObjectContext) private var viewContext
+    let persistedContainer = CoreDataManager.shared.persistentContainer
+    
+    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
+    
+    var assignmentSpacing: CGFloat = 5
+    
+    @State private var currentDate: Date = Date.now
+    @State private var selectedDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+    let calendar = Calendar.current
+
+    let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+    
+    private func findHeight(_ text: String) -> CGFloat {
+        if Double(text.count) / 45 < 1.5 {
+            return 135
+        }
+        return CGFloat((text.count / 45) * 17 + 140)
+    }
+
+    @State var checkInProgress: Int = 0
+    @State var checkToDo: Int = 0
+    @State var checkFinished: Int = 0
     
     var body: some View {
-        
-        VStack {
-            ZStack {
-                ForEach(store.items) { item in
-                    
-                    // article view
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 100)
-                            .fill(item.color)
-                            .frame(width: 300,height:100)
+        GeometryReader { geometry in
+            NavigationView {
+                ZStack {
+                    Color("cDarkGray")
+                        .ignoresSafeArea()
+                    ScrollView {
                         VStack {
-                            Text(item.title)
-                                .padding()
-                            Text(String(item.date.formatted(.dateTime.day().month().year())))
-                        }
-                    }
-                    .frame(width: 400, height: 200)
-                    
-                    .scaleEffect(1.0 - abs(distance(item.id)) * 0.2 )
-    //                .opacity(1.0 - abs(distance(item.id)) * 0.3 )
-                    .offset(x: myXOffset(item.id), y: 0)
-                    .zIndex(1.0 - abs(distance(item.id)) * 0.1)
-                }
-            }
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        draggingItem = snappedItem + value.translation.width / 100
-                    }
-                    .onEnded { value in
-                        withAnimation {
-                            draggingItem = snappedItem + value.predictedEndTranslation.width / 100
-                            draggingItem = round(draggingItem).remainder(dividingBy: Double(store.items.count))
-                            let temp = draggingItem
-                            snappedItem = draggingItem
-                            
-                            if draggingItem < 0 {
-                                relativeRotations += Int(abs(temp) - abs(draggingItem))
-                            } else {
-                                relativeRotations -= Int(abs(temp) - abs(draggingItem))
+                            if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
+                                HStack {
+                                    Text("you finished everything for today!!!")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
                             }
                             
-                            touches += 1
+                            // MARK: In Progress
+                            if checkInProgress != 0 {
+                                HStack {
+                                    Text("in progress")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            ForEach(allAssignments) { assign in
+                                if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.status == "In Progress" {
+                                        AssignmentViewNew(assignment: assign)
+                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkInProgress += 1
+                                            }
+                                            .onDisappear {
+                                                checkInProgress -= 1
+                                            }
+                                    }
+                                }
+                            }
                             
+                            // MARK: To Do
+                            if checkToDo != 0 {
+                                HStack {
+                                    Text("to do")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            
+                            ForEach(allAssignments) { assign in
+                                if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.status == "To Do" {
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkToDo += 1
+                                            }
+                                            .onDisappear {
+                                                checkToDo -= 1
+                                            }
+                                    }
+                                }
+                            }
+                            
+                            // MARK: Completed
+                            if checkFinished != 0 {
+                                HStack {
+                                    Text("completed things!")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            
+                            ForEach(allAssignments) { assign in
+                                if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.status == "Finished!" {
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkFinished += 1
+                                            }
+                                            .onDisappear {
+                                                checkFinished -= 1
+                                            }
+                                    }
+                                }
+                            }
+                            if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
+                                HStack {
+                                    Text("Nothing due tomorrow :)")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            Spacer().frame(height: 100)
                         }
                     }
-            )
-            Text("Touches: \(touches)")
-            Text("Relative Rotations: \(relativeRotations)")
-            Text("snappedItem: \(snappedItem)")
-            Text("draggingItem: \(draggingItem)")
-
+                    VStack {
+                        Spacer().frame(height:geometry.size.height-150)
+                        DateSelector(selectedDate: $selectedDate)
+                    }
+                }
+                .navigationTitle("Due")
+            }
         }
-        
     }
     
-    func distance(_ item: Int) -> Double {
-        return (draggingItem - Double(item)).remainder(dividingBy: Double(store.items.count))
+    func add() {
+        selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
     }
-    
-    func myXOffset(_ item: Int) -> Double {
-        let angle = Double.pi * 2 / Double(store.items.count) * distance(item)
-        return sin(angle) * 200
+    func subtract() {
+        selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
     }
-    
 }
+
 
 struct Due_Previews: PreviewProvider {
     static var previews: some View {
-        Due()
+        let persistedContainer = CoreDataManager.shared.persistentContainer
+        Due().environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }

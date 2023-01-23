@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+func successHaptics() {
+    let generator = UINotificationFeedbackGenerator()
+    generator.notificationOccurred(.success)
+}
+func errorHaptics() {
+    let generator = UINotificationFeedbackGenerator()
+    generator.notificationOccurred(.error)
+}
+func mediumHaptics() {
+    let rigidImpact = UIImpactFeedbackGenerator(style: .rigid)
+    rigidImpact.impactOccurred()
+}
+
 struct TimerView: View {
     
     @State var hours: Int = 0
@@ -34,19 +47,6 @@ struct TimerView: View {
     
     @State var startButtonDisabled: Bool = false
     
-    func successHaptics() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-    }
-    func resetHaptics() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error)
-    }
-    func mediumHaptics() {
-        let rigidImpact = UIImpactFeedbackGenerator(style: .rigid)
-        rigidImpact.impactOccurred()
-    }
-
     var isStarted: Bool {
         if hours * 3600 + minutes * 60 + seconds == 0 || status == "To Do" {
             return false
@@ -126,7 +126,7 @@ struct TimerView: View {
         forceStart = true
         isStarted1 = true
         status = "In Progress"
-        self.successHaptics()
+        successHaptics()
         startButtonDisabled = true
         
         do {

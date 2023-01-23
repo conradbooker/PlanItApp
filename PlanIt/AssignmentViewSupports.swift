@@ -12,6 +12,11 @@ struct AssignmentViewSupports: View {
         Text("Hello, World!")
     }
 }
+extension UIScreen {
+   static let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
+   static let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
+//   static let screenSize = CGFloat(UIScreen.main.bounds.size)
+}
 
 struct FormattedTime: View {
     var hourStop: Int

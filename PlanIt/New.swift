@@ -37,24 +37,21 @@ extension Color {
 
 struct New: View {
     
+    // MARK: variables / constants
     /// Dynamic variables
     @State private var newType: String = "Assignment"
     @State private var title: String = ""
     @State private var summary: String = ""
-    @State private var assignmentType: String = "Assessment"
+    @State private var assignmentType: String = "Homework"
     @State private var course: String = ""
     @State private var dueDate: Date = Date()
     @State private var planned: Date = Date()
     @State private var color: Color = .red
     @State var hourStop: String = "0"
     @State var minuteStop: String = "45"
-    
     @State private var isParent: Bool = false
-    
     @State private var tapped: Bool = false
-    
-    var asd: [String] = []
-    
+        
     @State private var assessmentType: String = "Quiz"
     @State private var childAssignments: [childAssignment] = []
     
@@ -64,19 +61,21 @@ struct New: View {
     let assessmentTypes = ["Quiz","Quest","Test"]
 
     
-    /// Alerts
+    /// Error alerts
     @State var showAlert: Bool = false
     @State var showAlertDupe: Bool = false
     @State var showCourseEmptyAlert: Bool = false
+    @State var alertTitle: String = ""
+    @State var alertText: String = ""
     
+    /// CoreData
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
-    
-//    let firstCourse = allCourses[0]
-    
+        
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
+    // MARK: tapCourse
     private func tapCourse() -> String {
         if !tapped {
             let firstCourse = allCourses[0]
@@ -85,7 +84,7 @@ struct New: View {
         return course
     }
 
-        
+    // MARK: saveAssignment
     private func saveAssignment() {
                 
         let dateFormatter = DateFormatter()
@@ -122,7 +121,7 @@ struct New: View {
         assignment.dateCreated = Date()
         assignment.dateFinished = Date()
         assignment.datePlanned = planned
-        assignment.isPlanned = false
+        assignment.isPlanned = true
         assignment.dueDate = dueDate
         
         assignment.courseID = UUID()
@@ -146,9 +145,6 @@ struct New: View {
         assignment.isPaused = true
 
         do {
-//            assignment.isPlanned = false
-//            assignment.datePlanned = Date()
-            
             try viewContext.save()
         } catch {
             print(error.localizedDescription)
@@ -157,6 +153,7 @@ struct New: View {
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         
+        // MARK: save childAssignments
         if !childAssignments.isEmpty {
             for assign in childAssignments {
                 
@@ -194,7 +191,7 @@ struct New: View {
                 assignment.dateCreated = Date()
                 assignment.dateFinished = Date()
                 assignment.datePlanned = assign.plannedDate
-                assignment.isPlanned = false
+                assignment.isPlanned = true
                 assignment.dueDate = dueDate
                 
                 assignment.courseID = UUID()
@@ -223,8 +220,9 @@ struct New: View {
 
         
     }
+    
+    // MARK: saveCourse
     private func saveCourse() {
-        
         do {
             let course = Course(context: viewContext)
             
@@ -252,6 +250,7 @@ struct New: View {
         
     }
     
+    // MARK: deleteAssignment
     private func deleteAssignment(at offsets: IndexSet) {
         offsets.forEach { index in
             let assignment = allAssignments[index]
@@ -264,19 +263,18 @@ struct New: View {
             }
         }
     }
-    private func deleteCourse(at offsets: IndexSet) {
-        offsets.forEach { index in
-            let course = allCourses[index]
-            viewContext.delete(course)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                print(error.localizedDescription)
-            }
+    
+    // MARK: deleteCourse
+    private func deleteCourse(_ course: Course) {
+        viewContext.delete(course)
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
+    // MARK: getColor
     private func getColor(_ title: String) -> Color {
         for course in allCourses {
             let colored = Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))
@@ -286,13 +284,11 @@ struct New: View {
         }
         return .green
     }
-
     
     var body: some View {
         NavigationView {
-            VStack {
-                
-                /// Top picker
+            ScrollView {
+                // MARK: new assignment / course
                 Picker("New Type", selection: $newType) {
                     ForEach(types, id: \.self) { type in
                         Text(type).tag(type)
@@ -305,17 +301,17 @@ struct New: View {
                 if newType == "Assignment" {
                     Group {
                         Group {
-                            /// Title
+                            // MARK: title
                             TextField("Enter title", text: $title)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
                             
-                            /// Description
+                            // MARK: description
                             TextField("Enter description", text: $summary)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
                             
-                            ///Assignment Type
+                            // MARK: assignment type
                             Picker("Assignment Type", selection: $assignmentType) {
                                 ForEach(assignmentTypes, id: \.self) { assignmentType in
                                     Text(assignmentType).tag(assignmentType)
@@ -324,8 +320,8 @@ struct New: View {
                             .pickerStyle(.segmented)
                             .padding(.horizontal)
                             
+                            // MARK: assessment type
                             if assignmentType == "Assessment" {
-                                /// Assessment Type (Quiz, Test, Quest)
                                 Picker("AssessmentTypes", selection: $assessmentType) {
                                     ForEach(assessmentTypes, id: \.self) { type in
                                         Text(type).tag(type)
@@ -335,7 +331,7 @@ struct New: View {
                                 .padding([.leading, .bottom, .trailing])
                             }
 
-                            /// Pick which course assignment is to
+                            // MARK: class selection
                             Picker("Classes", selection: $course) {
                                 ForEach(allCourses, id: \.self) { course in
                                     Text(course.title ?? "").tag(course.title ?? "")
@@ -345,12 +341,11 @@ struct New: View {
                             .onTapGesture {
                                 tapped = true
                             }
-
-                            
                         }
+                        
                         Group { /// Date and time
 
-                            /// Due Date
+                            // MARK: due date / test date
                             Group {
                                 if assignmentType != "Assessment" {
                                     DatePicker("Due Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
@@ -360,19 +355,22 @@ struct New: View {
                                         .padding(.horizontal)
                                 }
                             }
-                            
+                            // MARK: homework
                             if assignmentType == "Homework" {
                             /// Planned date
                                 DatePicker("What day will you do this?", selection: $planned, in: ...dueDate, displayedComponents: [.date])
                                 .padding(.horizontal)
                             
-                            /// Assignment length
+                                // MARK: assignment time
                                 HStack(spacing: 0) {
                                     Text("How long will this take?")
+                                        .padding(.leading)
+                                    Spacer()
                                     NumTextField(subText: "h", text: $hourStop)
+                                        .frame(width: 40)
                                         .textFieldStyle(.roundedBorder)
-                                        .padding(.horizontal)
-                                        .frame(width: 80)
+                                        .padding(.leading, 2)
+                                        .padding(.trailing, 7.0)
                                         .multilineTextAlignment(.center)
                                     if Int(hourStop) ?? 0 == 1 {
                                         Text("hour")
@@ -380,22 +378,27 @@ struct New: View {
                                         Text("hours")
                                     }
                                     NumTextField(subText: "m", text: $minuteStop)
+                                        .frame(width: 40)
                                         .textFieldStyle(.roundedBorder)
-                                        .padding(.horizontal)
-                                        .frame(width: 80)
+                                        .padding(.horizontal, 7.0)
                                         .multilineTextAlignment(.center)
                                     if Int(minuteStop) ?? 0 == 1 {
                                         Text("min")
+                                            .padding(.trailing)
                                     } else {
                                         Text("mins")
+                                            .padding(.trailing)
                                     }
-                                    
                                 }
-                            } else if assignmentType == "Project" {
+                            }
+                            // MARK: project components
+                            else if assignmentType == "Project" {
                                 
                                 /// Add days for working on project
                                 Text("Which days will you work on the project?")
-                            } else if assignmentType == "Assessment" {
+                            }
+                            // MARK: test components
+                            else if assignmentType == "Assessment" {
                                 /// Add days for studying
                                 HStack {
                                     Text("Which days will you study for your \(assessmentType.lowercased())?")
@@ -422,7 +425,7 @@ struct New: View {
                                         Image(systemName: "plus.circle.fill")
                                     })
                                 }
-                                
+                                /// add days to study
                                 if childAssignments.isEmpty {
                                     Text("(press plus button to add assignments)")
                                         .padding()
@@ -431,57 +434,42 @@ struct New: View {
                                         Spacer()
                                         ForEach($childAssignments) { assign in
                                             ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate).frame(height: 45)
-                                            // pass through the hourstop, minutestop, date
                                         }
                                     }.frame(height: 200)
 
-                                    // TODO: make button to add multistepassignmet to [childAssignments]
                                 }
                             }
                         }
                         
-                        /// Save button
-                        Button(action: {
+                        // MARK: save
+                        
+                        Button("Save") {
                             if title == "" || minuteStop == ""  || hourStop == "" {
                                 showAlert = true
+                                alertTitle = "Error"
+                                alertText = "Please fill all fields!"
                             } else {
                                 if allCourses.isEmpty {
-                                    showCourseEmptyAlert = true
+                                    alertTitle = "Error"
+                                    alertText = "You have no classes! Please click on courses to add a new course."
+                                    showAlert = true
                                 } else {
                                     saveAssignment()
                                 }
                             }
-
-                        }) {
-                            Text("Save")
-                                .padding()
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text("Error"),
-                                        message: Text("Please fill all fields!")
-                                    )
-                                }
-                                .alert(isPresented: $showCourseEmptyAlert) {
-                                    Alert(
-                                        title: Text("Error"),
-                                        message: Text("You have no classes! Please click on courses to add a new course.")
-                                    )
-                                }
-
                         }
-                        List {
-                            ForEach(allAssignments) { assignmentY in
-                                HStack {
-                                    Text(assignmentY.title ?? "")
-                                }
-                            }.onDelete(perform: deleteAssignment)
+                        .buttonStyle(TimerButton(color: Color("timerStart")))
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text(alertTitle),
+                                message: Text(alertText)
+                            )
                         }
+                        .font(.title2)
                     }
-                    
-                } else { /// if user wants a new course
+                }
+                // MARK: new course
+                else { /// if user wants a new course
                     Group {
                         TextField("Enter title", text: $title)
                             .textFieldStyle(.roundedBorder)
@@ -524,16 +512,17 @@ struct New: View {
                                     )
                                 }
                         }
-                        List {
-                            ForEach(allCourses) { course in
-                                HStack {
-                                    Text(course.title ?? "")
-                                    Circle().fill(Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))).frame(width:20)
-
+                        ForEach(allCourses) { course in
+                            HStack {
+                                Text(course.title ?? "")
+                                Circle().fill(Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))).frame(width:20)
+                                Button {
+                                    deleteCourse(course)
+                                } label: {
+                                    Image(systemName: "trash.fill")
                                 }
-                            }.onDelete(perform: deleteCourse)
+                            }
                         }
-//                        .onDelete(perform: deleteCourse)
 
                     }
 
@@ -542,7 +531,7 @@ struct New: View {
                 
                 
             }
-//            .navigationTitle("New")
+            .navigationTitle("New")
         }
     }
 }

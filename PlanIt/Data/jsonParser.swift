@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import PythonSupport
+import UIKit
 
 var defaultJSon = """
 [
@@ -90,9 +91,9 @@ struct ICSCal: Decodable, Hashable, Identifiable {
 struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
     
     var id: String {
-        self.SUMMARY + self.DTEND
+        self.title + self.DTEND.dropFirst(11)
     }
-    
+        
     var course: String {
         let splitted = SUMMARY.split(separator: " - ", maxSplits: 1)
         if splitted.count < 2 {
@@ -269,7 +270,7 @@ func returnString() -> String {
 
 //var onlineAssignmentData: [ICSCal] = load("data.json")
 
-var onlineAssignmentData: [ICSCal]  = returnString().decodeJson([ICSCal].self)
+var onlineAssignmentData: [ICSCal] = returnString().decodeJson([ICSCal].self)
 
 //let menuItems = try! JSONDecoder().decode([ICSCal].self, from: jsonData)
 //let

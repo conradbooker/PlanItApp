@@ -12,23 +12,26 @@ struct Home: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
-    
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
+    
+    var assignmentSpacing: CGFloat = 5
     
     @State private var currentDate: Date = Date.now
     @State private var selectedDate: Date = Date.now
+    let calendar = Calendar.current
 
     let impactMedium = UIImpactFeedbackGenerator(style: .medium)
     
-    let calendar = Calendar.current
-    
     private func findHeight(_ text: String) -> CGFloat {
         if Double(text.count) / 45 < 1.5 {
-            return 109
+            return 135
         }
-        return CGFloat((text.count / 45) * 17 + 119)
+        return CGFloat((text.count / 45) * 17 + 140)
     }
 
+    @State var checkInProgress: Int = 0
+    @State var checkToDo: Int = 0
+    @State var checkFinished: Int = 0
     
     var body: some View {
         GeometryReader { geometry in
@@ -38,109 +41,101 @@ struct Home: View {
                         .ignoresSafeArea()
                     ScrollView {
                         VStack {
-                            HStack {
-                                Text("Welcome back, Cunt!")
-                                    .padding(.leading)
-                                    .fontWeight(.bold)
-                                    .font(.system(size: 30))
-                                Spacer()
+                            if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
+                                HStack {
+                                    Text("you finished everything for today!!!")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
                             }
                             
-                            HStack {
-                                Text("Assignments in progress")
-                                    .padding(.leading)
-                                Spacer()
+                            // MARK: In Progress
+                            if checkInProgress != 0 {
+                                HStack {
+                                    Text("in progress")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
                             }
-                            
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "In Progress" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign)
+                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkInProgress += 1
+                                            }
+                                            .onDisappear {
+                                                checkInProgress -= 1
+                                            }
                                     }
                                 }
                             }
-                            HStack {
-                                Text("Assignments to do")
-                                    .padding(.leading)
-                                Spacer()
+                            
+                            // MARK: To Do
+                            if checkToDo != 0 {
+                                HStack {
+                                    Text("to do")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
                             }
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "To Do" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkToDo += 1
+                                            }
+                                            .onDisappear {
+                                                checkToDo -= 1
+                                            }
                                     }
                                 }
                             }
-
-                            HStack {
-                                Text("finished assignments")
-                                    .padding(.leading)
-                                Spacer()
+                            
+                            // MARK: Completed
+                            if checkFinished != 0 {
+                                HStack {
+                                    Text("completed things!")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
                             }
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + 25).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkFinished += 1
+                                            }
+                                            .onDisappear {
+                                                checkFinished -= 1
+                                            }
                                     }
                                 }
                             }
-
+                            if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
+                                HStack {
+                                    Text("Nothing planned tomorrow :)")
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            Spacer().frame(height: 100)
                         }
                     }
                     VStack {
                         Spacer().frame(height:geometry.size.height-150)
-                        VStack {
-                            ZStack {
-                                ZStack {
-                                    VStack(spacing: 0) {
-                                        DatePicker("", selection: $selectedDate, displayedComponents: [.date])
-                                            .datePickerStyle(.compact)
-                                            
-            //                                .accentColor(.orange)
-                                        .labelsHidden()
-                                        Spacer().frame(height:5)
-                                    }
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(Color("cLessDarkGray"))
-                                        .frame(width: geometry.size.width - 10,height:50)
-                                        .allowsHitTesting(false)
-                                        .shadow(radius: 2)
-                                    HStack(spacing: 0) {
-                                        Text(selectedDate.formatted(.dateTime.weekday(.wide)) + ", ")
-                                        Text(selectedDate, style: .date)
-                                    }
-                                    .allowsHitTesting(false)
-
-                                }
-                                HStack {
-                                    Button(action:{
-                                        print("subtracted 1")
-                                        subtract()
-                                        impactMedium.impactOccurred()
-                                    }){
-                                        Image(systemName: "minus.circle.fill")
-                                    }
-                                    Spacer().frame(width:geometry.size.width-100)
-                                    Button(action:{
-                                        print("added 1")
-                                        add()
-                                        impactMedium.impactOccurred()
-                                    }){
-                                        Image(systemName: "plus.circle.fill")
-                                    }
-                                }
-
-
-                                
-                            }
-                        }
-
+                        DateSelector(selectedDate: $selectedDate)
+                            .frame(width: UIScreen.screenWidth - 10)
                     }
                 }
+                .navigationTitle("Welcome back, Cunt!")
             }
-            
         }
     }
     
@@ -150,7 +145,6 @@ struct Home: View {
     func subtract() {
         selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
     }
-
 }
 
 struct Home_Previews: PreviewProvider {

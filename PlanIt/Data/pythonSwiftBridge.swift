@@ -15,10 +15,10 @@ func runPythonICSJSon(_ URL: String) -> PythonObject {
     ///private/var/containers/Bundle/Application/0FF83499-223B-4056-818D-0047E20CD79B/PlanIt.app/icsJSon.py
 
     let sys = Python.import("sys")
-    print(sys)
     sys.path.append(path)
-    print(sys)
     let file = Python.import("icsJSon")
+    
+    //network error handling here
     
     let response = file.returnicsJSon(URL)
     return response
