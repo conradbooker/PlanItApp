@@ -46,7 +46,7 @@ struct TimerView: View {
     @State var isFinished: Bool = false
     
     @State var startButtonDisabled: Bool = false
-    
+        
     var isStarted: Bool {
         if hours * 3600 + minutes * 60 + seconds == 0 || status == "To Do" {
             return false
@@ -299,8 +299,7 @@ struct TimerView: View {
                     }
                     
                 }
-//            }
-            
+        // MARK: Timer portion
         }.onReceive(timer) { _ in
             if !assignment.isPaused || forceStart {
                 if assignment.activeSeconds == 59 {
@@ -346,10 +345,16 @@ struct TimerView: View {
         }
     }
     private func addTime() {
-        hours += Int(addHours) ?? 0
-        minutes += Int(addMinutes) ?? 0
+        assignment.activeHours += Int16(addHours) ?? 0
+        assignment.activeMinutes += Int16(addMinutes) ?? 0
         addHours = ""
         addMinutes = ""
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+            print("Error")
+        }
     }
 }
 

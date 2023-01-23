@@ -13,6 +13,7 @@ struct Due: View {
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
+    @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
     
     var assignmentSpacing: CGFloat = 5
     
@@ -23,15 +24,126 @@ struct Due: View {
     let impactMedium = UIImpactFeedbackGenerator(style: .medium)
     
     private func findHeight(_ text: String) -> CGFloat {
-        if Double(text.count) / 45 < 1.5 {
+        if Double(text.count) / 40 < 1.2 {
             return 135
         }
-        return CGFloat((text.count / 45) * 17 + 140)
+        return CGFloat((text.count / 40) * 17 + 140)
     }
 
     @State var checkInProgress: Int = 0
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
+    
+    @State var assignmentSize =  CGSize()
+    
+    // MARK: getColor
+    private func getColor(_ title: String) -> Color {
+        for course in allCourses {
+            let colored = Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))
+            if title.lowercased() == course.title?.lowercased() {
+                return colored
+            }
+        }
+        return .green
+    }
+    
+    // MARK: syncAssignments
+    private func syncAssignments() {
+        var allCoursesDict: [String: String] = [:]
+        
+        for course in allCourses {
+            allCoursesDict[course.onlineTitle!] = course.title!
+        }
+        let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
+        let onlineAssignments = things[0].VCALENDAR[0].VEVENT
+        
+        /// assignment IDs
+        var existingAssignmentIDs: [String] = []
+        for assignment in allAssignments {
+            existingAssignmentIDs.append(assignment.assignmentID!)
+        }
+        
+        print(existingAssignmentIDs)
+        
+        if existingAssignmentIDs.contains("Personal Reflection20220912") {
+            print("cupcakke")
+        } else {
+            print("Squidward")
+        }
+        
+        /// main function crap
+        for assign in onlineAssignments {
+            if existingAssignmentIDs.contains(String(assign.id)) == false {
+                print("ID:")
+                print(String(assign.id))
+                let dateFormatter = DateFormatter()
+                let currentCourse = allCoursesDict[assign.course] ?? ""
+                dateFormatter.dateFormat = "YYYYMMdd"
+                
+                let assignment = Assignment(context: viewContext)
+                assignment.activeHours = 0
+                assignment.activeMinutes = 0
+                assignment.activeSeconds = 0
+                assignment.dubiousMinutes = 0
+                assignment.minuteStop = 0
+                assignment.hourStop = 0
+                assignment.totalHours = 0
+                assignment.totalMinutes = 0
+                assignment.totalSeconds = 0
+                
+                assignment.red = Float(getColor(currentCourse).components.red)
+                assignment.green = Float(getColor(currentCourse).components.green)
+                assignment.blue = Float(getColor(currentCourse).components.blue)
+                assignment.opacity = 0.0
+                        
+                assignment.assignmentType = "Homework"
+                assignment.course = currentCourse
+                assignment.source = "fromOnline"
+                assignment.summary = assign.description
+                assignment.title = assign.title
+                
+                assignment.dateCreated = Date()
+                assignment.dateFinished = Date()
+                
+                if assign.dueDate < Date() {
+                    assignment.status = "Finished!"
+                } else {
+                    assignment.status = "To Do"
+                }
+                
+                assignment.datePlanned = Calendar.current.date(byAdding: .day, value: -1000, to: assign.dueDate)
+                assignment.isPlanned = false
+                assignment.dueDate = assign.dueDate
+                
+                assignment.courseID = UUID()
+                assignment.id = UUID()
+                assignment.assignmentID = assign.title + assign.DTEND.dropFirst(11)
+
+                print(assignment.assignmentID!)
+                assignment.isFinished = false
+                
+                assignment.parentCourse = ""
+                assignment.isChild = false
+                assignment.isParent = false
+                            
+                assignment.parentID = ""
+                assignment.parentAssignmentTitle = ""
+                assignment.isPaused = true
+
+                do {
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                    print("Error occured in saving! (parent)")
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+            } else {
+                print("poopi")
+            }
+        }
+    }
+
     
     var body: some View {
         GeometryReader { geometry in
@@ -61,7 +173,6 @@ struct Due: View {
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "In Progress" {
                                         AssignmentViewNew(assignment: assign)
-                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkInProgress += 1
@@ -85,7 +196,8 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "To Do" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkToDo += 1
                                             }
@@ -108,7 +220,8 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkFinished += 1
                                             }
@@ -134,6 +247,9 @@ struct Due: View {
                     }
                 }
                 .navigationTitle("Due")
+                .refreshable {
+                    syncAssignments()
+                }
             }
         }
     }

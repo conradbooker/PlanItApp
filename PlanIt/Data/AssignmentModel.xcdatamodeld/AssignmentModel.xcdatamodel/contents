@@ -13,7 +13,7 @@
         <attribute name="dateFinished" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="datePlanned" attributeType="Date" defaultDateTimeInterval="694028820" usesScalarValueType="NO"/>
         <attribute name="dubiousMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="dueDate" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
+        <attribute name="dueDate" attributeType="Date" defaultDateTimeInterval="725778000" usesScalarValueType="NO"/>
         <attribute name="green" attributeType="Float" defaultValueString="0.23921569" usesScalarValueType="YES"/>
         <attribute name="hourStop" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" defaultValueString="E5BB4B1E-6493-4F51-AC65-74FA9043FF88" usesScalarValueType="NO"/>

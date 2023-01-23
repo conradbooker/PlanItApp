@@ -156,6 +156,23 @@ struct ExternalSource: View {
                 print("poopi")
             }
         }
+        
+        for matchCourse in courses {
+            for course in allCourses {
+                if course.title == matchCourse.userCourse {
+                    course.onlineTitle = matchCourse.onlineCourse
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        print(error.localizedDescription)
+                        print("Error occured in saving! (parent)")
+                        let nserror = error as NSError
+                        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                    }
+                }
+            }
+        }
+        
     }
 
     

@@ -44,7 +44,7 @@ struct New: View {
     @State private var summary: String = ""
     @State private var assignmentType: String = "Homework"
     @State private var course: String = ""
-    @State private var dueDate: Date = Date()
+    @State private var dueDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
     @State private var planned: Date = Date()
     @State private var color: Color = .red
     @State var hourStop: String = "0"

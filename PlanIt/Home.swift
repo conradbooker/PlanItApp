@@ -33,6 +33,9 @@ struct Home: View {
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
     
+    @State private var totalHours: Int = 0
+    @State private var totalMinutes: Int = 0
+
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
@@ -65,10 +68,21 @@ struct Home: View {
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkInProgress += 1
+                                                if !assign.isFinished {
+                                                    totalMinutes += Int(assign.minuteStop)
+                                                    totalHours += Int(assign.hourStop)
+                                                }
                                             }
                                             .onDisappear {
                                                 checkInProgress -= 1
+                                                if !assign.isFinished {
+                                                    totalMinutes -= Int(assign.minuteStop)
+                                                    totalHours -= Int(assign.hourStop)
+                                                }
                                             }
+//                                            .onChange(of: assign.minuteStop) { _ in
+//                                                totalMinutes -=
+//                                            }
                                     }
                                 }
                             }
@@ -88,9 +102,17 @@ struct Home: View {
                                         AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkToDo += 1
+                                                if !assign.isFinished {
+                                                    totalMinutes += Int(assign.minuteStop)
+                                                    totalHours += Int(assign.hourStop)
+                                                }
                                             }
                                             .onDisappear {
                                                 checkToDo -= 1
+                                                if !assign.isFinished {
+                                                    totalMinutes -= Int(assign.minuteStop)
+                                                    totalHours -= Int(assign.hourStop)
+                                                }
                                             }
                                     }
                                 }
@@ -108,22 +130,35 @@ struct Home: View {
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign)
+                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkFinished += 1
+                                                if !assign.isFinished {
+                                                    totalMinutes += Int(assign.minuteStop)
+                                                    totalHours += Int(assign.hourStop)
+                                                }
                                             }
                                             .onDisappear {
                                                 checkFinished -= 1
+                                                if !assign.isFinished {
+                                                    totalMinutes -= Int(assign.minuteStop)
+                                                    totalHours -= Int(assign.hourStop)
+                                                }
                                             }
                                     }
                                 }
                             }
-                            if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
-                                HStack {
-                                    Text("Nothing planned tomorrow :)")
-                                        .padding([.top, .leading])
-                                    Spacer()
+                            Group {
+                                if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
+                                    HStack {
+                                        Text("Nothing planned tomorrow :)")
+                                            .padding([.top, .leading])
+                                        Spacer()
+                                    }
                                 }
+                                FormattedTime(hourStop: totalHours, minuteStop: totalMinutes)
                             }
                             Spacer().frame(height: 100)
                         }

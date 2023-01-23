@@ -16,17 +16,14 @@ struct AssignmentViewNew: View {
         
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
-    //    @Binding private var showEnlarged: Bool
-    
-    private func findHeight(_ text: String) -> CGFloat {
-        if Double(text.count) / 45 < 1.3 {
-            return 135
-        }
-        return CGFloat((text.count / 35) * 17 + 130)
-    }
-    
+    @State private var showEdit: Bool = false
+        
     @State var contentSize = CGSize()
-    
+    @State var courseSize = CGSize()
+    @State var titleSize = CGSize()
+    @State var dueDateSize = CGSize()
+    @State var timerSize = CGSize()
+
     var text: String = "Read sections 1-7 of \"Song of Myself\"--also, please read attached excerpts from his \"Preface\""
     
     private func deleteAssignment(_ assignment: Assignment) {
@@ -40,14 +37,13 @@ struct AssignmentViewNew: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            
             // MARK: course color
             NavigationLink {
                 ExpandedCourse(assignment: assignment)
                     .environment(\.managedObjectContext, persistedContainer.viewContext)
             } label: {
                 RoundedRectangle(cornerRadius: 8)
-                    .frame(width: 15, height: findHeight(assignment.title ?? ""))
+                    .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + timerSize.height)
                     .shadow(radius: 3)
                     .foregroundColor(Color(red: CGFloat(assignment.red), green: CGFloat(assignment.green), blue: CGFloat(assignment.blue)))
             }
@@ -55,8 +51,21 @@ struct AssignmentViewNew: View {
             Spacer()
                 .frame(width: 5)
             
-            // MARK: main stuff
             ZStack {
+                // MARK: for reading text
+                HStack {
+                    Text(assignment.title ?? "")
+                        .fontWeight(.medium)
+                        .padding(.leading, 6)
+//                        .background(.none)
+                    Spacer()
+                }
+                .padding(.top, 4)
+                .readSize { size in
+                    titleSize = size
+                }
+                
+                // MARK: background rectangle
                 NavigationLink {
                     ExpandedAssignment(assignment: assignment)
                         .environment(\.managedObjectContext, persistedContainer.viewContext)
@@ -64,23 +73,33 @@ struct AssignmentViewNew: View {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color("cLessDarkGray"))
                         .shadow(radius: 3)
-                        .frame(height: contentSize.height)
+                        .frame(height: courseSize.height + titleSize.height + dueDateSize.height + timerSize.height)
+                    // courseSize + etc
                 }
                 
                 VStack(alignment: .leading, spacing: 0) {
+                    // MARK: course
                     HStack {
                         Text((assignment.course ?? "Error") + " - " +  (assignment.assignmentType ?? "#<NotFound @x08B38BA9>"))
                             .font(.subheadline)
                             .padding(.leading, 6)
                         Spacer()
-                    }.padding(.top, 4)
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        courseSize = size
+                    }
+                    
+                    // MARK: title
                     HStack {
                         Text(assignment.title ?? "")
                             .fontWeight(.medium)
                             .padding(.leading, 6)
                         Spacer()
-                    }.padding(.top, 4)
+                    }
+                    .padding(.top, 4)
                     HStack(spacing: 0) {
+                        // MARK: due date
                         Text("Due: ")
                             .padding(.leading, 6)
                             .font(.subheadline)
@@ -89,24 +108,29 @@ struct AssignmentViewNew: View {
                         Text(assignment.dueDate ?? Date(), style: .date)
                             .font(.subheadline)
                         Spacer()
-                    }.padding(.top, 4)
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        dueDateSize = size
+                    }
                     
                     HStack {
+                        // MARK: timer view
                         TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment)
                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                     }
                     .padding(.top, 4)
                     .padding(.bottom, 6)
+                    .readSize { size in
+                        timerSize = size
+                    }
                     
                 }
-                .frame(height: findHeight(assignment.title ?? ""))
-                .readSize { size in
-                    contentSize = size
-                }
+//                .frame(height: findHeight(assignment.title ?? ""))
             }
             .contextMenu {
                 Button {
-                    
+                    showEdit = true
                 } label: {
                     Label("edit", systemImage: "pencil")
                 }
@@ -131,7 +155,7 @@ struct AssignmentViewNew: View {
                     }
 
                 } label: {
-                    Label("quick settings", systemImage: "gears.fill")
+                    Label("quick settings", systemImage: "gearshape.2.fill")
                 }
                 
                 Button(role: .destructive) {
@@ -145,6 +169,9 @@ struct AssignmentViewNew: View {
             
         }
         .frame(width: UIScreen.screenWidth - 10)
+        .sheet(isPresented: $showEdit) {
+            EditAssignment(assignmentt: assignment, showEdit: $showEdit).environment(\.managedObjectContext, persistedContainer.viewContext)
+        }
     }
 }
 

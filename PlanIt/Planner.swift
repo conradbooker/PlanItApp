@@ -10,6 +10,20 @@ import SwiftUI
 struct Planner: View {
     
     let assignments = onlineAssignmentData[0].VCALENDAR[0].VEVENT
+    @State private var startDate = Date()
+    @State private var stopDate = Calendar.current.date(byAdding: .day, value: 7, to: Date())!
+    
+    func add() {
+        startDate = Calendar.current.date(byAdding: .day, value: 7, to: startDate)!
+        stopDate = Calendar.current.date(byAdding: .day, value: 7, to: stopDate)!
+    }
+    
+    func subtract() {
+        startDate = Calendar.current.date(byAdding: .day, value: -7, to: startDate)!
+        stopDate = Calendar.current.date(byAdding: .day, value: -7, to: stopDate)!
+    }
+    
+    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
     var body: some View {
         VStack {

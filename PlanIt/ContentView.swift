@@ -30,7 +30,7 @@ struct ContentView: View {
             .toolbarBackground(
                 Color.white,
                 for: .tabBar)
-            EditAssignment().environment(\.managedObjectContext, persistedContainer.viewContext)
+            New().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("New", systemImage: "plus.circle")
                 }

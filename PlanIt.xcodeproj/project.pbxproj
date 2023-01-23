@@ -38,6 +38,7 @@
 		7961B6CE297AE43600A0593E /* ExpandedCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7961B6CD297AE43600A0593E /* ExpandedCourse.swift */; };
 		79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7965646F296A35DA003D230F /* AssignmentViewNew.swift */; };
 		796FFDF52974BC45007DF816 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796FFDF42974BC45007DF816 /* New.swift */; };
+		797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797A79B4297F0CA700799769 /* PlannerRow.swift */; };
 		798BF0C3297606E0005D7ED5 /* ChildAssignmentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */; };
 		79B1CBE62977926400377357 /* NumTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE52977926400377357 /* NumTextField.swift */; };
 		79B1CBE829788A5F00377357 /* AssignmentViewSupports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */; };
@@ -75,6 +76,7 @@
 		7961B6CD297AE43600A0593E /* ExpandedCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedCourse.swift; sourceTree = "<group>"; };
 		7965646F296A35DA003D230F /* AssignmentViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewNew.swift; sourceTree = "<group>"; };
 		796FFDF42974BC45007DF816 /* New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
+		797A79B4297F0CA700799769 /* PlannerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerRow.swift; sourceTree = "<group>"; };
 		798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAssignmentRow.swift; sourceTree = "<group>"; };
 		79B1CBE52977926400377357 /* NumTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTextField.swift; sourceTree = "<group>"; };
 		79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewSupports.swift; sourceTree = "<group>"; };
@@ -145,8 +147,8 @@
 			children = (
 				791F60352960BD6300076509 /* Home.swift */,
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
-				791F60332960BD6300076509 /* Due.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
+				791F60332960BD6300076509 /* Due.swift */,
 				791F603C2960BD7000076509 /* ExternalSource.swift */,
 				791F60322960BD6300076509 /* Planner.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
@@ -161,13 +163,14 @@
 				791F604C2960BE6000076509 /* Tester.swift */,
 				79B1CBE52977926400377357 /* NumTextField.swift */,
 				798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */,
-				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
 				791F604A2960BE5100076509 /* TimerView.swift */,
 				79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */,
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
-				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
 				7961B6CD297AE43600A0593E /* ExpandedCourse.swift */,
 				791BE995297DF9A700DF724E /* DateSelector.swift */,
+				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
+				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
+				797A79B4297F0CA700799769 /* PlannerRow.swift */,
 			);
 			name = "Supporting Views";
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				791F603D2960BD7000076509 /* ExternalSource.swift in Sources */,
 				791F60382960BD6300076509 /* Due.swift in Sources */,
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
+				797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */,
 				791F604D2960BE6000076509 /* Tester.swift in Sources */,
 				791BE996297DF9A700DF724E /* DateSelector.swift in Sources */,
 				791410FA297AE1FE007F1DE2 /* ExpandedAssignment.swift in Sources */,

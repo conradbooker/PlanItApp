@@ -36,10 +36,10 @@ struct ExpandedAssignment: View {
     //    @Binding private var showEnlarged: Bool
     
     private func findHeight(_ text: String) -> CGFloat {
-        if Double(text.count) / 45 < 1.3 {
+        if Double(text.count) / 35 < 1.5 {
             return 81
         }
-        return CGFloat((text.count / 45) * 17 + 81)
+        return CGFloat((text.count / 35) * 17 + 81)
     }
     
     @State private var timerSize = CGSize()
