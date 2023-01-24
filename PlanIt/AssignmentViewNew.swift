@@ -57,7 +57,7 @@ struct AssignmentViewNew: View {
                     Text(assignment.title ?? "")
                         .fontWeight(.medium)
                         .padding(.leading, 6)
-//                        .background(.none)
+                        .opacity(0)
                     Spacer()
                 }
                 .padding(.top, 4)

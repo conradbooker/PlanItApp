@@ -38,9 +38,10 @@ struct Settings: View {
                 })
 
                 Section(header: Text("General")) {
-                    Text("Import Homework from external source")
+                    Text("Disable Timer")
                     Text("Profile")
                     Text("Color Theme")
+                    Text("Aesthetic Mode")
                     Text("Dark Mode")
                     Text("Language")
                     Text("Key")

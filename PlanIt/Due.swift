@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Due: View {
     
+    @AppStorage("initialSync") var initialSync: Bool = false
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
@@ -138,8 +139,6 @@ struct Due: View {
                     let nserror = error as NSError
                     fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
                 }
-            } else {
-                print("poopi")
             }
         }
     }
@@ -248,7 +247,11 @@ struct Due: View {
                 }
                 .navigationTitle("Due")
                 .refreshable {
-                    syncAssignments()
+                    if initialSync {
+                        syncAssignments()
+                    } else {
+                        print("not initial synced yet!")
+                    }
                 }
             }
         }

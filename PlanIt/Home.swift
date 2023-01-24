@@ -12,7 +12,7 @@ struct Home: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
-    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
+    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "course", ascending: true)]) private var allAssignments: FetchedResults<Assignment>
     
     var assignmentSpacing: CGFloat = 5
     
@@ -22,13 +22,6 @@ struct Home: View {
 
     let impactMedium = UIImpactFeedbackGenerator(style: .medium)
     
-    private func findHeight(_ text: String) -> CGFloat {
-        if Double(text.count) / 45 < 1.5 {
-            return 135
-        }
-        return CGFloat((text.count / 45) * 17 + 140)
-    }
-
     @State var checkInProgress: Int = 0
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
@@ -64,7 +57,6 @@ struct Home: View {
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "In Progress" {
                                         AssignmentViewNew(assignment: assign)
-                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkInProgress += 1
@@ -99,7 +91,8 @@ struct Home: View {
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "To Do" {
-                                        AssignmentViewNew(assignment: assign).frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing).environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        AssignmentViewNew(assignment: assign)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkToDo += 1
                                                 if !assign.isFinished {
@@ -131,7 +124,6 @@ struct Home: View {
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
                                         AssignmentViewNew(assignment: assign)
-                                            .frame(width: geometry.size.width, height: findHeight(assign.title ?? "") + assignmentSpacing)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkFinished += 1

@@ -33,7 +33,7 @@ public class courseMatch: ObservableObject, Identifiable {
 }
 
 struct ExternalSource: View {
-    
+    @AppStorage("initialSync") var initialSync: Bool = false
     @State private var saveDisabled: Bool = true
     @State private var showErrorText: Bool = false
     @AppStorage("sourceURL") var sourceURL: String = ""
@@ -143,6 +143,11 @@ struct ExternalSource: View {
                 assignment.parentID = ""
                 assignment.parentAssignmentTitle = ""
                 assignment.isPaused = true
+                
+                print("found new assignment!")
+                print(assignment.title ?? "")
+                
+                initialSync = true
 
                 do {
                     try viewContext.save()
@@ -152,8 +157,6 @@ struct ExternalSource: View {
                     let nserror = error as NSError
                     fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
                 }
-            } else {
-                print("poopi")
             }
         }
         

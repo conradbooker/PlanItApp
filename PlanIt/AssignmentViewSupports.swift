@@ -21,6 +21,17 @@ extension UIScreen {
 struct FormattedTime: View {
     var hourStop: Int
     var minuteStop: Int
+    
+    init(hourStop: Int, minuteStop: Int) {
+        self.hourStop = hourStop
+        self.minuteStop = minuteStop
+        if self.minuteStop >= 60 {
+            let t = self.minuteStop
+            self.hourStop = t / 60
+            self.minuteStop = t % 60
+        }
+    }
+    
     var body: some View {
         if hourStop == 0 {
             Text("\(String(minuteStop)) mins")

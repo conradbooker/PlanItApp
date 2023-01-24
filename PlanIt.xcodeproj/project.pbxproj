@@ -145,12 +145,12 @@
 		791F60302960BD2000076509 /* Main Views */ = {
 			isa = PBXGroup;
 			children = (
+				791F60322960BD6300076509 /* Planner.swift */,
 				791F60352960BD6300076509 /* Home.swift */,
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
 				791F603C2960BD7000076509 /* ExternalSource.swift */,
-				791F60322960BD6300076509 /* Planner.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
 			);
 			name = "Main Views";
@@ -167,10 +167,10 @@
 				79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */,
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
 				7961B6CD297AE43600A0593E /* ExpandedCourse.swift */,
-				791BE995297DF9A700DF724E /* DateSelector.swift */,
 				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
 				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
 				797A79B4297F0CA700799769 /* PlannerRow.swift */,
+				791BE995297DF9A700DF724E /* DateSelector.swift */,
 			);
 			name = "Supporting Views";
 			sourceTree = "<group>";
@@ -471,7 +471,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Schematica.PlanIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -509,7 +511,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Schematica.PlanIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

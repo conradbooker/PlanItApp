@@ -35,28 +35,47 @@ struct ExpandedAssignment: View {
     
     //    @Binding private var showEnlarged: Bool
     
-    private func findHeight(_ text: String) -> CGFloat {
-        if Double(text.count) / 35 < 1.5 {
-            return 81
-        }
-        return CGFloat((text.count / 35) * 17 + 81)
-    }
-    
     @State private var timerSize = CGSize()
     @State private var descriptionSize = CGSize()
     @State private var descriptionTitleSize = CGSize()
 
+    @State private var courseSize = CGSize()
+    @State private var titleSize = CGSize()
+    @State private var dueDateSize = CGSize()
+    
     var text: String = "Read sections 1-7 of \"Song of Myself\"--also, please read attached excerpts from his \"Preface\""
     
     var body: some View {
         NavigationView {
             ZStack {
+                HStack {
+                    Text("Description:")
+                        .padding(.leading, 6)
+                    Spacer()
+                }
+                .padding(.top, 4)
+                .opacity(0)
+                .readSize { size in
+                    descriptionTitleSize = size
+                }
+                
+                HStack {
+                    Text(assignment.summary ?? "No Description")
+                        .padding(.leading, 6)
+                    Spacer()
+                }
+                .padding(.top, 4)
+                .padding(.bottom, 6)
+                .readSize { size in
+                    descriptionSize = size
+                }
+                .opacity(0)
                 Color("cDarkGray")
                     .ignoresSafeArea()
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
                         RoundedRectangle(cornerRadius: 8)
-                            .frame(width: 15)
+                            .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height)
                             .shadow(radius: 3)
                             .foregroundColor(Color(red: CGFloat(assignment.red), green: CGFloat(assignment.green), blue: CGFloat(assignment.blue)))
                         
@@ -64,22 +83,44 @@ struct ExpandedAssignment: View {
                             .frame(width: 5)
                         
                         ZStack {
+                            HStack {
+                                Text(assignment.title ?? "")
+                                    .fontWeight(.medium)
+                                    .padding(.leading, 6)
+                                Spacer()
+                            }
+                            .padding(.top, 4)
+                            .readSize { size in
+                                titleSize = size
+                            }
+                            .opacity(0)
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color("cLessDarkGray"))
                                 .shadow(radius: 3)
+                                .frame(height: courseSize.height + titleSize.height + dueDateSize.height)
                             VStack(alignment: .leading, spacing: 0) {
+                                
+                                // MARK: course
                                 HStack {
                                     Text((assignment.course ?? "Error") + " - " +  (assignment.assignmentType ?? "#<NotFound @x08B38BA9>"))
                                         .font(.subheadline)
                                         .padding(.leading, 6)
                                     Spacer()
                                 }
+                                .padding(.top, 4)
+                                .readSize { size in
+                                    courseSize = size
+                                }
+                                
+                                // MARK: title
                                 HStack {
                                     Text(assignment.title ?? "")
                                         .fontWeight(.medium)
                                         .padding(.leading, 6)
                                     Spacer()
                                 }.padding(.top, 4)
+                                
+                                // MARK: due date
                                 HStack(spacing: 0) {
                                     Text("Due: ")
                                         .padding(.leading, 6)
@@ -87,10 +128,14 @@ struct ExpandedAssignment: View {
                                     Text((assignment.dueDate ?? Date()).formatted(.dateTime.weekday(.wide)) + ", ")
                                         .font(.subheadline)
                                     Text(assignment.dueDate ?? Date(), style: .date)
-                                    
                                         .font(.subheadline)
                                     Spacer()
-                                }.padding(.top, 4)
+                                }
+                                .padding(.top, 4)
+                                .padding(.bottom, 6)
+                                .readSize { size in
+                                    dueDateSize = size
+                                }
                                 
                             }
                             
@@ -98,7 +143,7 @@ struct ExpandedAssignment: View {
                         .frame(width: UIScreen.screenWidth * 5.5/6)
                         
                     }
-                    .frame(width: UIScreen.screenWidth - 10, height: findHeight(assignment.title ?? ""))
+                    .frame(width: UIScreen.screenWidth - 10)
                     
                     Spacer()
                         .frame(height: 5)
@@ -109,8 +154,8 @@ struct ExpandedAssignment: View {
                         HStack {
                             TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment)
                                 .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                .readSize { t in
-                                    timerSize = t
+                                .readSize { size in
+                                    timerSize = size
                                 }
                         }
                         .padding(.top, 4)
@@ -130,25 +175,18 @@ struct ExpandedAssignment: View {
                             HStack {
                                 Text("Description:")
                                     .padding(.leading, 6)
-                                    .readSize { size in
-                                        descriptionTitleSize = size
-                                    }
-                                Spacer()
-                            }.padding(.top, 4)
-                            
-                            HStack {
-                                Text(assignment.summary ?? "No Description")
-                                    .padding(.leading, 6)
-                                    .readSize { size in
-                                        descriptionSize = size
-                                    }
                                 Spacer()
                             }
                             .padding(.top, 4)
-                            .padding(.bottom, 6)
+                            HStack {
+                                Text(assignment.summary ?? "No Description")
+                                    .padding(.leading, 6)
+                                Spacer()
+                            }
+                            .padding(.top, 4)
                             Spacer()
                         }
-                    }.frame(width: UIScreen.screenWidth - 16.2, height: 200)
+                    }.frame(width: UIScreen.screenWidth - 16.2, height: descriptionSize.height + descriptionTitleSize.height)
                     Spacer()
                 }
             }
