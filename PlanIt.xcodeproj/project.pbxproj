@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		791325B029809AD700A826B6 /* timerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791325AF29809AD700A826B6 /* timerClass.swift */; };
 		791410FA297AE1FE007F1DE2 /* ExpandedAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */; };
 		791BE996297DF9A700DF724E /* DateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791BE995297DF9A700DF724E /* DateSelector.swift */; };
 		791BE99A297E08B800DF724E /* EditAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791BE999297E08B800DF724E /* EditAssignment.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		791325AF29809AD700A826B6 /* timerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timerClass.swift; sourceTree = "<group>"; };
 		791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedAssignment.swift; sourceTree = "<group>"; };
 		791BE995297DF9A700DF724E /* DateSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelector.swift; sourceTree = "<group>"; };
 		791BE999297E08B800DF724E /* EditAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAssignment.swift; sourceTree = "<group>"; };
@@ -163,11 +165,12 @@
 				791F604C2960BE6000076509 /* Tester.swift */,
 				79B1CBE52977926400377357 /* NumTextField.swift */,
 				798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */,
-				791F604A2960BE5100076509 /* TimerView.swift */,
 				79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */,
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
 				7961B6CD297AE43600A0593E /* ExpandedCourse.swift */,
 				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
+				791F604A2960BE5100076509 /* TimerView.swift */,
+				791325AF29809AD700A826B6 /* timerClass.swift */,
 				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
 				797A79B4297F0CA700799769 /* PlannerRow.swift */,
 				791BE995297DF9A700DF724E /* DateSelector.swift */,
@@ -320,6 +323,7 @@
 				791F60492960BE4900076509 /* AssignmentView.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
+				791325B029809AD700A826B6 /* timerClass.swift in Sources */,
 				79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */,
 				791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */,
 				796FFDF52974BC45007DF816 /* New.swift in Sources */,

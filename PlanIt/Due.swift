@@ -82,14 +82,9 @@ struct Due: View {
                 dateFormatter.dateFormat = "YYYYMMdd"
                 
                 let assignment = Assignment(context: viewContext)
-                assignment.activeHours = 0
-                assignment.activeMinutes = 0
                 assignment.activeSeconds = 0
-                assignment.dubiousMinutes = 0
-                assignment.minuteStop = 0
-                assignment.hourStop = 0
-                assignment.totalHours = 0
-                assignment.totalMinutes = 0
+                assignment.dubiousSeconds = 0
+                assignment.secondStop = 0
                 assignment.totalSeconds = 0
                 
                 assignment.red = Float(getColor(currentCourse).components.red)
@@ -171,7 +166,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "In Progress" {
-                                        AssignmentViewNew(assignment: assign)
+                                        PlannerRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkInProgress += 1
@@ -195,7 +190,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "To Do" {
-                                        AssignmentViewNew(assignment: assign)
+                                        PlannerRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkToDo += 1
@@ -219,7 +214,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        AssignmentViewNew(assignment: assign)
+                                        PlannerRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkFinished += 1

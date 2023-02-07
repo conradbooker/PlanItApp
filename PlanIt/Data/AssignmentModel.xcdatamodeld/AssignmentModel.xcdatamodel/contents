@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Assignment" representedClassName="Assignment" syncable="YES" codeGenerationType="class">
-        <attribute name="activeHours" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="activeMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="activeSeconds" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="activeSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="assignmentID" attributeType="String" defaultValueString=""/>
         <attribute name="assignmentType" attributeType="String" defaultValueString="Homework"/>
         <attribute name="blue" attributeType="Float" defaultValueString="0.2392157" usesScalarValueType="YES"/>
@@ -12,29 +10,26 @@
         <attribute name="dateCreated" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="dateFinished" attributeType="Date" defaultDateTimeInterval="-978289200" usesScalarValueType="NO"/>
         <attribute name="datePlanned" attributeType="Date" defaultDateTimeInterval="694028820" usesScalarValueType="NO"/>
-        <attribute name="dubiousMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dubiousSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="dueDate" attributeType="Date" defaultDateTimeInterval="725778000" usesScalarValueType="NO"/>
         <attribute name="green" attributeType="Float" defaultValueString="0.23921569" usesScalarValueType="YES"/>
-        <attribute name="hourStop" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" defaultValueString="E5BB4B1E-6493-4F51-AC65-74FA9043FF88" usesScalarValueType="NO"/>
         <attribute name="isChild" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isFinished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isParent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isPaused" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="isPlanned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="minuteStop" attributeType="Integer 16" defaultValueString="45" usesScalarValueType="YES"/>
         <attribute name="opacity" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="parentAssignmentTitle" attributeType="String" defaultValueString=""/>
         <attribute name="parentCourse" attributeType="String" defaultValueString=""/>
         <attribute name="parentID" attributeType="String" defaultValueString=""/>
         <attribute name="red" attributeType="Float" defaultValueString="0.92156863" usesScalarValueType="YES"/>
+        <attribute name="secondStop" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="source" attributeType="String" defaultValueString=""/>
         <attribute name="status" attributeType="String" defaultValueString="To Do"/>
         <attribute name="summary" attributeType="String" defaultValueString=""/>
         <attribute name="title" attributeType="String" defaultValueString="Assignment 5.4"/>
-        <attribute name="totalHours" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="totalMinutes" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="totalSeconds" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="Colors" representedClassName="Colors" syncable="YES" codeGenerationType="class">
         <attribute name="hex" attributeType="String"/>

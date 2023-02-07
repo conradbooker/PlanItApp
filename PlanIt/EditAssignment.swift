@@ -75,9 +75,7 @@ struct EditAssignment: View {
                 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMdd"
-        
-        assignment.minuteStop = Int16(minuteStop) ?? 0
-        assignment.hourStop = Int16(hourStop) ?? 0
+        assignment.secondStop = Int64(Int(hourStop)! * 3600 + Int(minuteStop)! * 60)
         assignment.red = Float(getColor(course).components.red)
         assignment.green = Float(getColor(course).components.green)
         assignment.blue = Float(getColor(course).components.blue)

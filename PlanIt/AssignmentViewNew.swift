@@ -54,7 +54,7 @@ struct AssignmentViewNew: View {
             ZStack {
                 // MARK: for reading text
                 HStack {
-                    Text(assignment.title ?? "")
+                    Text((assignment.title ?? "").lower())
                         .fontWeight(.medium)
                         .padding(.leading, 6)
                         .opacity(0)
@@ -80,7 +80,7 @@ struct AssignmentViewNew: View {
                 VStack(alignment: .leading, spacing: 0) {
                     // MARK: course
                     HStack {
-                        Text((assignment.course ?? "Error") + " - " +  (assignment.assignmentType ?? "#<NotFound @x08B38BA9>"))
+                        Text(((assignment.course ?? "Error") + " - " +  (assignment.assignmentType ?? "#<NotFound @x08B38BA9>")).lower())
                             .font(.subheadline)
                             .padding(.leading, 6)
                         Spacer()
@@ -92,7 +92,7 @@ struct AssignmentViewNew: View {
                     
                     // MARK: title
                     HStack {
-                        Text(assignment.title ?? "")
+                        Text((assignment.title ?? "").lower())
                             .fontWeight(.medium)
                             .padding(.leading, 6)
                         Spacer()
@@ -116,7 +116,7 @@ struct AssignmentViewNew: View {
                     
                     HStack {
                         // MARK: timer view
-                        TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment)
+                        TimerView(assignment: assignment)
                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                     }
                     .padding(.top, 4)

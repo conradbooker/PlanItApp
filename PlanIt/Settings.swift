@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+extension String {
+    func lower() -> String {
+        @AppStorage("aestheticMode") var aestheticMode: Bool = false
+        if aestheticMode {
+            return self.lowercased()
+        }
+        return self
+    }
+}
+
 struct Settings: View {
     @State private var link: String = ""
     @State private var showSync: Bool = false
@@ -17,6 +27,11 @@ struct Settings: View {
     
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
+    @AppStorage("disableTimer") var disableTimer: Bool = false
+    @AppStorage("aestheticMode") var aestheticMode: Bool = false
+    @AppStorage("bgColor") var bgColor: String = ""
+    @AppStorage("fgColor") var fgColor: String = ""
+
     private func deleteAssignments() {
         for assignment in allAssignments {
             viewContext.delete(assignment)
@@ -38,34 +53,34 @@ struct Settings: View {
                 })
 
                 Section(header: Text("General")) {
-                    Text("Disable Timer")
-                    Text("Profile")
-                    Text("Color Theme")
-                    Text("Aesthetic Mode")
-                    Text("Dark Mode")
-                    Text("Language")
-                    Text("Key")
-                    Button("Delete all assignments") {
-                        deleteAssignments()
-                    }
+                    Toggle("Disable Timer".lower(), isOn: $disableTimer)
+                    Toggle("Aesthetic Mode".lower(), isOn: $aestheticMode)
+                    Text("Profile".lower())
+                    Text("Color Theme".lower())
+                    Text("Dark Mode".lower())
+                    Text("Language".lower())
+                    Text("Key".lower())
                     .foregroundColor(.red)
                     
                 }
                 Section(header: Text("Help")) {
-                    Text("Quick start guide")
-                    Text("How to use")
-                    Text("FAQ")
+                    Text("Quick start guide".lower())
+                    Text("How to use".lower())
+                    Text("FAQ".lower())
+                    Button("Delete all assignments".lower()) {
+                        deleteAssignments()
+                    }
                 }
                 Section(header: Text("Notifications")) {
-                    Text("Configure Notifications")
-                    Text("View Notifications")
+                    Text("Configure Notifications".lower())
+                    Text("View Notifications".lower())
                 }
                 Section(header: Text("ABOUT")) {
-                    Text("About Schematica")
-                    Text("Other Apps")
-                    Text("View socials")
-                    Text("View Website")
-                    Text("Version: 0.1")
+                    Text("About Schematica".lower())
+                    Text("Other Apps".lower())
+                    Text("View socials".lower())
+                    Text("View Website".lower())
+                    Text("Version: 0.1".lower())
                 }
             }
             .navigationTitle("Settings")

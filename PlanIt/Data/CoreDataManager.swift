@@ -13,6 +13,7 @@ class CoreDataManager {
     static let shared: CoreDataManager = CoreDataManager()
     
     private init() {
+        
         persistentContainer = NSPersistentContainer(name: "AssignmentModel")
         persistentContainer.loadPersistentStores { description, error in
             if let error = error {

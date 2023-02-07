@@ -95,14 +95,9 @@ struct ExternalSource: View {
                 dateFormatter.dateFormat = "YYYYMMdd"
                 
                 let assignment = Assignment(context: viewContext)
-                assignment.activeHours = 0
-                assignment.activeMinutes = 0
                 assignment.activeSeconds = 0
-                assignment.dubiousMinutes = 0
-                assignment.minuteStop = 0
-                assignment.hourStop = 0
-                assignment.totalHours = 0
-                assignment.totalMinutes = 0
+                assignment.dubiousSeconds = 0
+                assignment.secondStop = 0
                 assignment.totalSeconds = 0
                 
                 assignment.red = Float(getColor(currentCourse).components.red)
@@ -183,9 +178,9 @@ struct ExternalSource: View {
         ScrollView {
             VStack(alignment: .leading) {
                 Group {
-                    Text("This app supports only 'Schoology', or Blackbaud's 'myschoolapp' for homework assignments. If you do not use either of these services, please go to [this form] for help.")
+                    Text("This app supports only 'Schoology', or Blackbaud's 'myschoolapp' for homework assignments. If you do not use either of these services, please go to [this form] for help.".lower())
                         .padding()
-                    TextField("Link", text: $sourceURL)
+                    TextField("Link".lower(), text: $sourceURL)
                         .textFieldStyle(.roundedBorder)
                         .padding(.horizontal)
                         .onChange(of: sourceURL) { _ in
@@ -216,8 +211,8 @@ struct ExternalSource: View {
                                 
                 Group {
                     Spacer().frame(height: 20)
-                    Text("Step 1/2: Match classes from myschoolapp to these your classes.")
-                    Text("Please note: if you are missing a class, this is because your teacher has not assigned you work in this class. PlanIt will notify you in the future for any class updates. In the mean time, add assignments under this class manualy.")
+                    Text("Step 1/2: Match classes from myschoolapp to these your classes.".lower())
+                    Text("Please note: if you are missing a class, this is because your teacher has not assigned you work in this class. PlanIt will notify you in the future for any class updates. In the mean time, add assignments under this class manualy.".lower())
                         .font(.subheadline)
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
@@ -242,13 +237,13 @@ struct ExternalSource: View {
                 }
                 Group {
                     Spacer().frame(height: 20)
-                    Text("Step 2/2: Check if these are right!")
+                    Text("Step 2/2: Check if these are right!".lower())
                     ForEach(courses) { course in
                         Text("\(course.onlineCourse): \(course.userCourse)")
                             .padding(.vertical, 5)
                     }
                 }
-                Button("Sync!!!") {
+                Button("Sync!!!".lower()) {
                     syncAssignments(courses)
                 }
             }

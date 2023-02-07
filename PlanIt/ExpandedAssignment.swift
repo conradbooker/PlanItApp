@@ -89,7 +89,6 @@ struct ExpandedAssignment: View {
                                     .padding(.leading, 6)
                                 Spacer()
                             }
-                            .padding(.top, 4)
                             .readSize { size in
                                 titleSize = size
                             }
@@ -152,7 +151,7 @@ struct ExpandedAssignment: View {
                             .foregroundColor(Color("cLessDarkGray"))
                             .shadow(radius: 3)
                         HStack {
-                            TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment)
+                            TimerView(assignment: assignment)
                                 .environment(\.managedObjectContext, persistedContainer.viewContext)
                                 .readSize { size in
                                     timerSize = size

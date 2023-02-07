@@ -26,8 +26,7 @@ struct Home: View {
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
     
-    @State private var totalHours: Int = 0
-    @State private var totalMinutes: Int = 0
+    @State private var totalSeconds: Int = 0
 
     var body: some View {
         GeometryReader { geometry in
@@ -39,7 +38,7 @@ struct Home: View {
                         VStack {
                             if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
                                 HStack {
-                                    Text("you finished everything for today!!!")
+                                    Text("You Finished Everything for Today!!!".lower())
                                         .padding([.top, .leading])
                                     Spacer()
                                 }
@@ -48,7 +47,7 @@ struct Home: View {
                             // MARK: In Progress
                             if checkInProgress != 0 {
                                 HStack {
-                                    Text("in progress")
+                                    Text("In Progress".lower())
                                         .padding([.top, .leading])
                                     Spacer()
                                 }
@@ -61,18 +60,17 @@ struct Home: View {
                                             .onAppear {
                                                 checkInProgress += 1
                                                 if !assign.isFinished {
-                                                    totalMinutes += Int(assign.minuteStop)
-                                                    totalHours += Int(assign.hourStop)
+                                                    totalSeconds += Int(assign.secondStop)
                                                 }
                                             }
                                             .onDisappear {
                                                 checkInProgress -= 1
                                                 if !assign.isFinished {
-                                                    totalMinutes -= Int(assign.minuteStop)
-                                                    totalHours -= Int(assign.hourStop)
+                                                    totalSeconds -= Int(assign.secondStop)
+                                                
                                                 }
                                             }
-//                                            .onChange(of: assign.minuteStop) { _ in
+//                                            .onChange(of: assign.secondStop / 60 % 60) { _ in
 //                                                totalMinutes -=
 //                                            }
                                     }
@@ -82,7 +80,7 @@ struct Home: View {
                             // MARK: To Do
                             if checkToDo != 0 {
                                 HStack {
-                                    Text("to do")
+                                    Text("To Do".lower())
                                         .padding([.top, .leading])
                                     Spacer()
                                 }
@@ -96,16 +94,12 @@ struct Home: View {
                                             .onAppear {
                                                 checkToDo += 1
                                                 if !assign.isFinished {
-                                                    totalMinutes += Int(assign.minuteStop)
-                                                    totalHours += Int(assign.hourStop)
-                                                }
+                                                    totalSeconds += Int(assign.secondStop)                                                }
                                             }
                                             .onDisappear {
                                                 checkToDo -= 1
                                                 if !assign.isFinished {
-                                                    totalMinutes -= Int(assign.minuteStop)
-                                                    totalHours -= Int(assign.hourStop)
-                                                }
+                                                    totalSeconds -= Int(assign.secondStop)                                                }
                                             }
                                     }
                                 }
@@ -114,7 +108,7 @@ struct Home: View {
                             // MARK: Completed
                             if checkFinished != 0 {
                                 HStack {
-                                    Text("completed things!")
+                                    Text("Completed Things!".lower())
                                         .padding([.top, .leading])
                                     Spacer()
                                 }
@@ -126,17 +120,14 @@ struct Home: View {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
-                                                checkFinished += 1
+                                                checkToDo += 1
                                                 if !assign.isFinished {
-                                                    totalMinutes += Int(assign.minuteStop)
-                                                    totalHours += Int(assign.hourStop)
-                                                }
+                                                    totalSeconds += Int(assign.secondStop)                                                }
                                             }
                                             .onDisappear {
-                                                checkFinished -= 1
+                                                checkToDo -= 1
                                                 if !assign.isFinished {
-                                                    totalMinutes -= Int(assign.minuteStop)
-                                                    totalHours -= Int(assign.hourStop)
+                                                    totalSeconds -= Int(assign.secondStop)
                                                 }
                                             }
                                     }
@@ -145,12 +136,12 @@ struct Home: View {
                             Group {
                                 if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
                                     HStack {
-                                        Text("Nothing planned tomorrow :)")
+                                        Text("Nothing Planned Tomorrow :)".lower())
                                             .padding([.top, .leading])
                                         Spacer()
                                     }
                                 }
-                                FormattedTime(hourStop: totalHours, minuteStop: totalMinutes)
+                                FormattedTime(secondStop: totalSeconds)
                             }
                             Spacer().frame(height: 100)
                         }
@@ -161,7 +152,7 @@ struct Home: View {
                             .frame(width: UIScreen.screenWidth - 10)
                     }
                 }
-                .navigationTitle("Welcome back, Cunt!")
+                .navigationTitle("Welcome back, Cunt!".lower())
             }
         }
     }
@@ -180,3 +171,5 @@ struct Home_Previews: PreviewProvider {
         Home().environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }
+
+

@@ -96,16 +96,13 @@ struct New: View {
         }
 
         let assignment = Assignment(context: viewContext)
-        assignment.activeHours = 0
-        assignment.activeMinutes = 0
-        assignment.activeSeconds = 0
-        assignment.dubiousMinutes = 0
-        assignment.minuteStop = Int16(minuteStop) ?? 0
-        assignment.hourStop = Int16(hourStop) ?? 0
-        assignment.totalHours = 0
-        assignment.totalMinutes = 0
-        assignment.totalSeconds = 0
         
+        assignment.secondStop = Int64(Int(hourStop)! * 3600 + Int(minuteStop)! * 60)
+        
+        assignment.activeSeconds = 0
+        assignment.dubiousSeconds = 0
+        assignment.totalSeconds = 0
+
         assignment.red = Float(getColor(courseTitle).components.red)
         assignment.green = Float(getColor(courseTitle).components.green)
         assignment.blue = Float(getColor(courseTitle).components.blue)
@@ -143,7 +140,7 @@ struct New: View {
         assignment.parentID = ""
         assignment.parentAssignmentTitle = ""
         assignment.isPaused = true
-
+        
         do {
             try viewContext.save()
         } catch {
@@ -166,14 +163,11 @@ struct New: View {
                 dateFormatter.dateFormat = "YYYYMMdd"
                 
                 let assignment = Assignment(context: viewContext)
-                assignment.activeHours = 0
-                assignment.activeMinutes = 0
+                
+                assignment.secondStop = Int64(Int(assign.hourStop)! * 3600 + Int(assign.minuteStop)! * 60)
+                
                 assignment.activeSeconds = 0
-                assignment.dubiousMinutes = 0
-                assignment.minuteStop = Int16(assign.minuteStop) ?? 0
-                assignment.hourStop = Int16(assign.hourStop) ?? 0
-                assignment.totalHours = 0
-                assignment.totalMinutes = 0
+                assignment.dubiousSeconds = 0
                 assignment.totalSeconds = 0
                 
                 assignment.red = Float(getColor(courseTitle).components.red)
@@ -411,7 +405,7 @@ struct New: View {
                                             modeling.title = "Study for " + self.title
                                             modeling.assignmentType = "Studying"
                                         } else {
-                                            modeling.title = "Work on " + title
+                                            modeling.title = "Work on " + self.title
                                             if assignmentType == "Paper" {
                                                 modeling.assignmentType = "Writing"
                                             } else {
@@ -433,7 +427,8 @@ struct New: View {
                                     ScrollView {
                                         Spacer()
                                         ForEach($childAssignments) { assign in
-                                            ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate).frame(height: 45)
+                                            ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate)
+                                                .frame(height: 45)
                                         }
                                     }.frame(height: 200)
 

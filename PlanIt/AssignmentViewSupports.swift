@@ -19,14 +19,17 @@ extension UIScreen {
 }
 
 struct FormattedTime: View {
-    var hourStop: Int
-    var minuteStop: Int
     
-    init(hourStop: Int, minuteStop: Int) {
-        self.hourStop = hourStop
-        self.minuteStop = minuteStop
+    var hourStop: Int = 0
+    var minuteStop: Int = 0
+    var secondStop: Int
+    
+    init(secondStop: Int) {
+        let t = Int(secondStop)
+        self.secondStop = secondStop
+        self.hourStop = t / 3600
+        self.minuteStop = t / 60 % 60
         if self.minuteStop >= 60 {
-            let t = self.minuteStop
             self.hourStop = t / 60
             self.minuteStop = t % 60
         }
@@ -47,6 +50,6 @@ struct FormattedTime: View {
 
 struct AssignmentViewSupports_Previews: PreviewProvider {
     static var previews: some View {
-        FormattedTime(hourStop: 0, minuteStop: 10)
+        FormattedTime(secondStop: 0)
     }
 }

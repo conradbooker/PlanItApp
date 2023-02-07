@@ -54,7 +54,8 @@ struct AssignmentView: View {
                             .padding(.bottom, 6.0)
                         Spacer()
                     }
-                    TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment).environment(\.managedObjectContext, persistedContainer.viewContext)
+                    TimerView(assignment: assignment)
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
 //                    HStack {
 //                        Text("title")
 //                        Spacer()

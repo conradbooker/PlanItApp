@@ -47,8 +47,6 @@ struct ChildAssignmentRow: View {
                         .padding(.horizontal, 7.0)
                         .multilineTextAlignment(.center)
                     DatePicker(minute, selection: $date,in: ...stopDate, displayedComponents: [.date])
-
-                    
                 }
                 .frame(width: geometry.size.width-20)
                 

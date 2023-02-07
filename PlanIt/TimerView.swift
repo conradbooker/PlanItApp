@@ -47,6 +47,8 @@ struct TimerView: View {
     
     @State var startButtonDisabled: Bool = false
         
+    @State var showTimerText: Bool = false
+    
     var isStarted: Bool {
         if hours * 3600 + minutes * 60 + seconds == 0 || status == "To Do" {
             return false
@@ -70,20 +72,14 @@ struct TimerView: View {
 //
 //    init
 
-    init(hours: Int, minutes: Int, seconds: Int, status: String, isFinished: Bool, assignment: Assignment) {
-        self.hours = hours
-        self.minutes = minutes
-        self.seconds = seconds
-        self.status = status
-        self.isFinished = isFinished
+    init(assignment: Assignment) {
         self.assignment = assignment
         
-        self.status = assignment.status ?? "To Do"
-        self.hours = Int(assignment.activeHours)
-        self.minutes = Int(assignment.activeMinutes)
+        self.hours = Int(assignment.activeSeconds)/3600
+        self.minutes = Int(assignment.activeSeconds)/60
         self.seconds = Int(assignment.activeSeconds)
+        self.status = assignment.status ?? "To Do"
         self.isFinished = assignment.isFinished
-
         
     }
     
@@ -138,7 +134,6 @@ struct TimerView: View {
             print(error.localizedDescription)
             print("Error")
         }
-
     }
     
     private func playPause() {
@@ -159,7 +154,7 @@ struct TimerView: View {
                 if !isStarted && !isStarted1 && status == "To Do" {
                     HStack(spacing: 0) {
                         Text("\(status) - ")
-                        FormattedTime(hourStop: Int(assignment.hourStop), minuteStop: Int(assignment.minuteStop))
+                        FormattedTime(secondStop: Int(assignment.secondStop))
                             .font(.system(size: 18))
                         Spacer()
                     }
@@ -202,14 +197,15 @@ struct TimerView: View {
                         Spacer()
                     }
                 } else {
-                    HStack(spacing: 0) {
-                        Text("\(status) - ")
-                        timerText(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), hoursStop: Int(assignment.hourStop), minutesStop: Int(assignment.minuteStop))
-                            .font(.system(size: 18))
-                        Spacer()
+                    if !isFinished && showTimerText {
+                        HStack(spacing: 0) {
+                            Text("\(status) - ")
+                            timerText(secondsStop: Int(assignment.secondStop), seconds: Int(assignment.activeSeconds))
+                                .font(.system(size: 18))
+                            Spacer()
+                        }
+                        .padding(.bottom, 4)
                     }
-                    .padding(.bottom, 4)
-                    
                     HStack {
                         if !assignment.isFinished {
                             if assignment.isPaused {
@@ -300,41 +296,12 @@ struct TimerView: View {
                     
                 }
         // MARK: Timer portion
-        }.onReceive(timer) { _ in
-            if !assignment.isPaused || forceStart {
-                if assignment.activeSeconds == 59 {
-                    assignment.activeSeconds = 0
-                    if assignment.activeMinutes == 59 {
-                        assignment.activeMinutes = 0
-                        assignment.activeHours = assignment.activeHours + 1
-                    }
-                    else {
-                        assignment.activeMinutes = assignment.activeMinutes + 1
-                    }
-                }
-                else {
-                    assignment.activeSeconds = assignment.activeSeconds + 1
-                }
-                if (assignment.activeHours * 60) + assignment.activeMinutes >= (assignment.hourStop * 60) + assignment.minuteStop {
-                    overTime = true
-                }
-                do {
-                    try viewContext.save()
-                    print("SAVED TIME")
-                } catch {
-                    print(error.localizedDescription)
-                    print("Error")
-                }
-            }
-            
         }
         .padding(.leading, 6)
     }
 
     private func resetTimer() {
         isStarted1 = false
-        assignment.activeHours = 0
-        assignment.activeMinutes = 0
         assignment.activeSeconds = 0
         do {
             try viewContext.save()
@@ -345,8 +312,8 @@ struct TimerView: View {
         }
     }
     private func addTime() {
-        assignment.activeHours += Int16(addHours) ?? 0
-        assignment.activeMinutes += Int16(addMinutes) ?? 0
+        assignment.activeSeconds += Int64(Int(addHours)! * 3600 + Int(addMinutes)! * 60)
+//        Int(Int(addHours)! * 3600) + Int(Int(addMinutes)! * 60)))
         addHours = ""
         addMinutes = ""
         do {
@@ -355,6 +322,19 @@ struct TimerView: View {
             print(error.localizedDescription)
             print("Error")
         }
+    }
+    
+    private func timeString(accumulatedTime: TimeInterval) -> String {
+        let hours = Int(accumulatedTime) / 3600
+        let minutes = Int(accumulatedTime) / 60 % 60
+        let seconds = Int(accumulatedTime) % 60
+        
+        let hourStop = Int(assignment.secondStop) / 3600
+        let minuteStop = Int(assignment.secondStop) / 60 % 60
+        let secondStop = Int(assignment.secondStop) % 60
+
+
+        return String(format:"%02i:%02i:%02i", hours, minutes, seconds) + String(format:"%02i:%02i:%02i", hourStop, minuteStop, secondStop)
     }
 }
 
@@ -373,15 +353,32 @@ struct TimerButton: ButtonStyle {
 }
 
 struct timerText: View {
-    
-    var hours: Int
-    var minutes: Int
+        
+    var secondsStop: Int
     var seconds: Int
-    var hoursStop: Int
-    var minutesStop: Int
+    
+    var hourStop = 0
+    var minutesStop = 0
+    
+    var minutes = 0
+    var hours = 0
+    
+    init(secondsStop: Int, seconds: Int) {
+        self.hourStop = secondsStop / 3600
+        self.minutesStop = secondsStop / 60 % 60
+        self.hours = seconds / 3600
+        self.minutes = seconds / 60 % 60
+        self.secondsStop = secondsStop
+        self.seconds = seconds
+    }
+    
+//    let hours = Int(accumulatedTime) / 3600
+//    let minutes = Int(accumulatedTime) / 60 % 60
+//    let seconds = Int(accumulatedTime) % 60
+
 
     var body: some View {
-        if hoursStop == 0 {
+        if hourStop == 0 {
             if seconds < 10 {
                 Text("\(minutes):0\(seconds) / \(minutesStop):00")
             } else {
@@ -390,15 +387,15 @@ struct timerText: View {
         } else {
             if minutes < 10 {
                 if seconds < 10 {
-                    Text("\(hours):0\(minutes):0\(seconds) / \(hoursStop):\(minutesStop):00")
+                    Text("\(hours):0\(minutes):0\(seconds) / \(hourStop):\(minutesStop):00")
                 } else {
-                    Text("\(hours):0\(minutes):\(seconds) / \(hoursStop):\(minutesStop):00")
+                    Text("\(hours):0\(minutes):\(seconds) / \(hourStop):\(minutesStop):00")
                 }
             } else {
                 if seconds < 10 {
-                    Text("\(hours):\(minutes):0\(seconds) / \(hoursStop):\(minutesStop):00")
+                    Text("\(hours):\(minutes):0\(seconds) / \(hourStop):\(minutesStop):00")
                 } else {
-                    Text("\(hours):\(minutes):\(seconds) / \(hoursStop):\(minutesStop):00")
+                    Text("\(hours):\(minutes):\(seconds) / \(hourStop):\(minutesStop):00")
                 }
             }
         }
@@ -415,7 +412,7 @@ struct TimerView_Previews: PreviewProvider {
         
         let assignment = Assignment(context: viewContext)
         
-        TimerView(hours: Int(assignment.activeHours), minutes: Int(assignment.activeMinutes), seconds: Int(assignment.activeSeconds), status: assignment.status ?? "Error", isFinished: assignment.isFinished, assignment: assignment)
+        TimerView(assignment: assignment)
             .environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }
