@@ -20,7 +20,11 @@ func mediumHaptics() {
     rigidImpact.impactOccurred()
 }
 
+var timer = timerClass()
+
 struct TimerView: View {
+    
+    @AppStorage("currentAssignmentID") var currentAssignmentID: String = ""
     
     @State var hours: Int = 0
     @State var minutes: Int = 0
@@ -36,64 +40,35 @@ struct TimerView: View {
     @State var addTimeBool: Bool = false
     @State var addMinutes: String = ""
     @State var addHours: String = ""
-
-    @State var status: String = "To Do"
     
     @State var fontSize: CGFloat = 20
 
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    @State var isFinished: Bool = false
-    
-    @State var startButtonDisabled: Bool = false
+    let count = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
         
-    @State var showTimerText: Bool = false
-    
-    var isStarted: Bool {
-        if hours * 3600 + minutes * 60 + seconds == 0 || status == "To Do" {
-            return false
-        }
-        return true
-    }
-    @State var isStarted1: Bool = false
-    
-    @State var forceStart: Bool = false
-    
-    @Environment(\.managedObjectContext) private var viewContext
-    var assignment: Assignment
-    
-//    init() {
-//        status = assignment.status ?? "To Do"
-//        hours = Int(assignment.activeHours)
-//        minutes = Int(assignment.activeMinutes)
-//        seconds = Int(assignment.activeSeconds)
-//        isFinished = assignment.isFinished
-//    }
-//
-//    init
-
+    @State var startButtonDisabled: Bool = false
+            
     init(assignment: Assignment) {
         self.assignment = assignment
         
         self.hours = Int(assignment.activeSeconds)/3600
         self.minutes = Int(assignment.activeSeconds)/60
         self.seconds = Int(assignment.activeSeconds)
-        self.status = assignment.status ?? "To Do"
-        self.isFinished = assignment.isFinished
         
     }
     
-    private func updateTime(_ assignment: Assignment) {
+    var isStarted: Bool {
+        if hours * 3600 + minutes * 60 + seconds == 0 && assignment.status == "To Do" {
+            return false
+        }
+        return true
+    }
         
-        assignment.status = status
-        
-        assignment.isFinished = isFinished
-        
-        print("SAVING 1/2")
-
+    @Environment(\.managedObjectContext) private var viewContext
+    var assignment: Assignment
+    
+    private func updateTime() {
         do {
             try viewContext.save()
-            print("SAVING 2/2")
         } catch {
             print(error.localizedDescription)
             print("Error")
@@ -101,32 +76,45 @@ struct TimerView: View {
     }
     
     private func changeStatus() {
-        if !isFinished {
-            isFinished = true
-            status = "Finished!"
+        if !assignment.isFinished {
+            assignment.isFinished = true
+            assignment.status = "Finished!"
+            print("finished")
         } else {
-            isFinished = false
+            assignment.isFinished = false
             if !isStarted {
-                status = "To Do"
+                assignment.status = "In Progress"
+                print("in progress")
             } else {
-                status = "In Progress"
+                assignment.status = "To Do"
+                print("to do")
             }
         }
     }
 
     private func done() {
+//        print(status)
+//        if assignment.isFinished
         self.changeStatus()
-        self.updateTime(assignment)
+        do {
+            assignment.isPaused = true
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     private func start() {
-        forceStart = true
-        isStarted1 = true
-        status = "In Progress"
+        assignment.status = "In Progress"
         successHaptics()
         startButtonDisabled = true
         
+        if Int(timer.totalAccumulatedTime) != 0 {
+            timer = timerClass()
+        }
+        
+        timer.startTimer()
+        
         do {
-            assignment.status = status
             try viewContext.save()
             print("startSave")
             
@@ -136,172 +124,229 @@ struct TimerView: View {
         }
     }
     
-    private func playPause() {
+    
+    private func pause() {
+        let curr = Int64(timer.totalAccumulatedTime)
+        timer.pauseTimer()
         do {
-            assignment.isPaused.toggle()
+            assignment.activeSeconds = curr
+            assignment.isPaused = true
             try viewContext.save()
-            print("pause/play")
+            print("paused")
+        } catch {
+            print(error.localizedDescription)
+            print("pause")
+        }
+    }
+    
+    private func play() {
+        currentAssignmentID = assignment.assignmentID!
+        timer = timerClass()
+        timer.addTime = TimeInterval(assignment.activeSeconds)
+        timer.startTimer()
+        do {
+            assignment.isPaused = false
+            try viewContext.save()
+            print("play")
         } catch {
             print(error.localizedDescription)
             print("Error")
         }
+
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             /// The Main Timer
-//            if !isFinished {
-                if !isStarted && !isStarted1 && status == "To Do" {
+            // MARK: Not Started
+            
+            
+            
+            if !isStarted {
+                // MARK: Start Text
+                HStack(spacing: 0) {
+                    Text("\(assignment.status ?? "To Do") - ")
+                    FormattedTime(secondStop: Int(assignment.secondStop))
+                        .font(.system(size: 18))
+                    Spacer()
+                }
+                .padding(.bottom, 4)
+                // MARK: Start Button
+                HStack {
+                    if !assignment.isFinished {
+                        Button("Start") {
+                            play()
+                            start()
+                            print("START")
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerStart")))
+                        .disabled(startButtonDisabled)
+                    }
+                    Button(action: {
+                        done()
+                        successHaptics()
+                    }) {
+                        if !assignment.isFinished {
+                            Image(systemName: "square")
+                                .font(.system(size: 18))
+                        } else {
+                            Image(systemName: "checkmark.square.fill")
+                                .font(.system(size: 18))
+                        }
+                    }
+                    .buttonStyle(TimerButton(color: Color("timerDone")))
+                    
+                    Spacer()
+                }
+            }
+            // MARK: Timer Started
+            
+            
+            
+            else {
+                // MARK: Timer Text
+                if !assignment.isFinished {
                     HStack(spacing: 0) {
-                        Text("\(status) - ")
-                        FormattedTime(secondStop: Int(assignment.secondStop))
+                        Text("\(assignment.status ?? "hi") - ")
+                        Text(timeString(accumulatedTime: assignment.activeSeconds))
                             .font(.system(size: 18))
                         Spacer()
                     }
                     .padding(.bottom, 4)
-                    
-                    HStack {
-                        if !assignment.isFinished {
-                            Button("Start") {
-                                playPause()
-                                start()
-                                print("START")
-                            }
-                            .buttonStyle(TimerButton(color: Color("timerStart")))
-                            .disabled(startButtonDisabled)
-                        }
-                        Button(action: {
-                            done()
-                            do {
-                                assignment.isPaused = true
-                                try viewContext.save()
-                                print("pause/play")
-                            } catch {
-                                print(error.localizedDescription)
-                                print("Error")
-                            }
-
-                            successHaptics()
-                            print("DONE")
-                        }) {
-                            if !assignment.isFinished {
-                                Image(systemName: "square")
-                                    .font(.system(size: 18))
-                            } else {
-                                Image(systemName: "checkmark.square.fill")
-                                    .font(.system(size: 18))
-                            }
-                        }
-                        .buttonStyle(TimerButton(color: Color("timerDone")))
-                        
-                        Spacer()
-                    }
-                } else {
-                    if !isFinished && showTimerText {
-                        HStack(spacing: 0) {
-                            Text("\(status) - ")
-                            timerText(secondsStop: Int(assignment.secondStop), seconds: Int(assignment.activeSeconds))
-                                .font(.system(size: 18))
-                            Spacer()
-                        }
-                        .padding(.bottom, 4)
-                    }
-                    HStack {
-                        if !assignment.isFinished {
-                            if assignment.isPaused {
-                                Button("Continue") {
-                                    mediumHaptics()
-                                    playPause()
-                                    forceStart = true
-                                    print("CONTINUE")
-                                }
-                                .buttonStyle(TimerButton(color: Color("timerPause")))
-                            } else {
-                                Button(action: {
-                                    mediumHaptics()
-                                    playPause()
-                                    forceStart = false
-                                    print("PAUSE")
-                                }) {
-                                    Text("Pause")
-                                }
-                                .buttonStyle(TimerButton(color: Color("timerPause")))
-                            }
-                            Button("Restart") {
-                                successHaptics()
-                                self.resetTimer()
-                                forceStart = false
-                                playPause()
-                                self.status = "To Do"
-                                self.updateTime(assignment)
-                                self.startButtonDisabled = false
-                                do {
-                                    assignment.isPaused = true
-                                    try viewContext.save()
-                                    print("pause/play")
-                                } catch {
-                                    print(error.localizedDescription)
-                                    print("Error")
-                                }
-                                print("RESTART")
-                            }
-                            .buttonStyle(TimerButton(color: Color("timerStop")))
-                            
-                            Button("Add Time") {
-                                playPause()
-                                forceStart = false
-                                mediumHaptics()
-                                addTimeBool = true
-                            }
-                            .buttonStyle(TimerButton(color: Color("timerAddTime")))
-                            .alert("Add Time", isPresented: $addTimeBool) {
-                                TextField("Add Minutes", text: $addMinutes)
-                                    .keyboardType(.decimalPad)
-                                TextField("Add Hours", text: $addHours)
-                                    .keyboardType(.decimalPad)
-                                
-                                Button(action: {
-                                    playPause()
-                                    forceStart = true
-                                    self.addTime()
-                                    self.updateTime(assignment)
-                                }) {
-                                    Text("OK")
-                                }
-                                Button("Cancel", role: .cancel) {}
-                            }
-                        }
-                        Button(action: {
-                            successHaptics()
-                            do {
-                                assignment.isPaused = true
-                                try viewContext.save()
-                                print("pause/play")
-                            } catch {
-                                print(error.localizedDescription)
-                                print("Error")
-                            }
-
-                            done()
-                        }) {
-                            if !assignment.isFinished {
-                                Image(systemName: "square")
-                            } else {
-                                Image(systemName: "checkmark.square.fill")
-                            }
-                        }
-                        .buttonStyle(TimerButton(color: Color("timerDone")))
-                        Spacer()
-                    }
-                    
                 }
+                HStack {
+                    if !assignment.isFinished {
+                        // MARK: Continue Button
+                        if assignment.isPaused {
+                            Button("Continue") {
+                                mediumHaptics()
+                                play()
+                                print("CONTINUE")
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerPause")))
+                        }
+                        // MARK: Pause Button
+                        else {
+                            Button(action: {
+                                mediumHaptics()
+                                pause()
+                                print("PAUSE")
+                            }) {
+                                Text("Pause")
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerPause")))
+                        }
+                        // MARK: Restart Button
+                        Button("Restart") {
+                            resetTimer()
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerStop")))
+                        
+                        // MARK: Add Time Button
+                        Button("Add Time") {
+                            pause()
+                            mediumHaptics()
+                            addTimeBool = true
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerAddTime")))
+                        .alert("Add Time", isPresented: $addTimeBool) {
+                            TextField("Add Minutes", text: $addMinutes)
+                                .keyboardType(.decimalPad)
+                            TextField("Add Hours", text: $addHours)
+                                .keyboardType(.decimalPad)
+                            
+                            Button(action: {
+                                play()
+                                self.addTime()
+                                self.updateTime()
+                            }) {
+                                Text("OK")
+                            }
+                            Button("Cancel", role: .cancel) {}
+                        }
+                    }
+                    // MARK: Done Button
+                    Button(action: {
+                        successHaptics()
+                        done()
+                    }) {
+                        if !assignment.isFinished {
+                            Image(systemName: "square")
+                        } else {
+                            Image(systemName: "checkmark.square.fill")
+                        }
+                    }
+                    .buttonStyle(TimerButton(color: Color("timerDone")))
+                    Spacer()
+                } /// end of HStack
+                
+            } /// end of else
         // MARK: Timer portion
+        }
+//        .onChange(of: timer.totalAccumulatedTime) { _ in
+//            if assignment.assignmentID == currentAssignmentID {
+//                if !assignment.isPaused {
+//                    assignment.activeSeconds = Int64(timer.totalAccumulatedTime)
+//                    print("totalaccumulatedtime: \(timer.totalAccumulatedTime)")
+//                    if assignment.activeSeconds >= assignment.secondStop {
+//                        overTime = true
+//                    }
+//                    do {
+//                        try viewContext.save()
+//                        print("SAVED TIME")
+//                    } catch {
+//                        print(error.localizedDescription)
+//                        print("Error")
+//                    }
+//                }
+//            }
+//        }
+        .onAppear {
+            print("current status now: " + (assignment.status ?? "-----"))
+        }
+        .onReceive(count) { _ in
+            if assignment.assignmentID == currentAssignmentID {
+                if !assignment.isPaused {
+                    assignment.activeSeconds = Int64(timer.totalAccumulatedTime)
+                    print("totalaccumulatedtime: \(timer.totalAccumulatedTime)")
+                    if assignment.activeSeconds >= assignment.secondStop {
+                        overTime = true
+                    }
+                    do {
+                        try viewContext.save()
+                        print("SAVED TIME")
+                    } catch {
+                        print(error.localizedDescription)
+                        print("Error")
+                    }
+                }
+            } else {
+
+                do {
+                    assignment.isPaused = true
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+
+            }
         }
         .padding(.leading, 6)
     }
 
     private func resetTimer() {
-        isStarted1 = false
+        successHaptics()
+        pause()
+        assignment.status = "To Do"
+        do {
+            assignment.isPaused = true
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+            print("Error")
+        }
+        print("RESTART")
+
         assignment.activeSeconds = 0
         do {
             try viewContext.save()
@@ -324,7 +369,7 @@ struct TimerView: View {
         }
     }
     
-    private func timeString(accumulatedTime: TimeInterval) -> String {
+    private func timeString(accumulatedTime: Int64) -> String {
         let hours = Int(accumulatedTime) / 3600
         let minutes = Int(accumulatedTime) / 60 % 60
         let seconds = Int(accumulatedTime) % 60
@@ -333,8 +378,11 @@ struct TimerView: View {
         let minuteStop = Int(assignment.secondStop) / 60 % 60
         let secondStop = Int(assignment.secondStop) % 60
 
+        if hours < 1 {
+            return String(format:"%02i:%02i", minutes, seconds) + " / " +  String(format:"%02i:%02i", minuteStop, secondStop)
+        }
 
-        return String(format:"%02i:%02i:%02i", hours, minutes, seconds) + String(format:"%02i:%02i:%02i", hourStop, minuteStop, secondStop)
+        return String(format:"%02i:%02i:%02i", hours, minutes, seconds) + " / " +  String(format:"%02i:%02i:%02i", hourStop, minuteStop, secondStop)
     }
 }
 
@@ -346,6 +394,18 @@ struct TimerButton: ButtonStyle {
             .padding(5.0)
             .background(color)
             .foregroundColor(.white)
+            .cornerRadius(4)
+            .shadow(radius: 2)
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+    }
+}
+struct DayButton: ButtonStyle {
+    var color: Color
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .fontWeight(.semibold)
+            .padding(5.0)
+            .background(color)
             .cornerRadius(4)
             .shadow(radius: 2)
             .scaleEffect(configuration.isPressed ? 0.9 : 1)

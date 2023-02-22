@@ -6,6 +6,19 @@
         "reference" : "systemGray3Color"
       },
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "platform" : "ios",
+        "reference" : "systemGray3Color"
+      },
+      "idiom" : "universal"
     }
   ],
   "info" : {

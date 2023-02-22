@@ -58,20 +58,33 @@ struct Due: View {
         let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
         let onlineAssignments = things[0].VCALENDAR[0].VEVENT
         
+        var onlineAssignmentIDs: [String] = []
+        for assignment in onlineAssignments {
+            onlineAssignmentIDs.append(assignment.id)
+        }
+        
         /// assignment IDs
         var existingAssignmentIDs: [String] = []
         for assignment in allAssignments {
             existingAssignmentIDs.append(assignment.assignmentID!)
+            
+            /// if existing assignment is not in online assignments (if the teacher has moved an assignment)
+            if !(onlineAssignmentIDs.contains(assignment.assignmentID!)) && assignment.source == "fromOnline" {
+                
+                viewContext.delete(assignment)
+                /// in the future this should be a soft delete not a hard delete (go into recently deleted)
+                /// would require delete, and delete date for assignments older than 30 days or something
+                
+                do {
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         }
         
         print(existingAssignmentIDs)
-        
-        if existingAssignmentIDs.contains("Personal Reflection20220912") {
-            print("cupcakke")
-        } else {
-            print("Squidward")
-        }
-        
+                
         /// main function crap
         for assign in onlineAssignments {
             if existingAssignmentIDs.contains(String(assign.id)) == false {
@@ -107,7 +120,7 @@ struct Due: View {
                     assignment.status = "To Do"
                 }
                 
-                assignment.datePlanned = Calendar.current.date(byAdding: .day, value: -1000, to: assign.dueDate)
+                assignment.datePlanned = Calendar.current.date(byAdding: .day, value: -1, to: assign.dueDate)
                 assignment.isPlanned = false
                 assignment.dueDate = assign.dueDate
                 

@@ -28,8 +28,6 @@
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data.json */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
-		791F605B2960C35300076509 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605A2960C35300076509 /* PythonKit */; };
-		791F605E2960C93400076509 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 791F605D2960C93400076509 /* Python-iOS */; };
 		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
 		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
 		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
@@ -38,6 +36,8 @@
 		795958CF2960F32A00CA6CEF /* Example.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958CE2960F32A00CA6CEF /* Example.py */; };
 		7961B6CE297AE43600A0593E /* ExpandedCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7961B6CD297AE43600A0593E /* ExpandedCourse.swift */; };
 		79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7965646F296A35DA003D230F /* AssignmentViewNew.swift */; };
+		7967123229A3D8AF002CE3BF /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7967123129A3D8AF002CE3BF /* PythonKit */; };
+		796F012E29A4306000242653 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 796F012D29A4306000242653 /* Python-iOS */; };
 		796FFDF52974BC45007DF816 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796FFDF42974BC45007DF816 /* New.swift */; };
 		797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797A79B4297F0CA700799769 /* PlannerRow.swift */; };
 		798BF0C3297606E0005D7ED5 /* ChildAssignmentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */; };
@@ -79,6 +79,7 @@
 		7965646F296A35DA003D230F /* AssignmentViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewNew.swift; sourceTree = "<group>"; };
 		796FFDF42974BC45007DF816 /* New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
 		797A79B4297F0CA700799769 /* PlannerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerRow.swift; sourceTree = "<group>"; };
+		7980B88629A3D244003AC967 /* Python3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python3.framework; path = Library/Frameworks/Python3.framework; sourceTree = DEVELOPER_DIR; };
 		798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAssignmentRow.swift; sourceTree = "<group>"; };
 		79B1CBE52977926400377357 /* NumTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTextField.swift; sourceTree = "<group>"; };
 		79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewSupports.swift; sourceTree = "<group>"; };
@@ -89,8 +90,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				791F605E2960C93400076509 /* Python-iOS in Frameworks */,
-				791F605B2960C35300076509 /* PythonKit in Frameworks */,
+				796F012E29A4306000242653 /* Python-iOS in Frameworks */,
+				7967123229A3D8AF002CE3BF /* PythonKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +103,7 @@
 			children = (
 				791F601E2960BB4300076509 /* PlanIt */,
 				791F601D2960BB4300076509 /* Products */,
+				7980B88529A3D244003AC967 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,6 +221,14 @@
 			path = icsJSonMain;
 			sourceTree = "<group>";
 		};
+		7980B88529A3D244003AC967 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7980B88629A3D244003AC967 /* Python3.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -236,8 +246,8 @@
 			);
 			name = PlanIt;
 			packageProductDependencies = (
-				791F605A2960C35300076509 /* PythonKit */,
-				791F605D2960C93400076509 /* Python-iOS */,
+				7967123129A3D8AF002CE3BF /* PythonKit */,
+				796F012D29A4306000242653 /* Python-iOS */,
 			);
 			productName = PlanIt;
 			productReference = 791F601C2960BB4300076509 /* PlanIt.app */;
@@ -268,8 +278,8 @@
 			);
 			mainGroup = 791F60132960BB4300076509;
 			packageReferences = (
-				791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */,
-				791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */,
+				7967123029A3D8AF002CE3BF /* XCRemoteSwiftPackageReference "PythonKit" */,
+				796F012C29A4306000242653 /* XCRemoteSwiftPackageReference "Python-iOS" */,
 			);
 			productRefGroup = 791F601D2960BB4300076509 /* Products */;
 			projectDirPath = "";
@@ -548,7 +558,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+		7967123029A3D8AF002CE3BF /* XCRemoteSwiftPackageReference "PythonKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pvieito/PythonKit";
 			requirement = {
@@ -556,7 +566,7 @@
 				kind = branch;
 			};
 		};
-		791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */ = {
+		796F012C29A4306000242653 /* XCRemoteSwiftPackageReference "Python-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kewlbear/Python-iOS";
 			requirement = {
@@ -567,14 +577,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		791F605A2960C35300076509 /* PythonKit */ = {
+		7967123129A3D8AF002CE3BF /* PythonKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 791F60592960C35300076509 /* XCRemoteSwiftPackageReference "PythonKit" */;
+			package = 7967123029A3D8AF002CE3BF /* XCRemoteSwiftPackageReference "PythonKit" */;
 			productName = PythonKit;
 		};
-		791F605D2960C93400076509 /* Python-iOS */ = {
+		796F012D29A4306000242653 /* Python-iOS */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 791F605C2960C93400076509 /* XCRemoteSwiftPackageReference "Python-iOS" */;
+			package = 796F012C29A4306000242653 /* XCRemoteSwiftPackageReference "Python-iOS" */;
 			productName = "Python-iOS";
 		};
 /* End XCSwiftPackageProductDependency section */

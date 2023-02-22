@@ -126,7 +126,7 @@ struct ExternalSource: View {
                 
                 assignment.courseID = UUID()
                 assignment.id = UUID()
-                assignment.assignmentID = assign.title + assign.DTEND.dropFirst(11)
+                assignment.assignmentID = assign.title + "." + assign.DTEND.dropFirst(11)
 
                 print(assignment.assignmentID!)
                 assignment.isFinished = false
@@ -139,6 +139,9 @@ struct ExternalSource: View {
                 assignment.parentAssignmentTitle = ""
                 assignment.isPaused = true
                 
+                assignment.specificHour = 0
+                assignment.specificMinute = 0
+
                 print("found new assignment!")
                 print(assignment.title ?? "")
                 

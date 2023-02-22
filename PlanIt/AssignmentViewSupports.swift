@@ -53,3 +53,18 @@ struct AssignmentViewSupports_Previews: PreviewProvider {
         FormattedTime(secondStop: 0)
     }
 }
+
+struct Checkbox: ButtonStyle {
+    var color: Color
+    @State var isPressed: Bool = false
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .fontWeight(.semibold)
+            .padding(5.0)
+            .background(color)
+            .foregroundColor(.white)
+            .cornerRadius(4)
+            .shadow(radius: 2)
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+    }
+}

@@ -29,6 +29,7 @@ struct Settings: View {
     
     @AppStorage("disableTimer") var disableTimer: Bool = false
     @AppStorage("aestheticMode") var aestheticMode: Bool = false
+    @AppStorage("twofourhourtime") var twofourhourtime: Bool = false
     @AppStorage("bgColor") var bgColor: String = ""
     @AppStorage("fgColor") var fgColor: String = ""
 
@@ -46,21 +47,34 @@ struct Settings: View {
     var body: some View {
         NavigationView {
             Form {
-                Button(action: {
-                    showSync.toggle()
-                }, label: {
-                    Text("Sync Assignments from myschoolapp, or schology")
-                })
+                
+                Section(header: Text("Configure")) {
+                    Button {
+                        showSync.toggle()
+                    } label: {
+                        Text("Sync Assignments from external source")
+                    }
+                    Button {
+                        
+                    } label: {
+                        Text("Time Break Ups".lower())
+                    }
+
+                }
 
                 Section(header: Text("General")) {
                     Toggle("Disable Timer".lower(), isOn: $disableTimer)
                     Toggle("Aesthetic Mode".lower(), isOn: $aestheticMode)
+                    Toggle("24 Hour Time Time".lower(), isOn: $twofourhourtime)
                     Text("Profile".lower())
                     Text("Color Theme".lower())
                     Text("Dark Mode".lower())
                     Text("Language".lower())
-                    Text("Key".lower())
-                    .foregroundColor(.red)
+                    Button {
+                        
+                    } label: {
+                        Text("Key".lower())
+                    }
                     
                 }
                 Section(header: Text("Help")) {
@@ -70,6 +84,7 @@ struct Settings: View {
                     Button("Delete all assignments".lower()) {
                         deleteAssignments()
                     }
+                    .foregroundColor(.red)
                 }
                 Section(header: Text("Notifications")) {
                     Text("Configure Notifications".lower())
@@ -87,6 +102,7 @@ struct Settings: View {
             .sheet(isPresented: $showSync) {
                 ExternalSource().environment(\.managedObjectContext, persistedContainer.viewContext)
             }
+            
         }
     }
 }

@@ -39,7 +39,7 @@ struct New: View {
     
     // MARK: variables / constants
     /// Dynamic variables
-    @State private var newType: String = "Assignment"
+    @State private var newType: String = "TimeFrame"
     @State private var title: String = ""
     @State private var summary: String = ""
     @State private var assignmentType: String = "Homework"
@@ -54,6 +54,8 @@ struct New: View {
         
     @State private var assessmentType: String = "Quiz"
     @State private var childAssignments: [childAssignment] = []
+    
+    @AppStorage("twofourhourtime") var twofourhourtime: Bool = false
     
     /// Static vars
     let assignmentTypes = ["Homework", "Project", "Assessment", "Paper"]
@@ -75,6 +77,19 @@ struct New: View {
         
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
+    @FetchRequest(entity: TimeFrame.entity(), sortDescriptors: [NSSortDescriptor(key: "time", ascending: false)]) private var allTimeFrames: FetchedResults<TimeFrame>
+    // add 24 hour regular time to sort
+
+    // MARK: TimeFrameVars
+    @State var timeFrameTitle: String = ""
+    @State var hour: String = ""
+    @State var minute: String = ""
+//    @State var amPM: Int = 0 /// 0 = none, 1 = am, 2 = pm
+    @State var amPM: Bool = false
+    @State var set: Set = Set<String>()
+    
+    let days = ["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"]
+
     // MARK: tapCourse
     private func tapCourse() -> String {
         if !tapped {
@@ -121,9 +136,12 @@ struct New: View {
         assignment.isPlanned = true
         assignment.dueDate = dueDate
         
+        assignment.specificHour = 0
+        assignment.specificMinute = 0
+
         assignment.courseID = UUID()
         assignment.id = UUID()
-        assignment.assignmentID = title + dateFormatter.string(from: dueDate)
+        assignment.assignmentID = title + "." + dateFormatter.string(from: dueDate)
 
         assignment.isFinished = false
         
@@ -243,6 +261,34 @@ struct New: View {
         }
         
     }
+    //MARK: save TimeFrame
+    
+    private func saveTimeFrame() {
+        do {
+            let timeFrame = TimeFrame(context: viewContext)
+            
+            timeFrame.hour = Int16(hour)!
+            timeFrame.minute = Int16(minute)!
+            
+            timeFrame.time = Int16(hour)!
+            
+            if !twofourhourtime {
+                timeFrame.amPM = 0
+            } else {
+                if !amPM {
+                    timeFrame.amPM = 1
+                } else {
+                    timeFrame.time = 12
+                    timeFrame.time += Int16(hour)!
+                    timeFrame.amPM = 2
+                }
+            }
+            timeFrame.title = timeFrameTitle
+            try viewContext.save()
+        } catch {
+            
+        }
+    }
     
     // MARK: deleteAssignment
     private func deleteAssignment(at offsets: IndexSet) {
@@ -268,6 +314,16 @@ struct New: View {
         }
     }
     
+    // MARK: delete timeFrame
+    private func deleteTimeFrame(_ timeFrame: TimeFrame) {
+        viewContext.delete(timeFrame)
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
     // MARK: getColor
     private func getColor(_ title: String) -> Color {
         for course in allCourses {
@@ -277,6 +333,13 @@ struct New: View {
             }
         }
         return .green
+    }
+    
+    private func dayColor(_ day: String) -> Color {
+        if set.contains(day) {
+            return Color("secondary")
+        }
+        return Color("cDarkGray")
     }
     
     var body: some View {
@@ -352,7 +415,7 @@ struct New: View {
                             // MARK: homework
                             if assignmentType == "Homework" {
                             /// Planned date
-                                DatePicker("What day will you do this?", selection: $planned, in: ...dueDate, displayedComponents: [.date])
+                                DatePicker("What day will you do this?".lower(), selection: $planned, in: ...dueDate, displayedComponents: [.date])
                                 .padding(.horizontal)
                             
                                 // MARK: assignment time
@@ -464,7 +527,7 @@ struct New: View {
                     }
                 }
                 // MARK: new course
-                else { /// if user wants a new course
+                else if newType == "Course" { /// if user wants a new course
                     Group {
                         TextField("Enter title", text: $title)
                             .textFieldStyle(.roundedBorder)
@@ -523,8 +586,96 @@ struct New: View {
 
 
                 }
-                
-                
+                // MARK: TimeFrame
+//                else if newType == "TimeFrame" {
+//                    TextField("Enter title", text: $timeFrameTitle)
+//                        .textFieldStyle(.roundedBorder)
+//                        .padding(.horizontal)
+//                    HStack {
+//                        ForEach(days, id: \.self) { day in
+//                            VStack {
+//                                Button(day) {
+//                                    if set.contains(day) {
+//                                        set.remove(day)
+//                                    } else {
+//                                        set.insert(day)
+//                                    }
+//                                }
+//                                .buttonStyle(DayButton(color: dayColor(day)))
+//
+////                                Text(day)
+////                                    .padding(2)
+////                                    .background(dayColor(day))
+////                                    .cornerRadius(5)
+////                                Button {
+////                                    set.insert(day)
+////                                } label: {
+////                                    Image(systemName: "plus.circle.fill")
+////                                }
+////                                Button {
+////                                    set.remove(day)
+////                                } label: {
+////                                    Image(systemName: "minus.circle.fill")
+////                                }
+//                            }
+//                        }
+//                    }
+//                    HStack(spacing: 0) {
+//                        Text("What time?")
+//                        Spacer()
+//                        NumTextField(subText: "h", text: $hour)
+//                            .frame(width: 40)
+//                            .textFieldStyle(.roundedBorder)
+//                            .padding(.trailing, 7.0)
+//                            .multilineTextAlignment(.center)
+//                        Text(":")
+//                        NumTextField(subText: "m", text: $minute)
+//                            .frame(width: 40)
+//                            .textFieldStyle(.roundedBorder)
+//                            .padding(.leading, 7.0)
+//                            .multilineTextAlignment(.center)
+//                    }
+//                    .padding(.horizontal)
+//                    if !twofourhourtime {
+//                        HStack(spacing: 0) {
+//                            Spacer()
+//                            Text("AM")
+//                            Toggle(" ", isOn: $amPM)
+//                                .frame(width: UIScreen.screenWidth/8)
+//                                .padding(.leading, 7)
+//                            Text("PM")
+//                                .padding(.leading, 14)
+//                        }
+//                            .padding(.horizontal)
+//                    }
+//                    Button("Save") {
+//                        if timeFrameTitle == "" || hour == "" || minute == "" {
+//                            showAlert = true
+//                        } else {
+//                            saveTimeFrame()
+//                        }
+//                    }
+//                    .buttonStyle(TimerButton(color: Color("timerStart")))
+//                    .alert(isPresented: $showAlert) {
+//                        Alert(
+//                            title: Text("Error"),
+//                            message: Text("Please fill out title everything!")
+//                        )
+//                    }
+//                    .font(.title2)
+//                    ForEach(allTimeFrames) { timeFrame in
+//                        HStack {
+//                            Text(timeFrame.title ?? "")
+//                            Button {
+//                                deleteTimeFrame(timeFrame)
+//                            } label: {
+//                                Image(systemName: "trash.fill")
+//                            }
+//                        }
+//                    }
+//
+//
+//                }
             }
             .navigationTitle("New")
         }

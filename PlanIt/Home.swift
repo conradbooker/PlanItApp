@@ -25,7 +25,8 @@ struct Home: View {
     @State var checkInProgress: Int = 0
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
-    
+    @State var checkUnplanned: Int = 0
+
     @State private var totalSeconds: Int = 0
 
     var body: some View {
@@ -44,6 +45,41 @@ struct Home: View {
                                 }
                             }
                             
+                            
+                            
+                            // MARK: Unplanned assignments
+                        Group {
+                            if checkUnplanned != 0 {
+                                HStack {
+                                    Text("\(checkUnplanned) Unplanned assignments".lower())
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+                            
+                            ForEach(allAssignments) { assign in
+                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.isPlanned == false {
+                                        PlannerRow(assignment: assign)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkUnplanned += 1
+                                                if !assign.isFinished {
+                                                    totalSeconds += Int(assign.secondStop)
+                                                }
+                                            }
+                                            .onDisappear {
+                                                checkUnplanned -= 1
+                                                if !assign.isFinished {
+                                                    totalSeconds -= Int(assign.secondStop)
+                                                    
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                            
                             // MARK: In Progress
                             if checkInProgress != 0 {
                                 HStack {
@@ -54,7 +90,7 @@ struct Home: View {
                             }
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "In Progress" {
+                                    if assign.status == "In Progress" && assign.isPlanned {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
@@ -88,18 +124,21 @@ struct Home: View {
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "To Do" {
+                                    if assign.status == "To Do" && assign.isPlanned {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
+                                                print(assign.status!)
                                                 checkToDo += 1
                                                 if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)                                                }
+                                                    totalSeconds += Int(assign.secondStop)
+                                                }
                                             }
                                             .onDisappear {
                                                 checkToDo -= 1
                                                 if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)                                                }
+                                                    totalSeconds -= Int(assign.secondStop)
+                                                }
                                             }
                                     }
                                 }
@@ -116,16 +155,16 @@ struct Home: View {
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "Finished!" {
+                                    if assign.status == "Finished!" && assign.isPlanned {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
-                                                checkToDo += 1
+                                                checkFinished += 1
                                                 if !assign.isFinished {
                                                     totalSeconds += Int(assign.secondStop)                                                }
                                             }
                                             .onDisappear {
-                                                checkToDo -= 1
+                                                checkFinished -= 1
                                                 if !assign.isFinished {
                                                     totalSeconds -= Int(assign.secondStop)
                                                 }
@@ -152,7 +191,7 @@ struct Home: View {
                             .frame(width: UIScreen.screenWidth - 10)
                     }
                 }
-                .navigationTitle("Welcome back, Cunt!".lower())
+                .navigationTitle("Home".lower())
             }
         }
     }
