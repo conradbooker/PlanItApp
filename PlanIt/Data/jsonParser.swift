@@ -160,8 +160,9 @@ struct IndividualOnlineAssignmets: Decodable, Hashable, Identifiable {
     }
         
     var title: String {
-        let first = SUMMARY.replacingOccurrences(of: "&amp;", with: "&")
-        
+        var first = SUMMARY.replacingOccurrences(of: "&amp;", with: "&")
+        first = SUMMARY.replacingOccurrences(of: "&#160;", with: " ")
+
         let splitted = first.split(separator: " - ", maxSplits: 1)
         
         if splitted.count < 2 || !first.contains("-") && !first.contains(":") {
