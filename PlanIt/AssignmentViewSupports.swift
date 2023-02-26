@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct AssignmentViewSupports: View {
-    var body: some View {
-        Text("Hello, World!")
-    }
-}
 extension UIScreen {
    static let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
    static let screenHeight = CGFloat(UIScreen.main.bounds.size.height)

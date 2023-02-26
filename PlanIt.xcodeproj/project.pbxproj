@@ -23,7 +23,6 @@
 		791F60422960BE0600076509 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60412960BE0600076509 /* CoreDataManager.swift */; };
 		791F60442960BE2600076509 /* jsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60432960BE2600076509 /* jsonParser.swift */; };
 		791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 791F60452960BE3700076509 /* AssignmentModel.xcdatamodeld */; };
-		791F60492960BE4900076509 /* AssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60482960BE4900076509 /* AssignmentView.swift */; };
 		791F604B2960BE5100076509 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604A2960BE5100076509 /* TimerView.swift */; };
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data.json */; };
@@ -64,7 +63,6 @@
 		791F60412960BE0600076509 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		791F60432960BE2600076509 /* jsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = jsonParser.swift; sourceTree = "<group>"; };
 		791F60462960BE3700076509 /* AssignmentModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AssignmentModel.xcdatamodel; sourceTree = "<group>"; };
-		791F60482960BE4900076509 /* AssignmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentView.swift; sourceTree = "<group>"; };
 		791F604A2960BE5100076509 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
 		791F604E2960BE8B00076509 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 		791F60312960BD3400076509 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
-				791F60482960BE4900076509 /* AssignmentView.swift */,
 				791F604C2960BE6000076509 /* Tester.swift */,
 				79B1CBE52977926400377357 /* NumTextField.swift */,
 				798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */,
@@ -330,7 +327,6 @@
 				795958CB2960EBEB00CA6CEF /* pythonSwiftBridge.swift in Sources */,
 				79B1CBE62977926400377357 /* NumTextField.swift in Sources */,
 				791F60442960BE2600076509 /* jsonParser.swift in Sources */,
-				791F60492960BE4900076509 /* AssignmentView.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
 				791325B029809AD700A826B6 /* timerClass.swift in Sources */,

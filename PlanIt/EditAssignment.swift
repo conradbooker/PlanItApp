@@ -33,7 +33,7 @@ struct EditAssignment: View {
     /// Static vars
     let assignmentTypes = ["Homework", "Project", "Assessment", "Paper"]
     let types = ["Assignment","Course"]
-    let assessmentTypes = ["Quiz","Quest","Test"]
+    let assessmentTypes = ["Quiz","Quest","Test","In Class Essay"]
     
     var assignment: Assignment
     
@@ -328,10 +328,10 @@ struct EditAssignment: View {
                             // MARK: due date / test date
                             Group {
                                 if assignmentType != "Assessment" {
-                                    DatePicker("Due Date:", selection: $dueDate, in: Calendar.current.date(byAdding: .day, value: 1, to: Date())!..., displayedComponents: [.date])
+                                    DatePicker("Due Date:", selection: $dueDate,  displayedComponents: [.date])
                                         .padding(.horizontal)
                                 } else {
-                                    DatePicker("\(assessmentType) Date:", selection: $dueDate, in: Calendar.current.date(byAdding: .day, value: 1, to: Date())!..., displayedComponents: [.date])
+                                    DatePicker("\(assessmentType) Date:", selection: $dueDate, displayedComponents: [.date])
                                         .padding(.horizontal)
                                 }
                             }
@@ -457,12 +457,22 @@ struct EditAssignment: View {
                             }
                         }
                         .buttonStyle(TimerButton(color: Color("timerStart")))
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text(alertTitle),
-                                message: Text(alertText)
-                            )
+                        .alert(alertTitle, isPresented: $showAlert) {
+                            Button("Cancel", role: .cancel, action: {})
+                            Button("OK", action: {saveAssignment()})
+                        } message: {
+                            // 4
+                            Text(alertText)
+
                         }
+//                        .alert(isPresented: $showAlert) {
+//                            Alert(
+//                                title: Text(alertTitle),
+//                                message: Text(alertText)
+//                            )
+//                            Button("Cancel", role: .cancel, action: {})
+//                            Button("OK", action: {saveAssignment()})
+//                        }
                         .font(.title2)
                     }
                     Spacer()

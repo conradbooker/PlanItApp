@@ -74,11 +74,7 @@ struct AssignmentOnline: Decodable, Hashable, Identifiable {
     var PRODID: String
     var CALSCALE: String
     var VEVENT: [IndividualOnlineAssignmets]
-    
-//    var image: Image {
-//        Image(name)
-//    }
-        
+            
 }
 
 struct ICSCal: Decodable, Hashable, Identifiable {

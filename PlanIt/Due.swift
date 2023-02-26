@@ -48,6 +48,16 @@ struct Due: View {
         return .green
     }
     
+    var title: String {
+        if selectedDate.formatted(.dateTime.day().month().year()) == currentDate.formatted(.dateTime.day().month().year()) {
+            return "Today"
+        }
+        let weekdayIndex = Calendar.current.component(.weekday, from: selectedDate) - 1
+        let weekday = DateFormatter().shortWeekdaySymbols[weekdayIndex]
+        return "\(weekday), \(String(selectedDate.formatted(date: .abbreviated, time: .omitted)).dropLast(6))"
+    }
+
+    
     // MARK: syncAssignments
     private func syncAssignments() {
         var allCoursesDict: [String: String] = [:]
@@ -253,7 +263,7 @@ struct Due: View {
                         DateSelector(selectedDate: $selectedDate)
                     }
                 }
-                .navigationTitle("Due")
+                .navigationTitle("Due \(title)".lower())
                 .refreshable {
                     if initialSync {
                         syncAssignments()

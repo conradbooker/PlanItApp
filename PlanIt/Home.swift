@@ -26,8 +26,141 @@ struct Home: View {
     @State var checkToDo: Int = 0
     @State var checkFinished: Int = 0
     @State var checkUnplanned: Int = 0
+    @State var checkAssessments: Int = 0
 
     @State private var totalSeconds: Int = 0
+    
+    @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
+    
+    var title: String {
+        if selectedDate.formatted(.dateTime.day().month().year()) == currentDate.formatted(.dateTime.day().month().year()) {
+            return "To Do Today"
+        }
+        let weekdayIndex = Calendar.current.component(.weekday, from: selectedDate) - 1
+        let weekday = DateFormatter().shortWeekdaySymbols[weekdayIndex]
+        return "To Do \(weekday), \(String(selectedDate.formatted(date: .abbreviated, time: .omitted)).dropLast(6))"
+    }
+    
+    private func getColor(_ title: String) -> Color {
+        for course in allCourses {
+            let colored = Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))
+            if title.lowercased() == course.title?.lowercased() {
+                return colored
+            }
+        }
+        return .green
+    }
+    
+    private func syncAssignments() {
+        var allCoursesDict: [String: String] = [:]
+        
+        for course in allCourses {
+            allCoursesDict[course.onlineTitle!] = course.title!
+        }
+        let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
+        let onlineAssignments = things[0].VCALENDAR[0].VEVENT
+        
+        var onlineAssignmentIDs: [String] = []
+        for assignment in onlineAssignments {
+            onlineAssignmentIDs.append(assignment.id)
+        }
+        
+        /// assignment IDs
+        var existingAssignmentIDs: [String] = []
+        for assignment in allAssignments {
+            existingAssignmentIDs.append(assignment.assignmentID!)
+            
+            /// if existing assignment is not in online assignments (if the teacher has moved an assignment)
+            if !(onlineAssignmentIDs.contains(assignment.assignmentID!)) && assignment.source == "fromOnline" {
+                
+                viewContext.delete(assignment)
+                /// in the future this should be a soft delete not a hard delete (go into recently deleted)
+                /// would require delete, and delete date for assignments older than 30 days or something
+                
+                do {
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+        print(existingAssignmentIDs)
+                
+        /// main function crap
+        for assign in onlineAssignments {
+            if existingAssignmentIDs.contains(String(assign.id)) == false {
+                print("ID:")
+                print(String(assign.id))
+                let dateFormatter = DateFormatter()
+                let currentCourse = allCoursesDict[assign.course] ?? ""
+                dateFormatter.dateFormat = "YYYYMMdd"
+                
+                let assignment = Assignment(context: viewContext)
+                assignment.activeSeconds = 0
+                assignment.dubiousSeconds = 0
+                assignment.secondStop = 0
+                assignment.totalSeconds = 0
+                
+                assignment.red = Float(getColor(currentCourse).components.red)
+                assignment.green = Float(getColor(currentCourse).components.green)
+                assignment.blue = Float(getColor(currentCourse).components.blue)
+                assignment.opacity = 0.0
+                        
+                assignment.assignmentType = "Homework"
+                assignment.course = currentCourse
+                assignment.source = "fromOnline"
+                assignment.summary = assign.description
+                assignment.title = assign.title
+                
+                assignment.dateCreated = Date()
+                assignment.dateFinished = Date()
+                
+                if assign.dueDate < Date() {
+                    assignment.status = "Finished!"
+                } else {
+                    assignment.status = "To Do"
+                }
+                
+                assignment.datePlanned = Calendar.current.date(byAdding: .day, value: -1, to: assign.dueDate)
+                assignment.isPlanned = false
+                assignment.dueDate = assign.dueDate
+                
+                assignment.courseID = UUID()
+                assignment.id = UUID()
+                assignment.assignmentID = assign.title + assign.DTEND.dropFirst(11)
+
+                print(assignment.assignmentID!)
+                assignment.isFinished = false
+                
+                assignment.parentCourse = ""
+                assignment.isChild = false
+                assignment.isParent = false
+                            
+                assignment.parentID = ""
+                assignment.parentAssignmentTitle = ""
+                assignment.isPaused = true
+
+                do {
+                    try viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                    print("Error occured in saving! (parent)")
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+            }
+        }
+    }
+    
+    var majors: String {
+        if checkAssessments == 1 {
+            return "1 Major Assignment Tomorrow"
+        } else {
+            return String("\(checkAssessments) Major Assignments Tomorrow")
+        }
+    }
+
 
     var body: some View {
         GeometryReader { geometry in
@@ -37,6 +170,7 @@ struct Home: View {
                         .ignoresSafeArea()
                     ScrollView {
                         VStack {
+                            Group {
                             if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
                                 HStack {
                                     Text("You Finished Everything for Today!!!".lower())
@@ -44,14 +178,48 @@ struct Home: View {
                                     Spacer()
                                 }
                             }
+                                
+                                // MARK: Assessments
+                                
+                            if checkAssessments != 0 {
+                                HStack {
+                                    Text(majors.lower())
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
                             
+//                                selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
+                            ForEach(allAssignments) { assign in
+                                if Calendar.current.date(byAdding: .day, value: -1, to: assign.datePlanned!)!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                    if assign.assignmentType != "Homework" {
+                                        PlannerRow(assignment: assign)
+                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                            .onAppear {
+                                                checkAssessments += 1
+                                                if !assign.isFinished {
+                                                    totalSeconds += Int(assign.secondStop)
+                                                }
+                                            }
+                                            .onDisappear {
+                                                checkAssessments -= 1
+                                                if !assign.isFinished {
+                                                    totalSeconds -= Int(assign.secondStop)
+                                                    
+                                                }
+                                            }
+                                    }
+                                }
+                            }
                             
+
+                            } /// end of group
                             
                             // MARK: Unplanned assignments
                         Group {
                             if checkUnplanned != 0 {
                                 HStack {
-                                    Text("\(checkUnplanned) Unplanned assignments".lower())
+                                    Text("\(checkUnplanned) unplanned assignments to do this day".lower())
                                         .padding([.top, .leading])
                                     Spacer()
                                 }
@@ -90,7 +258,7 @@ struct Home: View {
                             }
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "In Progress" && assign.isPlanned {
+                                    if assign.status == "In Progress" && assign.isPlanned && assign.assignmentType == "Homework" {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
@@ -106,9 +274,6 @@ struct Home: View {
                                                 
                                                 }
                                             }
-//                                            .onChange(of: assign.secondStop / 60 % 60) { _ in
-//                                                totalMinutes -=
-//                                            }
                                     }
                                 }
                             }
@@ -124,7 +289,7 @@ struct Home: View {
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "To Do" && assign.isPlanned {
+                                    if assign.status == "To Do" && assign.isPlanned && assign.assignmentType == "Homework" {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
@@ -155,7 +320,7 @@ struct Home: View {
                             
                             ForEach(allAssignments) { assign in
                                 if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "Finished!" && assign.isPlanned {
+                                    if assign.status == "Finished!" && assign.isPlanned && assign.assignmentType == "Homework" {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
@@ -173,14 +338,14 @@ struct Home: View {
                                 }
                             }
                             Group {
-                                if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 {
+                                if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 && checkUnplanned == 0{
                                     HStack {
-                                        Text("Nothing Planned Tomorrow :)".lower())
+                                        Text("No assignments! Swipe down to sync or create new assignment.".lower())
                                             .padding([.top, .leading])
                                         Spacer()
                                     }
                                 }
-                                FormattedTime(secondStop: totalSeconds)
+//                                FormattedTime(secondStop: totalSeconds)
                             }
                             Spacer().frame(height: 100)
                         }
@@ -191,7 +356,7 @@ struct Home: View {
                             .frame(width: UIScreen.screenWidth - 10)
                     }
                 }
-                .navigationTitle("Home".lower())
+                .navigationTitle(title.lower())
             }
         }
     }
