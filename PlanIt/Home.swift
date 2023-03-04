@@ -192,7 +192,7 @@ struct Home: View {
 //                                selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
                             ForEach(allAssignments) { assign in
                                 if Calendar.current.date(byAdding: .day, value: -1, to: assign.datePlanned!)!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.assignmentType != "Homework" {
+                                    if assign.isPlanned == true && assign.assignmentType != "Homework" && assign.assignmentType != "Studying" {
                                         PlannerRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {

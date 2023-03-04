@@ -75,7 +75,7 @@ struct DateSelectorRanged: View {
     let calendar = Calendar.current
     
     var thisMonday: Date {
-        checkMondays(selectedDate)
+        return Date()
     }
             
     var body: some View {

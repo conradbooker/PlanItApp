@@ -15,7 +15,6 @@
 		791F60222960BB4300076509 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60212960BB4300076509 /* ContentView.swift */; };
 		791F60242960BB4400076509 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 791F60232960BB4400076509 /* Assets.xcassets */; };
 		791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 791F60272960BB4400076509 /* Preview Assets.xcassets */; };
-		791F60372960BD6300076509 /* Planner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60322960BD6300076509 /* Planner.swift */; };
 		791F60382960BD6300076509 /* Due.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60332960BD6300076509 /* Due.swift */; };
 		791F60392960BD6300076509 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60342960BD6300076509 /* Settings.swift */; };
 		791F603A2960BD6300076509 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F60352960BD6300076509 /* Home.swift */; };
@@ -27,6 +26,9 @@
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data.json */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
+		7948931229ABD66400428F04 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7948931129ABD66400428F04 /* TabBar.swift */; };
+		795257DE29B14D3800D7183A /* Agenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DD29B14D3800D7183A /* Agenda.swift */; };
+		795257E029B2D12900D7183A /* AgendaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DF29B2D12900D7183A /* AgendaRow.swift */; };
 		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
 		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
 		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
@@ -55,7 +57,6 @@
 		791F60232960BB4400076509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		791F60252960BB4400076509 /* PlanIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlanIt.entitlements; sourceTree = "<group>"; };
 		791F60272960BB4400076509 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		791F60322960BD6300076509 /* Planner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Planner.swift; sourceTree = "<group>"; };
 		791F60332960BD6300076509 /* Due.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Due.swift; sourceTree = "<group>"; };
 		791F60342960BD6300076509 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		791F60352960BD6300076509 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -67,6 +68,9 @@
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
 		791F604E2960BE8B00076509 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
+		7948931129ABD66400428F04 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		795257DD29B14D3800D7183A /* Agenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agenda.swift; sourceTree = "<group>"; };
+		795257DF29B2D12900D7183A /* AgendaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRow.swift; sourceTree = "<group>"; };
 		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
 		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
 		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = PlanIt/Data/icsJSonMain/icsJSon.py; sourceTree = SOURCE_ROOT; };
@@ -138,6 +142,7 @@
 		791F602E2960BD1200076509 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7948931029ABD65100428F04 /* tab */,
 				791F60312960BD3400076509 /* Supporting Views */,
 				791F60302960BD2000076509 /* Main Views */,
 			);
@@ -147,8 +152,8 @@
 		791F60302960BD2000076509 /* Main Views */ = {
 			isa = PBXGroup;
 			children = (
-				791F60322960BD6300076509 /* Planner.swift */,
 				791F60352960BD6300076509 /* Home.swift */,
+				795257DD29B14D3800D7183A /* Agenda.swift */,
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
@@ -173,6 +178,7 @@
 				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
 				797A79B4297F0CA700799769 /* PlannerRow.swift */,
 				791BE995297DF9A700DF724E /* DateSelector.swift */,
+				795257DF29B2D12900D7183A /* AgendaRow.swift */,
 			);
 			name = "Supporting Views";
 			sourceTree = "<group>";
@@ -207,6 +213,14 @@
 				795958CE2960F32A00CA6CEF /* Example.py */,
 			);
 			path = icsJSon;
+			sourceTree = "<group>";
+		};
+		7948931029ABD65100428F04 /* tab */ = {
+			isa = PBXGroup;
+			children = (
+				7948931129ABD66400428F04 /* TabBar.swift */,
+			);
+			name = tab;
 			sourceTree = "<group>";
 		};
 		795958C32960D77000CA6CEF /* icsJSonMain */ = {
@@ -311,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				795958CD2960F23000CA6CEF /* Testpy.swift in Sources */,
+				795257E029B2D12900D7183A /* AgendaRow.swift in Sources */,
 				791F60222960BB4300076509 /* ContentView.swift in Sources */,
 				798BF0C3297606E0005D7ED5 /* ChildAssignmentRow.swift in Sources */,
 				7961B6CE297AE43600A0593E /* ExpandedCourse.swift in Sources */,
@@ -319,14 +334,15 @@
 				791F603D2960BD7000076509 /* ExternalSource.swift in Sources */,
 				791F60382960BD6300076509 /* Due.swift in Sources */,
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
+				7948931229ABD66400428F04 /* TabBar.swift in Sources */,
 				797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */,
 				791F604D2960BE6000076509 /* Tester.swift in Sources */,
 				791BE996297DF9A700DF724E /* DateSelector.swift in Sources */,
 				791410FA297AE1FE007F1DE2 /* ExpandedAssignment.swift in Sources */,
-				791F60372960BD6300076509 /* Planner.swift in Sources */,
 				795958CB2960EBEB00CA6CEF /* pythonSwiftBridge.swift in Sources */,
 				79B1CBE62977926400377357 /* NumTextField.swift in Sources */,
 				791F60442960BE2600076509 /* jsonParser.swift in Sources */,
+				795257DE29B14D3800D7183A /* Agenda.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
 				791325B029809AD700A826B6 /* timerClass.swift in Sources */,

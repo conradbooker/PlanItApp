@@ -235,7 +235,7 @@ struct EditAssignment: View {
                             .fill(Color("secondary"))
                             .frame(width: 34, height: 4.5)
                             .padding([.top, .bottom], 6)
-                            .shadow(radius: /*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
+                            .shadow(radius: 2)
                         Divider()
                     }
                     ScrollView {
@@ -244,7 +244,7 @@ struct EditAssignment: View {
                             TextField("Enter title", text: $title, axis: .vertical)
                                 .background(Color("cDarkGray"))
                                 .textFieldStyle(.roundedBorder)
-                                .padding(.horizontal)
+                                .padding([.top, .leading, .trailing])
                                 .focused($inputIsActive)
                             
                             // MARK: description
@@ -459,20 +459,23 @@ struct EditAssignment: View {
                         .buttonStyle(TimerButton(color: Color("timerStart")))
                         .alert(alertTitle, isPresented: $showAlert) {
                             Button("Cancel", role: .cancel, action: {})
-                            Button("OK", action: {saveAssignment()})
+                            Button("OK") {
+                                saveAssignment()
+                                showEdit = false
+                            }
                         } message: {
                             // 4
                             Text(alertText)
-
+                            
                         }
-//                        .alert(isPresented: $showAlert) {
-//                            Alert(
-//                                title: Text(alertTitle),
-//                                message: Text(alertText)
-//                            )
-//                            Button("Cancel", role: .cancel, action: {})
-//                            Button("OK", action: {saveAssignment()})
-//                        }
+                        //                        .alert(isPresented: $showAlert) {
+                        //                            Alert(
+                        //                                title: Text(alertTitle),
+                        //                                message: Text(alertText)
+                        //                            )
+                        //                            Button("Cancel", role: .cancel, action: {})
+                        //                            Button("OK", action: {saveAssignment()})
+                        //                        }
                         .font(.title2)
                     }
                     Spacer()

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Agenda" representedClassName="Agenda" syncable="YES" codeGenerationType="class">
+        <attribute name="assignmentID" attributeType="String"/>
+        <attribute name="blue" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="699485400" usesScalarValueType="NO"/>
+        <attribute name="green" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="group" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="isCompleted" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="red" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="summary" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+    </entity>
     <entity name="Assignment" representedClassName="Assignment" syncable="YES" codeGenerationType="class">
         <attribute name="activeSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="assignmentID" attributeType="String" defaultValueString=""/>
@@ -54,14 +67,6 @@
         <attribute name="dateFinished" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="priority" attributeType="String"/>
-        <attribute name="title" attributeType="String"/>
-    </entity>
-    <entity name="TimeFrame" representedClassName="TimeFrame" syncable="YES" codeGenerationType="class">
-        <attribute name="amPM" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="days" attributeType="String" defaultValueString=""/>
-        <attribute name="hour" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="minute" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="time" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
     </entity>
 </model>

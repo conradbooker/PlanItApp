@@ -39,7 +39,7 @@ struct New: View {
     
     // MARK: variables / constants
     /// Dynamic variables
-    @State private var newType: String = "TimeFrame"
+    @State private var newType: String = "Assignment"
     @State private var title: String = ""
     @State private var summary: String = ""
     @State private var assignmentType: String = "Homework"
@@ -77,7 +77,6 @@ struct New: View {
         
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
-    @FetchRequest(entity: TimeFrame.entity(), sortDescriptors: [NSSortDescriptor(key: "time", ascending: false)]) private var allTimeFrames: FetchedResults<TimeFrame>
     // add 24 hour regular time to sort
 
     // MARK: TimeFrameVars
@@ -261,34 +260,6 @@ struct New: View {
         }
         
     }
-    //MARK: save TimeFrame
-    
-    private func saveTimeFrame() {
-        do {
-            let timeFrame = TimeFrame(context: viewContext)
-            
-            timeFrame.hour = Int16(hour)!
-            timeFrame.minute = Int16(minute)!
-            
-            timeFrame.time = Int16(hour)!
-            
-            if !twofourhourtime {
-                timeFrame.amPM = 0
-            } else {
-                if !amPM {
-                    timeFrame.amPM = 1
-                } else {
-                    timeFrame.time = 12
-                    timeFrame.time += Int16(hour)!
-                    timeFrame.amPM = 2
-                }
-            }
-            timeFrame.title = timeFrameTitle
-            try viewContext.save()
-        } catch {
-            
-        }
-    }
     
     // MARK: deleteAssignment
     private func deleteAssignment(at offsets: IndexSet) {
@@ -315,14 +286,6 @@ struct New: View {
     }
     
     // MARK: delete timeFrame
-    private func deleteTimeFrame(_ timeFrame: TimeFrame) {
-        viewContext.delete(timeFrame)
-        do {
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
 
     // MARK: getColor
     private func getColor(_ title: String) -> Color {

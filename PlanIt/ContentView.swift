@@ -12,6 +12,7 @@ struct ContentView: View {
     let persistedContainer = CoreDataManager.shared.persistentContainer
 
     var body: some View {
+        
         TabView {
             Home().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
@@ -22,9 +23,9 @@ struct ContentView: View {
                 Color.white,
                 for: .tabBar)
             
-            Planner()
+            test()
                 .tabItem {
-                    Label("Planner", systemImage: "rectangle.and.pencil.and.ellipsis")
+                    Label("Agenda", systemImage: "rectangle.and.pencil.and.ellipsis")
                 }
             .toolbar(.visible, for: .tabBar)
             .toolbarBackground(
