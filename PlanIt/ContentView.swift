@@ -23,7 +23,7 @@ struct ContentView: View {
                 Color.white,
                 for: .tabBar)
             
-            test()
+            AgendaView().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("Agenda", systemImage: "rectangle.and.pencil.and.ellipsis")
                 }
