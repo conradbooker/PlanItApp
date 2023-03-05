@@ -29,6 +29,7 @@
 		7948931229ABD66400428F04 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7948931129ABD66400428F04 /* TabBar.swift */; };
 		795257DE29B14D3800D7183A /* Agenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DD29B14D3800D7183A /* Agenda.swift */; };
 		795257E029B2D12900D7183A /* AgendaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DF29B2D12900D7183A /* AgendaRow.swift */; };
+		7953807D29B4535C007B30B7 /* Step1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953807C29B4535C007B30B7 /* Step1.swift */; };
 		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
 		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
 		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
@@ -71,6 +72,7 @@
 		7948931129ABD66400428F04 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		795257DD29B14D3800D7183A /* Agenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agenda.swift; sourceTree = "<group>"; };
 		795257DF29B2D12900D7183A /* AgendaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRow.swift; sourceTree = "<group>"; };
+		7953807C29B4535C007B30B7 /* Step1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Step1.swift; path = "../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/Step1.swift"; sourceTree = "<group>"; };
 		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
 		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
 		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = PlanIt/Data/icsJSonMain/icsJSon.py; sourceTree = SOURCE_ROOT; };
@@ -148,7 +150,6 @@
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
-				791F603C2960BD7000076509 /* ExternalSource.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
 			);
 			name = "Main Views";
@@ -220,6 +221,8 @@
 		7953807829B44F3C007B30B7 /* ExternalSource */ = {
 			isa = PBXGroup;
 			children = (
+				791F603C2960BD7000076509 /* ExternalSource.swift */,
+				7953807C29B4535C007B30B7 /* Step1.swift */,
 			);
 			path = ExternalSource;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				791F60382960BD6300076509 /* Due.swift in Sources */,
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
 				7948931229ABD66400428F04 /* TabBar.swift in Sources */,
+				7953807D29B4535C007B30B7 /* Step1.swift in Sources */,
 				797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */,
 				791F604D2960BE6000076509 /* Tester.swift in Sources */,
 				791BE996297DF9A700DF724E /* DateSelector.swift in Sources */,
