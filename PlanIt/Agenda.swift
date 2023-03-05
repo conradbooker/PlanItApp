@@ -78,12 +78,7 @@ struct AgendaView: View {
                                         
                     ForEach(allAgendas) { agenda in
                         if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && !agenda.isCompleted {
-                            AgendaRow(agenda: agenda)
-                            Button {
-                                deleteAgenda(agenda)
-                            } label: {
-                                Image(systemName: "trash")
-                            }
+                            withAnimation(.easeIn) { AgendaRow(agenda: agenda) }
                         }
                     }
                     HStack {
@@ -93,12 +88,7 @@ struct AgendaView: View {
                                         
                     ForEach(allAgendas) { agenda in
                         if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && agenda.isCompleted {
-                            AgendaRow(agenda: agenda)
-                            Button {
-                                deleteAgenda(agenda)
-                            } label: {
-                                Image(systemName: "trash")
-                            }
+                            withAnimation(.easeIn) { AgendaRow(agenda: agenda) }
                         }
                     }
 
