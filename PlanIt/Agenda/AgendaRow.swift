@@ -101,7 +101,7 @@ struct AgendaRowNew: View {
                             
                             // MARK: title
                                 HStack(spacing: 0) {
-                                    Text("Course:")
+                                    Text("Group:".lower())
                                         .padding(.leading,10)
                                     Picker("Classes", selection: $courseTitle) {
                                         ForEach(allCourses, id: \.self) { course in
@@ -195,136 +195,133 @@ struct AgendaRow: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        HStack(spacing: 0) {
             HStack(spacing: 0) {
-                HStack(spacing: 0) {
+                RoundedRectangle(cornerRadius: 8)
+                    .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + 5)
+                    .shadow(radius: 3)
+                    .foregroundColor(Color(red: CGFloat(agenda.red), green: CGFloat(agenda.green), blue: CGFloat(agenda.blue)))
+                
+                Spacer()
+                    .frame(width: 5)
+                
+                ZStack {
+                    HStack {
+                        Text(agenda.title ?? "")
+                            .fontWeight(.medium)
+                            .padding(.leading, 6)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        titleSize = size
+                    }
+                    .opacity(0)
                     RoundedRectangle(cornerRadius: 8)
-                        .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + 5)
+                        .foregroundColor(Color("cLessDarkGray"))
                         .shadow(radius: 3)
-                        .foregroundColor(Color(red: CGFloat(agenda.red), green: CGFloat(agenda.green), blue: CGFloat(agenda.blue)))
-                    
-                    Spacer()
-                        .frame(width: 5)
-                    
-                    ZStack {
+                        .frame(height: courseSize.height + titleSize.height + 5)
+                    VStack(alignment: .leading, spacing: 0) {
+                        
+                        // MARK: course
                         HStack {
-                            Text(agenda.title ?? "")
-                                .fontWeight(.medium)
-                                .padding(.leading, 6)
-                            Spacer()
-                        }
-                        .padding(.top, 4)
-                        .readSize { size in
-                            titleSize = size
-                        }
-                        .opacity(0)
-                        RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color("cLessDarkGray"))
-                            .shadow(radius: 3)
-                            .frame(height: courseSize.height + titleSize.height + 5)
-                        VStack(alignment: .leading, spacing: 0) {
-                            
-                            // MARK: course
+                            VStack(spacing: 0) {
                             HStack {
-                                VStack(spacing: 0) {
-                                HStack {
-                                    Text((agenda.group ?? "Error"))
-                                        .font(.subheadline)
-                                        .padding(.leading, 6)
-                                    Spacer()
-                                }
-                                .padding(.top, 4)
-                                .readSize { size in
-                                    courseSize = size
-                                }
-                                
-                                // MARK: title
-                                HStack {
-                                    Text(agenda.title ?? "Error nothing loaded")
-                                        .fontWeight(.medium)
-                                        .padding(.leading, 6)
-                                    Spacer()
-                                }
-                                .readSize { size in
-                                    titleSize = size
-                                }
-                                .padding(.top, 4)
-                                .padding(.bottom, 6)
-                            }
-                                Button {
-                                    
-                                    do {
-                                        agenda.isCompleted.toggle()
-                                        try viewContext.save()
-                                        print(agenda.isCompleted)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                } label: {
-                                    if agenda.isCompleted {
-                                        Image(systemName: "checkmark.square.fill")
-                                    } else {
-                                        Image(systemName: "square")
-                                    }
-                                    
-                                }
-                                .buttonStyle(TimerButton(color: Color("timerDone")))
-                            
+                                Text((agenda.group ?? "Error"))
+                                    .font(.subheadline)
+                                    .padding(.leading, 6)
                                 Spacer()
                             }
+                            .padding(.top, 4)
+                            .readSize { size in
+                                courseSize = size
+                            }
+                            
+                            // MARK: title
+                            HStack {
+                                Text(agenda.title ?? "Error nothing loaded")
+                                    .fontWeight(.medium)
+                                    .padding(.leading, 6)
+                                Spacer()
+                            }
+                            .readSize { size in
+                                titleSize = size
+                            }
+                            .padding(.top, 4)
+                            .padding(.bottom, 6)
+                        }
+                            Button {
+                                
+                                do {
+                                    agenda.isCompleted.toggle()
+                                    try viewContext.save()
+                                    print(agenda.isCompleted)
+                                } catch {
+                                    print(error.localizedDescription)
+                                }
+                            } label: {
+                                if agenda.isCompleted {
+                                    Image(systemName: "checkmark.square.fill")
+                                } else {
+                                    Image(systemName: "square")
+                                }
+                                
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerDone")))
+                        
+                            Spacer()
+                        }
+                    }
+                    
+                }
+                .frame(width: UIScreen.screenWidth * 5.5/6)
+                
+            }
+            .offset(x: offset, y: 0)
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        if gesture.translation.width < 0 && gesture.translation.width > -20 {
+                            offset = gesture.translation.width
+                            print(gesture.translation)
+                        } else if gesture.translation.width > 0 && showDeleteButton {
+                            revert = true
+                            withAnimation(.easeOut) { showDeleteButton = false }
                         }
                         
                     }
-                    .frame(width: UIScreen.screenWidth * 5.5/6)
-                    
-                }
-                .offset(x: offset, y: 0)
-                .gesture(
-                    DragGesture()
-                        .onChanged { gesture in
-                            if gesture.translation.width < 0 && gesture.translation.width > -20 {
-                                offset = gesture.translation.width
-                                print(gesture.translation)
-                            } else if gesture.translation.width > 0 && showDeleteButton {
-                                revert = true
-                                print("gesture.translation")
-                                withAnimation(.easeOut) { showDeleteButton = false }
-                            }
-                            
-                        }
-                        .onEnded { _ in
-                            if offset <= -15 && !revert {
-                                print("doing")
-                                let count = 1...500
-                                withAnimation(.easeIn) { showDeleteButton = true }
-                                for _ in count {
-                                    withAnimation(.easeIn(duration: 0.2)) {
-                                        if offset > -50 { offset -= 1 }
-                                    }
+                    .onEnded { _ in
+                        if offset <= -15 && !revert {
+                            print("doing")
+                            let count = 1...500
+                            withAnimation(.easeIn) { showDeleteButton = true }
+                            for _ in count {
+                                withAnimation(.easeIn(duration: 0.1)) {
+                                    if offset > -50 { offset -= 1 }
                                 }
-                                // remove the card
-                            } else if offset > -15 && !revert {
-                                withAnimation(.easeOut) { showDeleteButton = false }
-                                offset = .zero
-                                toggled = false
-                            } else if revert {
-                                withAnimation(.easeOut) { showDeleteButton = false }
-                                withAnimation(.easeIn) { offset = .zero }
-                                toggled = false
-                                revert = false
                             }
+                            // remove the card
+                        } else if offset > -15 && !revert {
+                            withAnimation(.easeOut) { showDeleteButton = false }
+                            offset = .zero
+                            toggled = false
+                        } else if revert {
+                            withAnimation(.easeOut) { showDeleteButton = false }
+                            withAnimation(.easeIn(duration: 0.1)) { offset = .zero }
+                            toggled = false
+                            revert = false
                         }
-                )
-                .frame(width: UIScreen.screenWidth - 10)
-                if showDeleteButton {
-                    Button {
-                        deleteAgenda(agenda)
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.title2)
                     }
-                    .padding(.leading, -38)
+            )
+            .frame(width: UIScreen.screenWidth - 10)
+            if showDeleteButton {
+                Button {
+                    deleteAgenda(agenda)
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.title2)
                 }
+                .padding(.leading, -38)
             }
         }
     }

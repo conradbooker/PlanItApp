@@ -399,6 +399,7 @@ struct TimerButton: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.9 : 1)
     }
 }
+
 struct DayButton: ButtonStyle {
     var color: Color
     func makeBody(configuration: Configuration) -> some View {

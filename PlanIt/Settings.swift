@@ -100,7 +100,7 @@ struct Settings: View {
             }
             .navigationTitle("Settings")
             .sheet(isPresented: $showSync) {
-                ExternalSource().environment(\.managedObjectContext, persistedContainer.viewContext)
+                ExternalSource(isPresented: $showSync).environment(\.managedObjectContext, persistedContainer.viewContext)
             }
             
         }

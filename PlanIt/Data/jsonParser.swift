@@ -50,7 +50,7 @@ var defaultJSon = """
                   "DTSTART": "VALUE=DATE:20220908",
                   "DTEND": "VALUE=DATE:20220909",
                   "DTSTAMP": "20221231T152802",
-                  "SUMMARY": "Error: Assignments did not load properly. Seek [help] for help",
+                  "SUMMARY": "Error: Assignments did not load properly. This happened because of an invalid URL.",
                   "STATUS": "CONFIRMED",
                   "CLASS": "PUBLIC",
                   "PRIORITY": "3",
@@ -267,8 +267,6 @@ func returnString() -> String {
 
 //var onlineAssignmentData: [ICSCal] = load("data.json")
 
-var onlineAssignmentData: [ICSCal] = returnString().decodeJson([ICSCal].self)
-
 //let menuItems = try! JSONDecoder().decode([ICSCal].self, from: jsonData)
 //let
 
@@ -297,12 +295,6 @@ extension String {
           fatalError("err:\(error)")
       }
    }
-}
-
-
-
-func loadJSonURL() {
-    onlineAssignmentData = returnString().decodeJson([ICSCal].self)
 }
 
 func load<T: Decodable>(_ filename: String) -> T {

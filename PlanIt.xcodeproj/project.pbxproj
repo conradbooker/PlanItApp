@@ -30,6 +30,8 @@
 		795257DE29B14D3800D7183A /* Agenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DD29B14D3800D7183A /* Agenda.swift */; };
 		795257E029B2D12900D7183A /* AgendaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DF29B2D12900D7183A /* AgendaRow.swift */; };
 		7953807F29B45525007B30B7 /* Step1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953807E29B45525007B30B7 /* Step1.swift */; };
+		7953808229B4575B007B30B7 /* Step2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953808129B4575B007B30B7 /* Step2.swift */; };
+		7953808429B53AD4007B30B7 /* Step3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953808329B53AD4007B30B7 /* Step3.swift */; };
 		795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C42960D78600CA6CEF /* icsJSonFinal.py */; };
 		795958C72960D78900CA6CEF /* test.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C62960D78900CA6CEF /* test.py */; };
 		795958C92960D79800CA6CEF /* icsJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 795958C82960D79800CA6CEF /* icsJSon.py */; };
@@ -73,6 +75,8 @@
 		795257DD29B14D3800D7183A /* Agenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agenda.swift; sourceTree = "<group>"; };
 		795257DF29B2D12900D7183A /* AgendaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRow.swift; sourceTree = "<group>"; };
 		7953807E29B45525007B30B7 /* Step1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1.swift; sourceTree = "<group>"; };
+		7953808129B4575B007B30B7 /* Step2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2.swift; sourceTree = "<group>"; };
+		7953808329B53AD4007B30B7 /* Step3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3.swift; sourceTree = "<group>"; };
 		795958C42960D78600CA6CEF /* icsJSonFinal.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = icsJSonFinal.py; sourceTree = "<group>"; };
 		795958C62960D78900CA6CEF /* test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
 		795958C82960D79800CA6CEF /* icsJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = icsJSon.py; path = PlanIt/Data/icsJSonMain/icsJSon.py; sourceTree = SOURCE_ROOT; };
@@ -144,9 +148,9 @@
 		791F60302960BD2000076509 /* Main Views */ = {
 			isa = PBXGroup;
 			children = (
+				79A8CA7229B547C400B46988 /* Agenda */,
 				7953807829B44F3C007B30B7 /* ExternalSource */,
 				791F60352960BD6300076509 /* Home.swift */,
-				795257DD29B14D3800D7183A /* Agenda.swift */,
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
@@ -159,19 +163,17 @@
 		791F60312960BD3400076509 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
+				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
+				7953808029B45602007B30B7 /* timer */,
 				791F604C2960BE6000076509 /* Tester.swift */,
 				79B1CBE52977926400377357 /* NumTextField.swift */,
 				798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */,
 				79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */,
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
 				7961B6CD297AE43600A0593E /* ExpandedCourse.swift */,
-				7965646F296A35DA003D230F /* AssignmentViewNew.swift */,
-				791F604A2960BE5100076509 /* TimerView.swift */,
-				791325AF29809AD700A826B6 /* timerClass.swift */,
 				791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */,
 				797A79B4297F0CA700799769 /* PlannerRow.swift */,
 				791BE995297DF9A700DF724E /* DateSelector.swift */,
-				795257DF29B2D12900D7183A /* AgendaRow.swift */,
 			);
 			name = "Supporting Views";
 			path = ..;
@@ -223,6 +225,8 @@
 			children = (
 				791F603C2960BD7000076509 /* ExternalSource.swift */,
 				7953807E29B45525007B30B7 /* Step1.swift */,
+				7953808129B4575B007B30B7 /* Step2.swift */,
+				7953808329B53AD4007B30B7 /* Step3.swift */,
 			);
 			path = ExternalSource;
 			sourceTree = "<group>";
@@ -235,6 +239,15 @@
 				7948931029ABD65100428F04 /* tab */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7953808029B45602007B30B7 /* timer */ = {
+			isa = PBXGroup;
+			children = (
+				791325AF29809AD700A826B6 /* timerClass.swift */,
+				791F604A2960BE5100076509 /* TimerView.swift */,
+			);
+			path = timer;
 			sourceTree = "<group>";
 		};
 		795958C32960D77000CA6CEF /* icsJSonMain */ = {
@@ -252,6 +265,15 @@
 				7980B88629A3D244003AC967 /* Python3.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		79A8CA7229B547C400B46988 /* Agenda */ = {
+			isa = PBXGroup;
+			children = (
+				795257DF29B2D12900D7183A /* AgendaRow.swift */,
+				795257DD29B14D3800D7183A /* Agenda.swift */,
+			);
+			path = Agenda;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +368,7 @@
 				79B1CBE829788A5F00377357 /* AssignmentViewSupports.swift in Sources */,
 				791F60202960BB4300076509 /* PlanItApp.swift in Sources */,
 				791F603D2960BD7000076509 /* ExternalSource.swift in Sources */,
+				7953808229B4575B007B30B7 /* Step2.swift in Sources */,
 				791F60382960BD6300076509 /* Due.swift in Sources */,
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
 				7948931229ABD66400428F04 /* TabBar.swift in Sources */,
@@ -366,6 +389,7 @@
 				796FFDF52974BC45007DF816 /* New.swift in Sources */,
 				791BE99A297E08B800DF724E /* EditAssignment.swift in Sources */,
 				791F60392960BD6300076509 /* Settings.swift in Sources */,
+				7953808429B53AD4007B30B7 /* Step3.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -91,7 +91,6 @@ struct AgendaView: View {
                             withAnimation(.easeIn) { AgendaRow(agenda: agenda) }
                         }
                     }
-
                 }
                 
                 VStack(spacing: 0) {
