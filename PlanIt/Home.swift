@@ -9,10 +9,14 @@ import SwiftUI
 
 struct Home: View {
     
+    // Future: change fetch request so that it is not in 1million if statements!!
+    
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "course", ascending: true)]) private var allAssignments: FetchedResults<Assignment>
+    
+    @AppStorage("initialSync") var initialSync: Bool = false
     
     var assignmentSpacing: CGFloat = 5
     
@@ -293,7 +297,6 @@ struct Home: View {
                                         AssignmentViewNew(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
-                                                print(assign.status!)
                                                 checkToDo += 1
                                                 if !assign.isFinished {
                                                     totalSeconds += Int(assign.secondStop)
@@ -357,6 +360,13 @@ struct Home: View {
                     }
                 }
                 .navigationTitle(title.lower())
+                .refreshable {
+                    if initialSync {
+                        syncAssignments()
+                    } else {
+                        print("not initial synced yet!")
+                    }
+                }
             }
         }
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AgendaView: View {
+struct Checklist: View {
     
     func add() {
         selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
@@ -62,11 +62,11 @@ struct AgendaView: View {
         NavigationView {
             ZStack {
                 Color("cDarkGray")
-                
+                    .ignoresSafeArea()
                 ScrollView {
                     
                     if isPresented {
-                        AgendaRowNew(selectedDate: selectedDate, isPresented: $isPresented)
+                        NewTask(selectedDate: selectedDate, isPresented: $isPresented)
                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                             .padding(.vertical)
                     }
@@ -78,7 +78,7 @@ struct AgendaView: View {
                                         
                     ForEach(allAgendas) { agenda in
                         if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && !agenda.isCompleted {
-                            withAnimation(.easeIn) { AgendaRow(agenda: agenda) }
+                            withAnimation(.easeIn) { TaskRow(agenda: agenda) }
                         }
                     }
                     HStack {
@@ -88,7 +88,7 @@ struct AgendaView: View {
                                         
                     ForEach(allAgendas) { agenda in
                         if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && agenda.isCompleted {
-                            withAnimation(.easeIn) { AgendaRow(agenda: agenda) }
+                            withAnimation(.easeIn) { TaskRow(agenda: agenda) }
                         }
                     }
                 }
@@ -122,9 +122,9 @@ struct AgendaView: View {
     }
 }
 
-struct AgendaView_Previews: PreviewProvider {
+struct Checklist_Previews: PreviewProvider {
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        AgendaView().environment(\.managedObjectContext, persistedContainer.viewContext)
+        Checklist().environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }

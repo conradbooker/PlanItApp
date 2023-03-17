@@ -137,7 +137,7 @@ struct Step1: View {
                     sourceURL = first
                 }
                 .buttonStyle(TimerButton(color: Color("timerStart")))
-                Spacer().frame(height: 150)
+                Spacer().frame(height: 100)
                 HStack {
                     Spacer()
                     VStack {

@@ -185,7 +185,7 @@ struct ExpandedAssignment: View {
                             .padding(.top, 4)
                             Spacer()
                         }
-                    }.frame(width: UIScreen.screenWidth - 16.2, height: descriptionSize.height + descriptionTitleSize.height)
+                    }.frame(width: UIScreen.screenWidth - 16.2, height: descriptionSize.height + descriptionTitleSize.height + 8)
                     Spacer()
                 }
             }

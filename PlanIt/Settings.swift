@@ -47,21 +47,17 @@ struct Settings: View {
     var body: some View {
         NavigationView {
             Form {
-                
                 Section(header: Text("Configure")) {
                     Button {
                         showSync.toggle()
                     } label: {
-                        Text("Sync Assignments from external source")
-                    }
-                    Button {
-                        
-                    } label: {
-                        Text("Time Break Ups".lower())
+                        Text("Sync Assignments from external source".lower())
                     }
 
                 }
-
+                .id(UUID())
+                .listRowBackground(Color("cLessDarkGray"))
+                
                 Section(header: Text("General")) {
                     Toggle("Disable Timer".lower(), isOn: $disableTimer)
                     Toggle("Aesthetic Mode".lower(), isOn: $aestheticMode)
@@ -77,6 +73,9 @@ struct Settings: View {
                     }
                     
                 }
+                .id(UUID())
+                .listRowBackground(Color("cLessDarkGray"))
+                
                 Section(header: Text("Help")) {
                     Text("Quick start guide".lower())
                     Text("How to use".lower())
@@ -86,10 +85,16 @@ struct Settings: View {
                     }
                     .foregroundColor(.red)
                 }
+                .id(UUID())
+                .listRowBackground(Color("cLessDarkGray"))
+                
                 Section(header: Text("Notifications")) {
                     Text("Configure Notifications".lower())
                     Text("View Notifications".lower())
                 }
+                .id(UUID())
+                .listRowBackground(Color("cLessDarkGray"))
+                
                 Section(header: Text("ABOUT")) {
                     Text("About Schematica".lower())
                     Text("Other Apps".lower())
@@ -97,12 +102,15 @@ struct Settings: View {
                     Text("View Website".lower())
                     Text("Version: 0.1".lower())
                 }
+                .id(UUID())
+                .listRowBackground(Color("cLessDarkGray"))
             }
-            .navigationTitle("Settings")
+            .navigationTitle("Settings".lower())
             .sheet(isPresented: $showSync) {
                 ExternalSource(isPresented: $showSync).environment(\.managedObjectContext, persistedContainer.viewContext)
             }
-            
+            .scrollContentBackground(.hidden)
+            .background(Color("cDarkGray"))
         }
     }
 }

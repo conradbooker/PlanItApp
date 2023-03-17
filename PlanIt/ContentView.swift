@@ -18,44 +18,23 @@ struct ContentView: View {
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(
-                Color.white,
-                for: .tabBar)
             
-            AgendaView().environment(\.managedObjectContext, persistedContainer.viewContext)
+            Checklist().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("Agenda", systemImage: "rectangle.and.pencil.and.ellipsis")
                 }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(
-                Color.white,
-                for: .tabBar)
             New().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("New", systemImage: "plus.circle")
                 }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(
-                Color.white,
-                for: .tabBar)
             Due()
                 .tabItem {
                     Label("Due", systemImage: "exclamationmark.triangle.fill")
                 }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(
-                Color.white,
-                for: .tabBar)
             Settings().environment(\.managedObjectContext, persistedContainer.viewContext)
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.2")
                 }
-            .toolbar(.visible, for: .tabBar)
-            .toolbarBackground(
-                Color.white,
-                for: .tabBar)
-
         }
     }
 }

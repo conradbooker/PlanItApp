@@ -307,340 +307,341 @@ struct New: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                // MARK: new assignment / course
-                Picker("New Type", selection: $newType) {
-                    ForEach(types, id: \.self) { type in
-                        Text(type).tag(type)
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
+                ScrollView {
+                    // MARK: new assignment / course
+                    Picker("New Type", selection: $newType) {
+                        ForEach(types, id: \.self) { type in
+                            Text(type).tag(type)
+                        }
                     }
-                }
-                .pickerStyle(.segmented)
-                .padding([.leading, .bottom, .trailing])
-                
-                /// If user wants new assignment, eventually add task too
-                if newType == "Assignment" {
-                    Group {
+                    .pickerStyle(.segmented)
+                    .padding([.leading, .bottom, .trailing])
+                    
+                    /// If user wants new assignment, eventually add task too
+                    if newType == "Assignment" {
                         Group {
-                            // MARK: title
-                            TextField("Enter title", text: $title)
-                                .textFieldStyle(.roundedBorder)
-                                .padding(.horizontal)
-                            
-                            // MARK: description
-                            TextField("Enter description", text: $summary)
-                                .textFieldStyle(.roundedBorder)
-                                .padding(.horizontal)
-                            
-                            // MARK: assignment type
-                            Picker("Assignment Type", selection: $assignmentType) {
-                                ForEach(assignmentTypes, id: \.self) { assignmentType in
-                                    Text(assignmentType).tag(assignmentType)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .padding(.horizontal)
-                            
-                            // MARK: assessment type
-                            if assignmentType == "Assessment" {
-                                Picker("AssessmentTypes", selection: $assessmentType) {
-                                    ForEach(assessmentTypes, id: \.self) { type in
-                                        Text(type).tag(type)
+                            Group {
+                                // MARK: title
+                                TextField("Enter title", text: $title)
+                                    .textFieldStyle(.roundedBorder)
+                                    .padding(.horizontal)
+                                
+                                // MARK: description
+                                TextField("Enter description", text: $summary)
+                                    .textFieldStyle(.roundedBorder)
+                                    .padding(.horizontal)
+                                
+                                // MARK: assignment type
+                                Picker("Assignment Type", selection: $assignmentType) {
+                                    ForEach(assignmentTypes, id: \.self) { assignmentType in
+                                        Text(assignmentType).tag(assignmentType)
                                     }
                                 }
                                 .pickerStyle(.segmented)
-                                .padding([.leading, .bottom, .trailing])
-                            }
-
-                            // MARK: class selection
-                            Picker("Classes", selection: $course) {
-                                ForEach(allCourses, id: \.self) { course in
-                                    Text(course.title ?? "").tag(course.title ?? "")
-                                }
-                            }
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                tapped = true
-                            }
-                        }
-                        
-                        Group { /// Date and time
-
-                            // MARK: due date / test date
-                            Group {
-                                if assignmentType != "Assessment" {
-                                    DatePicker("Due Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
-                                        .padding(.horizontal)
-                                } else {
-                                    DatePicker("\(assessmentType) Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
-                                        .padding(.horizontal)
-                                }
-                            }
-                            // MARK: homework
-                            if assignmentType == "Homework" {
-                            /// Planned date
-                                DatePicker("What day will you do this?".lower(), selection: $planned, in: ...dueDate, displayedComponents: [.date])
                                 .padding(.horizontal)
-                            
-                                // MARK: assignment time
-                                HStack(spacing: 0) {
-                                    Text("How long will this take?")
-                                        .padding(.leading)
-                                    Spacer()
-                                    NumTextField(subText: "h", text: $hourStop)
-                                        .frame(width: 40)
-                                        .textFieldStyle(.roundedBorder)
-                                        .padding(.leading, 2)
-                                        .padding(.trailing, 7.0)
-                                        .multilineTextAlignment(.center)
-                                    if Int(hourStop) ?? 0 == 1 {
-                                        Text("hour")
-                                    } else {
-                                        Text("hours")
-                                    }
-                                    NumTextField(subText: "m", text: $minuteStop)
-                                        .frame(width: 40)
-                                        .textFieldStyle(.roundedBorder)
-                                        .padding(.horizontal, 7.0)
-                                        .multilineTextAlignment(.center)
-                                    if Int(minuteStop) ?? 0 == 1 {
-                                        Text("min")
-                                            .padding(.trailing)
-                                    } else {
-                                        Text("mins")
-                                            .padding(.trailing)
-                                    }
-                                }
-                            }
-                            // MARK: project components
-                            else if assignmentType == "Project" {
                                 
-                                /// Add days for working on project
-                                Text("Which days will you work on the project?")
+                                // MARK: assessment type
+                                if assignmentType == "Assessment" {
+                                    Picker("AssessmentTypes", selection: $assessmentType) {
+                                        ForEach(assessmentTypes, id: \.self) { type in
+                                            Text(type).tag(type)
+                                        }
+                                    }
+                                    .pickerStyle(.segmented)
+                                    .padding([.leading, .bottom, .trailing])
+                                }
+
+                                // MARK: class selection
+                                Picker("Classes", selection: $course) {
+                                    ForEach(allCourses, id: \.self) { course in
+                                        Text(course.title ?? "").tag(course.title ?? "")
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .onTapGesture {
+                                    tapped = true
+                                }
                             }
-                            // MARK: test components
-                            else if assignmentType == "Assessment" {
-                                /// Add days for studying
-                                HStack {
-                                    Text("Which days will you study for your \(assessmentType.lowercased())?")
-                                    Button(action: {
-                                        let dateFormatter = DateFormatter()
-                                        dateFormatter.dateFormat = "YYYYMMdd"
-                                        @ObservedObject var modeling = childAssignment()
-                                        
-                                        if assignmentType == "Assessment" {
-                                            modeling.title = "Study for " + self.title
-                                            modeling.assignmentType = "Studying"
-                                        } else {
-                                            modeling.title = "Work on " + self.title
-                                            if assignmentType == "Paper" {
-                                                modeling.assignmentType = "Writing"
-                                            } else {
-                                                modeling.assignmentType = "Project"
-                                            }
-                                        }
-                                        
-                                        childAssignments.append(modeling)
+                            
+                            Group { /// Date and time
 
-                                    }, label: {
-                                        Image(systemName: "plus.circle.fill")
-                                    })
+                                // MARK: due date / test date
+                                Group {
+                                    if assignmentType != "Assessment" {
+                                        DatePicker("Due Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
+                                            .padding(.horizontal)
+                                    } else {
+                                        DatePicker("\(assessmentType) Date:", selection: $dueDate, in: Date()..., displayedComponents: [.date])
+                                            .padding(.horizontal)
+                                    }
                                 }
-                                /// add days to study
-                                if childAssignments.isEmpty {
-                                    Text("(press plus button to add assignments)")
-                                        .padding()
-                                } else {
-                                    ScrollView {
+                                // MARK: homework
+                                if assignmentType == "Homework" {
+                                /// Planned date
+                                    DatePicker("What day will you do this?".lower(), selection: $planned, in: ...dueDate, displayedComponents: [.date])
+                                    .padding(.horizontal)
+                                
+                                    // MARK: assignment time
+                                    HStack(spacing: 0) {
+                                        Text("How long will this take?")
+                                            .padding(.leading)
                                         Spacer()
-                                        ForEach($childAssignments) { assign in
-                                            ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate)
-                                                .frame(height: 45)
+                                        NumTextField(subText: "h", text: $hourStop)
+                                            .frame(width: 40)
+                                            .textFieldStyle(.roundedBorder)
+                                            .padding(.leading, 2)
+                                            .padding(.trailing, 7.0)
+                                            .multilineTextAlignment(.center)
+                                        if Int(hourStop) ?? 0 == 1 {
+                                            Text("hour")
+                                        } else {
+                                            Text("hours")
                                         }
-                                    }.frame(height: 200)
-
+                                        NumTextField(subText: "m", text: $minuteStop)
+                                            .frame(width: 40)
+                                            .textFieldStyle(.roundedBorder)
+                                            .padding(.horizontal, 7.0)
+                                            .multilineTextAlignment(.center)
+                                        if Int(minuteStop) ?? 0 == 1 {
+                                            Text("min")
+                                                .padding(.trailing)
+                                        } else {
+                                            Text("mins")
+                                                .padding(.trailing)
+                                        }
+                                    }
                                 }
+                                // MARK: project components
+                                else if assignmentType == "Project" {
+                                    
+                                    /// Add days for working on project
+                                    Text("Which days will you work on the project?")
+                                }
+                                // MARK: test components
+                                else if assignmentType == "Assessment" {
+                                    /// Add days for studying
+                                    HStack {
+                                        Text("Which days will you study for your \(assessmentType.lowercased())?")
+                                        Button(action: {
+                                            let dateFormatter = DateFormatter()
+                                            dateFormatter.dateFormat = "YYYYMMdd"
+                                            @ObservedObject var modeling = childAssignment()
+                                            
+                                            if assignmentType == "Assessment" {
+                                                modeling.title = "Study for " + self.title
+                                                modeling.assignmentType = "Studying"
+                                            } else {
+                                                modeling.title = "Work on " + self.title
+                                                if assignmentType == "Paper" {
+                                                    modeling.assignmentType = "Writing"
+                                                } else {
+                                                    modeling.assignmentType = "Project"
+                                                }
+                                            }
+                                            
+                                            childAssignments.append(modeling)
+
+                                        }, label: {
+                                            Image(systemName: "plus.circle.fill")
+                                        })
+                                    }
+                                    /// add days to study
+                                    if childAssignments.isEmpty {
+                                        Text("(press plus button to add assignments)")
+                                            .padding()
+                                    } else {
+                                        ScrollView {
+                                            Spacer()
+                                            ForEach($childAssignments) { assign in
+                                                ChildAssignmentRow(date: assign.plannedDate, hourStop: assign.hourStop, minuteStop: assign.minuteStop, stopDate: dueDate)
+                                                    .frame(height: 45)
+                                            }
+                                        }.frame(height: 200)
+
+                                    }
+                                }
+                            }
+                            
+                            // MARK: save
+                            
+                            Button("Save") {
+                                if title == "" || minuteStop == ""  || hourStop == "" {
+                                    showAlert = true
+                                    alertTitle = "Error"
+                                    alertText = "Please fill all fields!"
+                                    errorHaptics()
+                                } else {
+                                    if allCourses.isEmpty {
+                                        alertTitle = "Error"
+                                        alertText = "You have no classes! Please click on courses to add a new course."
+                                        showAlert = true
+                                        errorHaptics()
+                                    } else {
+                                        saveAssignment()
+                                        successHaptics()
+                                        title = ""
+                                        summary = ""
+                                        
+                                    }
+                                }
+                            }
+                            .buttonStyle(TimerButton(color: Color("timerStart")))
+                            .font(.title2)
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text(alertTitle),
+                                    message: Text(alertText)
+                                )
                             }
                         }
+                    }
+                    // MARK: new course
+                    else if newType == "Course" { /// if user wants a new course
+                        Group {
+                            TextField("Enter title", text: $title)
+                                .textFieldStyle(.roundedBorder)
+                                .padding(.horizontal)
+                            TextField("Enter description", text: $summary)
+                                .textFieldStyle(.roundedBorder)
+                                .padding(.horizontal)
+                            ColorPicker("Pick a color for the course", selection: $color)
+                                .padding()
                         
-                        // MARK: save
-                        
-                        Button("Save") {
-                            if title == "" || minuteStop == ""  || hourStop == "" {
-                                showAlert = true
-                                alertTitle = "Error"
-                                alertText = "Please fill all fields!"
-                            } else {
-                                if allCourses.isEmpty {
-                                    alertTitle = "Error"
-                                    alertText = "You have no classes! Please click on courses to add a new course."
+                            Button {
+                                if title == "" {
                                     showAlert = true
                                 } else {
-                                    saveAssignment()
-                                }
-                            }
-                        }
-                        .buttonStyle(TimerButton(color: Color("timerStart")))
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text(alertTitle),
-                                message: Text(alertText)
-                            )
-                        }
-                        .font(.title2)
-                    }
-                }
-                // MARK: new course
-                else if newType == "Course" { /// if user wants a new course
-                    Group {
-                        TextField("Enter title", text: $title)
-                            .textFieldStyle(.roundedBorder)
-                            .padding(.horizontal)
-                        TextField("Enter description", text: $summary)
-                            .textFieldStyle(.roundedBorder)
-                            .padding(.horizontal)
-                        ColorPicker("Pick a color for the course", selection: $color)
-                            .padding()
-                    
-                        Button(action: {
-                            if title == "" {
-                                showAlert = true
-                            } else {
-                                for course in allCourses {
-                                    if title == course.title {
-                                        showAlertDupe = true
+                                    for course in allCourses {
+                                        if title == course.title {
+                                            showAlertDupe = true
+                                        }
+                                    }
+                                    if showAlertDupe == false {
+                                        saveCourse()
                                     }
                                 }
-                                if showAlertDupe == false {
-                                    saveCourse()
-                                }
+                            } label: {
+                                Text("Save")
                             }
-                        }) {
-                            Text("Save")
-                                .padding()
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text("Error"),
-                                        message: Text("Please fill out title!")
-                                    )
-                                }
-                                .alert(isPresented: $showAlertDupe) {
-                                    Alert(
-                                        title: Text("Error"),
-                                        message: Text("Please name it something else!")
-                                    )
-                                }
-                        }
-                        ForEach(allCourses) { course in
-                            HStack {
-                                Text(course.title ?? "")
-                                Circle().fill(Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))).frame(width:20)
-                                Button {
-                                    deleteCourse(course)
-                                } label: {
-                                    Image(systemName: "trash.fill")
-                                }
+                            .buttonStyle(TimerButton(color: Color("timerStart")))
+                            .font(.title2)
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text("Error"),
+                                    message: Text("Please fill out title!")
+                                )
                             }
+                            .alert(isPresented: $showAlertDupe) {
+                                Alert(
+                                    title: Text("Error"),
+                                    message: Text("Please name it something else!")
+                                )
+                            }
+                            Spacer().frame(height: 10)
+                            ForEach(allCourses) { course in
+                                CourseRow(course: course)
+                            }
+
                         }
+
 
                     }
-
-
+                    // MARK: TimeFrame
+    //                else if newType == "TimeFrame" {
+    //                    TextField("Enter title", text: $timeFrameTitle)
+    //                        .textFieldStyle(.roundedBorder)
+    //                        .padding(.horizontal)
+    //                    HStack {
+    //                        ForEach(days, id: \.self) { day in
+    //                            VStack {
+    //                                Button(day) {
+    //                                    if set.contains(day) {
+    //                                        set.remove(day)
+    //                                    } else {
+    //                                        set.insert(day)
+    //                                    }
+    //                                }
+    //                                .buttonStyle(DayButton(color: dayColor(day)))
+    //
+    ////                                Text(day)
+    ////                                    .padding(2)
+    ////                                    .background(dayColor(day))
+    ////                                    .cornerRadius(5)
+    ////                                Button {
+    ////                                    set.insert(day)
+    ////                                } label: {
+    ////                                    Image(systemName: "plus.circle.fill")
+    ////                                }
+    ////                                Button {
+    ////                                    set.remove(day)
+    ////                                } label: {
+    ////                                    Image(systemName: "minus.circle.fill")
+    ////                                }
+    //                            }
+    //                        }
+    //                    }
+    //                    HStack(spacing: 0) {
+    //                        Text("What time?")
+    //                        Spacer()
+    //                        NumTextField(subText: "h", text: $hour)
+    //                            .frame(width: 40)
+    //                            .textFieldStyle(.roundedBorder)
+    //                            .padding(.trailing, 7.0)
+    //                            .multilineTextAlignment(.center)
+    //                        Text(":")
+    //                        NumTextField(subText: "m", text: $minute)
+    //                            .frame(width: 40)
+    //                            .textFieldStyle(.roundedBorder)
+    //                            .padding(.leading, 7.0)
+    //                            .multilineTextAlignment(.center)
+    //                    }
+    //                    .padding(.horizontal)
+    //                    if !twofourhourtime {
+    //                        HStack(spacing: 0) {
+    //                            Spacer()
+    //                            Text("AM")
+    //                            Toggle(" ", isOn: $amPM)
+    //                                .frame(width: UIScreen.screenWidth/8)
+    //                                .padding(.leading, 7)
+    //                            Text("PM")
+    //                                .padding(.leading, 14)
+    //                        }
+    //                            .padding(.horizontal)
+    //                    }
+    //                    Button("Save") {
+    //                        if timeFrameTitle == "" || hour == "" || minute == "" {
+    //                            showAlert = true
+    //                        } else {
+    //                            saveTimeFrame()
+    //                        }
+    //                    }
+    //                    .buttonStyle(TimerButton(color: Color("timerStart")))
+    //                    .alert(isPresented: $showAlert) {
+    //                        Alert(
+    //                            title: Text("Error"),
+    //                            message: Text("Please fill out title everything!")
+    //                        )
+    //                    }
+    //                    .font(.title2)
+    //                    ForEach(allTimeFrames) { timeFrame in
+    //                        HStack {
+    //                            Text(timeFrame.title ?? "")
+    //                            Button {
+    //                                deleteTimeFrame(timeFrame)
+    //                            } label: {
+    //                                Image(systemName: "trash.fill")
+    //                            }
+    //                        }
+    //                    }
+    //
+    //
+    //                }
                 }
-                // MARK: TimeFrame
-//                else if newType == "TimeFrame" {
-//                    TextField("Enter title", text: $timeFrameTitle)
-//                        .textFieldStyle(.roundedBorder)
-//                        .padding(.horizontal)
-//                    HStack {
-//                        ForEach(days, id: \.self) { day in
-//                            VStack {
-//                                Button(day) {
-//                                    if set.contains(day) {
-//                                        set.remove(day)
-//                                    } else {
-//                                        set.insert(day)
-//                                    }
-//                                }
-//                                .buttonStyle(DayButton(color: dayColor(day)))
-//
-////                                Text(day)
-////                                    .padding(2)
-////                                    .background(dayColor(day))
-////                                    .cornerRadius(5)
-////                                Button {
-////                                    set.insert(day)
-////                                } label: {
-////                                    Image(systemName: "plus.circle.fill")
-////                                }
-////                                Button {
-////                                    set.remove(day)
-////                                } label: {
-////                                    Image(systemName: "minus.circle.fill")
-////                                }
-//                            }
-//                        }
-//                    }
-//                    HStack(spacing: 0) {
-//                        Text("What time?")
-//                        Spacer()
-//                        NumTextField(subText: "h", text: $hour)
-//                            .frame(width: 40)
-//                            .textFieldStyle(.roundedBorder)
-//                            .padding(.trailing, 7.0)
-//                            .multilineTextAlignment(.center)
-//                        Text(":")
-//                        NumTextField(subText: "m", text: $minute)
-//                            .frame(width: 40)
-//                            .textFieldStyle(.roundedBorder)
-//                            .padding(.leading, 7.0)
-//                            .multilineTextAlignment(.center)
-//                    }
-//                    .padding(.horizontal)
-//                    if !twofourhourtime {
-//                        HStack(spacing: 0) {
-//                            Spacer()
-//                            Text("AM")
-//                            Toggle(" ", isOn: $amPM)
-//                                .frame(width: UIScreen.screenWidth/8)
-//                                .padding(.leading, 7)
-//                            Text("PM")
-//                                .padding(.leading, 14)
-//                        }
-//                            .padding(.horizontal)
-//                    }
-//                    Button("Save") {
-//                        if timeFrameTitle == "" || hour == "" || minute == "" {
-//                            showAlert = true
-//                        } else {
-//                            saveTimeFrame()
-//                        }
-//                    }
-//                    .buttonStyle(TimerButton(color: Color("timerStart")))
-//                    .alert(isPresented: $showAlert) {
-//                        Alert(
-//                            title: Text("Error"),
-//                            message: Text("Please fill out title everything!")
-//                        )
-//                    }
-//                    .font(.title2)
-//                    ForEach(allTimeFrames) { timeFrame in
-//                        HStack {
-//                            Text(timeFrame.title ?? "")
-//                            Button {
-//                                deleteTimeFrame(timeFrame)
-//                            } label: {
-//                                Image(systemName: "trash.fill")
-//                            }
-//                        }
-//                    }
-//
-//
-//                }
+                .navigationTitle("New")
             }
-            .navigationTitle("New")
         }
     }
 }

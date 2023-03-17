@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AgendaRowNew: View {
+struct NewTask: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
@@ -167,7 +167,7 @@ struct AgendaRowNew: View {
 
 
 
-struct AgendaRow: View {
+struct TaskRow: View {
     var agenda: Agenda
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -183,7 +183,7 @@ struct AgendaRow: View {
     @State private var toggled: Bool = false
     @State private var toggled2: Bool = false
     @State private var revert: Bool = false
-
+    let impactMedium = UIImpactFeedbackGenerator(style: .medium)
     
     private func deleteAgenda(_ agenda: Agenda) {
         withAnimation(.easeOut) { viewContext.delete(agenda) }
@@ -250,26 +250,26 @@ struct AgendaRow: View {
                             .padding(.top, 4)
                             .padding(.bottom, 6)
                         }
-                            Button {
-                                
-                                do {
-                                    agenda.isCompleted.toggle()
-                                    try viewContext.save()
-                                    print(agenda.isCompleted)
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
-                            } label: {
-                                if agenda.isCompleted {
-                                    Image(systemName: "checkmark.square.fill")
-                                } else {
-                                    Image(systemName: "square")
-                                }
-                                
+                        Button {
+                            successHaptics()
+                            do {
+                                agenda.isCompleted.toggle()
+                                try viewContext.save()
+                                print(agenda.isCompleted)
+                            } catch {
+                                print(error.localizedDescription)
                             }
-                            .buttonStyle(TimerButton(color: Color("timerDone")))
-                        
-                            Spacer()
+                        } label: {
+                            if agenda.isCompleted {
+                                Image(systemName: "checkmark.square.fill")
+                            } else {
+                                Image(systemName: "square")
+                            }
+                            
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerDone")))
+                    
+                        Spacer()
                         }
                     }
                     
@@ -282,6 +282,9 @@ struct AgendaRow: View {
                 DragGesture()
                     .onChanged { gesture in
                         if gesture.translation.width < 0 && gesture.translation.width > -20 {
+                            if gesture.translation.width <= -15 {
+                                impactMedium.impactOccurred()
+                            }
                             offset = gesture.translation.width
                             print(gesture.translation)
                         } else if gesture.translation.width > 0 && showDeleteButton {
@@ -299,6 +302,7 @@ struct AgendaRow: View {
                                 withAnimation(.easeIn(duration: 0.1)) {
                                     if offset > -50 { offset -= 1 }
                                 }
+//                                impactMedium.impactOccurred()
                             }
                             // remove the card
                         } else if offset > -15 && !revert {
@@ -317,6 +321,7 @@ struct AgendaRow: View {
             if showDeleteButton {
                 Button {
                     deleteAgenda(agenda)
+                    successHaptics()
                 } label: {
                     Image(systemName: "trash")
                         .font(.title2)
@@ -327,12 +332,12 @@ struct AgendaRow: View {
     }
 }
 
-struct AgendaRow_Previews: PreviewProvider {
+struct TaskRow_Previews: PreviewProvider {
     @Environment(\.managedObjectContext) static var viewContext
     
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        AgendaRow(agenda: Agenda(context: viewContext))
+        TaskRow(agenda: Agenda(context: viewContext))
             .environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }
