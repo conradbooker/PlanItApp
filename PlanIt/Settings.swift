@@ -32,6 +32,10 @@ struct Settings: View {
     @AppStorage("twofourhourtime") var twofourhourtime: Bool = false
     @AppStorage("bgColor") var bgColor: String = ""
     @AppStorage("fgColor") var fgColor: String = ""
+    @AppStorage("darkMode") var darkMode: Int = 0
+    @AppStorage("accentColor") var accentColor: String = "aMint"
+
+    var aColors: [String] = ["aRed","aOrange","aYellow","aGreen","aMint","aCyan","aBlue","aIndigo","aPurple","aPink"]
 
     private func deleteAssignments() {
         for assignment in allAssignments {
@@ -55,25 +59,44 @@ struct Settings: View {
                     }
 
                 }
-                .id(UUID())
                 .listRowBackground(Color("cLessDarkGray"))
                 
                 Section(header: Text("General")) {
                     Toggle("Disable Timer".lower(), isOn: $disableTimer)
+                        .tint(Color(accentColor))
                     Toggle("Aesthetic Mode".lower(), isOn: $aestheticMode)
+                        .tint(Color(accentColor))
                     Toggle("24 Hour Time Time".lower(), isOn: $twofourhourtime)
-                    Text("Profile".lower())
-                    Text("Color Theme".lower())
-                    Text("Dark Mode".lower())
-                    Text("Language".lower())
-                    Button {
-                        
-                    } label: {
-                        Text("Key".lower())
+                        .tint(Color(accentColor))
+                    Picker("Accent Color", selection: $accentColor) {
+                        ForEach(aColors, id: \.self) { color in
+                            HStack {
+                                Text(color.dropFirst(1))
+                                Circle()
+                                    .frame(width:15)
+                                    .foregroundColor(Color(color))
+                            }
+                            .tag(color)
+                        }
                     }
-                    
+                    .pickerStyle(.navigationLink)
+                    Picker("Dark Mode", selection: $darkMode) {
+                        HStack {
+                            Text("Light")
+                            Image(systemName: "sun.max.fill")
+                        }
+                        .tag(0)
+                        HStack {
+                            Text("Dark")
+                            Image(systemName: "moon.fill")
+                        }
+                        .tag(1)
+                        Text("System")
+                            .tag(2)
+                    }
+                    .pickerStyle(.navigationLink)
+                    Text("Language".lower())
                 }
-                .id(UUID())
                 .listRowBackground(Color("cLessDarkGray"))
                 
                 Section(header: Text("Help")) {
@@ -85,14 +108,12 @@ struct Settings: View {
                     }
                     .foregroundColor(.red)
                 }
-                .id(UUID())
                 .listRowBackground(Color("cLessDarkGray"))
                 
                 Section(header: Text("Notifications")) {
                     Text("Configure Notifications".lower())
                     Text("View Notifications".lower())
                 }
-                .id(UUID())
                 .listRowBackground(Color("cLessDarkGray"))
                 
                 Section(header: Text("ABOUT")) {
@@ -102,15 +123,16 @@ struct Settings: View {
                     Text("View Website".lower())
                     Text("Version: 0.1".lower())
                 }
-                .id(UUID())
                 .listRowBackground(Color("cLessDarkGray"))
+                Spacer().frame(height: 25)
+                .listRowBackground(Color("cDarkGrayBg"))
             }
             .navigationTitle("Settings".lower())
             .sheet(isPresented: $showSync) {
                 ExternalSource(isPresented: $showSync).environment(\.managedObjectContext, persistedContainer.viewContext)
             }
             .scrollContentBackground(.hidden)
-            .background(Color("cDarkGray"))
+            .background(Color("cDarkGrayBg"))
         }
     }
 }

@@ -139,8 +139,8 @@
 			children = (
 				791F603F2960BDF100076509 /* Data */,
 				7953807929B44F52007B30B7 /* Views */,
-				791F601F2960BB4300076509 /* PlanItApp.swift */,
 				791F60212960BB4300076509 /* ContentView.swift */,
+				791F601F2960BB4300076509 /* PlanItApp.swift */,
 				791F60232960BB4400076509 /* Assets.xcassets */,
 				791F60252960BB4400076509 /* PlanIt.entitlements */,
 				791F60262960BB4400076509 /* Preview Content */,
@@ -184,7 +184,6 @@
 				795958CC2960F23000CA6CEF /* Testpy.swift */,
 				7961B6CD297AE43600A0593E /* ExpandedCourse.swift */,
 				797A79B4297F0CA700799769 /* PlannerRow.swift */,
-				791BE995297DF9A700DF724E /* DateSelector.swift */,
 			);
 			name = "Supporting Views";
 			path = ..;
@@ -225,6 +224,7 @@
 		7948931029ABD65100428F04 /* tab */ = {
 			isa = PBXGroup;
 			children = (
+				791BE995297DF9A700DF724E /* DateSelector.swift */,
 				7948931129ABD66400428F04 /* TabBar.swift */,
 			);
 			name = tab;
@@ -333,6 +333,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 791F60132960BB4300076509;
 			packageReferences = (

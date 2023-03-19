@@ -55,6 +55,8 @@ struct New: View {
     @State private var assessmentType: String = "Quiz"
     @State private var childAssignments: [childAssignment] = []
     
+    @Binding var isPresented: Bool
+    
     @AppStorage("twofourhourtime") var twofourhourtime: Bool = false
     
     /// Static vars
@@ -480,6 +482,7 @@ struct New: View {
                                         showAlert = true
                                         errorHaptics()
                                     } else {
+                                        isPresented = false
                                         saveAssignment()
                                         successHaptics()
                                         title = ""
@@ -660,6 +663,7 @@ public class childAssignment: ObservableObject, Identifiable {
 struct New_Previews: PreviewProvider {
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        New().environment(\.managedObjectContext, persistedContainer.viewContext)
+        New(isPresented: .constant(true))
+            .environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }

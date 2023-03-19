@@ -10,31 +10,31 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
+    @State var selectedTab: String = "Home"
+    @State var showSheet: Bool = false
+    @State var selectedDate: Date = Date()
 
     var body: some View {
-        
-        TabView {
-            Home().environment(\.managedObjectContext, persistedContainer.viewContext)
-                .tabItem {
-                    Label("Home", systemImage: "house")
+        ZStack {
+            VStack {
+                switch selectedTab {
+                case "Home": Home(selectedDate: selectedDate)
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                case "Agenda": Checklist(selectedDate: selectedDate)
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                case "Due": Due(selectedDate: selectedDate)
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                case "Settings": Settings()
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                default: Home(selectedDate: selectedDate)
+                        .environment(\.managedObjectContext, persistedContainer.viewContext)
                 }
-            
-            Checklist().environment(\.managedObjectContext, persistedContainer.viewContext)
-                .tabItem {
-                    Label("Agenda", systemImage: "rectangle.and.pencil.and.ellipsis")
-                }
-            New().environment(\.managedObjectContext, persistedContainer.viewContext)
-                .tabItem {
-                    Label("New", systemImage: "plus.circle")
-                }
-            Due()
-                .tabItem {
-                    Label("Due", systemImage: "exclamationmark.triangle.fill")
-                }
-            Settings().environment(\.managedObjectContext, persistedContainer.viewContext)
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape.2")
-                }
+        }
+            TabBar(selectedTab: $selectedTab, showSheet: $showSheet, selectedDate: $selectedDate)
+        }
+        .sheet(isPresented: $showSheet) {
+            New(isPresented: $showSheet)
+                .environment(\.managedObjectContext, persistedContainer.viewContext)
         }
     }
 }

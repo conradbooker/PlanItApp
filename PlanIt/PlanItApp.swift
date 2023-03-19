@@ -14,6 +14,7 @@ import PythonSupport
 struct PlanItApp: App {
     
     let persistentContainer = CoreDataManager.shared.persistentContainer
+    @AppStorage("darkMode") var darkMode: Int = 0
     
 //    private func hasConnection() -> Bool {
 //        let monitor = NWPathMonitor()
@@ -32,23 +33,33 @@ struct PlanItApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
-                .onAppear {
-                    PythonSupport.initialize()
-                    
-                    
-//                    @AppStorage("pyJSonData") var pyJSonData: String = ""
-//                    pyJSonData = String(runPythonICSJSon("https://trinityschoolnyc.myschoolapp.com/podium/feed/iCal.aspx?z=HdbCT3ZaWBaxtYaG0jy3COOOHSIw9SwPejVt1ZiRL0e%2f1LkExSAan453LoSYfB4QMIeAjRyRcFPyvvRbCsQ7QA%3d%3d")) ?? "Error"
-//                    if pyJSonData == "Error" || pyJSonData == """
-//                    [
-//                       {}
-//                    ]
-//                    """
-//                    {
-//                        print("Error loading JSon")
-//                    }
-                    print("hiii")
+            if darkMode == 0 {
+                withAnimation(.linear) {
+                    ContentView()
+                        .environment(\.managedObjectContext, persistentContainer.viewContext)
+                        .preferredColorScheme(.light)
+                        .onAppear {
+                            PythonSupport.initialize()
+                        }
                 }
+            } else if darkMode == 1 {
+                withAnimation(.linear) {
+                    ContentView()
+                        .environment(\.managedObjectContext, persistentContainer.viewContext)
+                        .preferredColorScheme(.dark)
+                        .onAppear {
+                            PythonSupport.initialize()
+                        }
+                }
+            } else {
+                withAnimation(.linear) {
+                    ContentView()
+                        .environment(\.managedObjectContext, persistentContainer.viewContext)
+                        .onAppear {
+                            PythonSupport.initialize()
+                        }
+                }
+            }
         }
     }
 }

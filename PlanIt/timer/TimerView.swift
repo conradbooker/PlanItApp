@@ -266,10 +266,10 @@ struct TimerView: View {
                         }
                     }
                     // MARK: Done Button
-                    Button(action: {
+                    Button {
                         successHaptics()
-                        done()
-                    }) {
+                        withAnimation(.spring()) { done() }
+                    } label: {
                         if !assignment.isFinished {
                             Image(systemName: "square")
                         } else {
@@ -312,23 +312,23 @@ struct TimerView: View {
                     if assignment.activeSeconds >= assignment.secondStop {
                         overTime = true
                     }
-                    do {
-                        try viewContext.save()
-                        print("SAVED TIME")
-                    } catch {
-                        print(error.localizedDescription)
-                        print("Error")
+                    if Int(timer.totalAccumulatedTime) % 5 == 0 {
+                        do {
+                            try viewContext.save()
+                        } catch {
+                            print(error.localizedDescription)
+                        }
                     }
                 }
             } else {
-
-                do {
-                    assignment.isPaused = true
-                    try viewContext.save()
-                } catch {
-                    print(error.localizedDescription)
+                if !assignment.isPaused {
+                    do {
+                        assignment.isPaused = true
+                        try viewContext.save()
+                    } catch {
+                        print(error.localizedDescription)
+                    }
                 }
-
             }
         }
         .padding(.leading, 6)

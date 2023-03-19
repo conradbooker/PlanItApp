@@ -13,15 +13,13 @@ struct Home: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
-    
-    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "course", ascending: true)]) private var allAssignments: FetchedResults<Assignment>
-    
+        
     @AppStorage("initialSync") var initialSync: Bool = false
     
     var assignmentSpacing: CGFloat = 5
     
     @State private var currentDate: Date = Date.now
-    @State private var selectedDate: Date = Date.now
+    var selectedDate: Date
     let calendar = Calendar.current
 
     let impactMedium = UIImpactFeedbackGenerator(style: .medium)
@@ -33,6 +31,8 @@ struct Home: View {
     @State var checkAssessments: Int = 0
 
     @State private var totalSeconds: Int = 0
+    
+    @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "course", ascending: true)]) private var allAssignments: FetchedResults<Assignment>
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
     
@@ -165,224 +165,212 @@ struct Home: View {
         }
     }
 
+//    In the Future, days that the school day ends, add weekends, and allow user to configure breaks, also allow users to configure which days do not have
 
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-                ZStack {
-                    Color("cDarkGray")
-                        .ignoresSafeArea()
-                    ScrollView {
-                        VStack {
-                            Group {
-                            if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
-                                HStack {
-                                    Text("You Finished Everything for Today!!!".lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
-                            }
-                                
-                                // MARK: Assessments
-                                
-                            if checkAssessments != 0 {
-                                HStack {
-                                    Text(majors.lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
-                            }
-                            
-//                                selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
-                            ForEach(allAssignments) { assign in
-                                if Calendar.current.date(byAdding: .day, value: -1, to: assign.datePlanned!)!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.isPlanned == true && assign.assignmentType != "Homework" && assign.assignmentType != "Studying" {
-                                        PlannerRow(assignment: assign)
-                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                            .onAppear {
-                                                checkAssessments += 1
-                                                if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)
-                                                }
-                                            }
-                                            .onDisappear {
-                                                checkAssessments -= 1
-                                                if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)
-                                                    
-                                                }
-                                            }
-                                    }
-                                }
-                            }
-                            
-
-                            } /// end of group
-                            
-                            // MARK: Unplanned assignments
+        NavigationView {
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
+                ScrollView {
+                    VStack {
                         Group {
-                            if checkUnplanned != 0 {
-                                HStack {
-                                    Text("\(checkUnplanned) unplanned assignments to do this day".lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
-                            }
-                            
-                            ForEach(allAssignments) { assign in
-                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.isPlanned == false {
-                                        PlannerRow(assignment: assign)
-                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                            .onAppear {
-                                                checkUnplanned += 1
-                                                if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)
-                                                }
-                                            }
-                                            .onDisappear {
-                                                checkUnplanned -= 1
-                                                if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)
-                                                    
-                                                }
-                                            }
-                                    }
-                                }
+                        if checkInProgress == 0 && checkToDo == 0 && checkFinished != 0 {
+                            HStack {
+                                Text("You Finished Everything for Today!!!".lower())
+                                    .padding([.top, .leading])
+                                Spacer()
                             }
                         }
                             
-                            // MARK: In Progress
-                            if checkInProgress != 0 {
-                                HStack {
-                                    Text("In Progress".lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
+                            // MARK: Assessments
+                            
+                        if checkAssessments != 0 {
+                            HStack {
+                                Text(majors.lower())
+                                    .padding([.top, .leading])
+                                Spacer()
                             }
-                            ForEach(allAssignments) { assign in
-                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "In Progress" && assign.isPlanned && assign.assignmentType == "Homework" {
-                                        AssignmentViewNew(assignment: assign)
-                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                            .onAppear {
-                                                checkInProgress += 1
-                                                if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)
-                                                }
+                        }
+                        
+//                                selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
+                        ForEach(allAssignments) { assign in
+                            if Calendar.current.date(byAdding: .day, value: -1, to: assign.datePlanned!)!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                if assign.isPlanned == true && assign.assignmentType != "Homework" && assign.assignmentType != "Studying" {
+                                    PlannerRow(assignment: assign)
+                                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        .onAppear {
+                                            checkAssessments += 1
+                                            if !assign.isFinished {
+                                                totalSeconds += Int(assign.secondStop)
                                             }
-                                            .onDisappear {
-                                                checkInProgress -= 1
-                                                if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)
+                                        }
+                                        .onDisappear {
+                                            checkAssessments -= 1
+                                            if !assign.isFinished {
+                                                totalSeconds -= Int(assign.secondStop)
                                                 
-                                                }
                                             }
-                                    }
+                                        }
                                 }
                             }
-                            
-                            // MARK: To Do
-                            if checkToDo != 0 {
-                                HStack {
-                                    Text("To Do".lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
+                        }
+                        
+
+                        } /// end of group
+                        
+                        // MARK: Unplanned assignments
+                    Group {
+                        if checkUnplanned != 0 {
+                            HStack {
+                                Text("\(checkUnplanned) unplanned assignments to do this day".lower())
+                                    .padding([.top, .leading])
+                                Spacer()
                             }
-                            
-                            ForEach(allAssignments) { assign in
-                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "To Do" && assign.isPlanned && assign.assignmentType == "Homework" {
-                                        AssignmentViewNew(assignment: assign)
-                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                            .onAppear {
-                                                checkToDo += 1
-                                                if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)
-                                                }
+                        }
+                        
+                        ForEach(allAssignments) { assign in
+                            if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                if assign.isPlanned == false {
+                                    PlannerRow(assignment: assign)
+                                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        .onAppear {
+                                            checkUnplanned += 1
+                                            if !assign.isFinished {
+                                                totalSeconds += Int(assign.secondStop)
                                             }
-                                            .onDisappear {
-                                                checkToDo -= 1
-                                                if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)
-                                                }
+                                        }
+                                        .onDisappear {
+                                            checkUnplanned -= 1
+                                            if !assign.isFinished {
+                                                totalSeconds -= Int(assign.secondStop)
+                                                
                                             }
-                                    }
+                                        }
                                 }
                             }
-                            
-                            // MARK: Completed
-                            if checkFinished != 0 {
-                                HStack {
-                                    Text("Completed Things!".lower())
-                                        .padding([.top, .leading])
-                                    Spacer()
-                                }
-                            }
-                            
-                            ForEach(allAssignments) { assign in
-                                if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
-                                    if assign.status == "Finished!" && assign.isPlanned && assign.assignmentType == "Homework" {
-                                        AssignmentViewNew(assignment: assign)
-                                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                                            .onAppear {
-                                                checkFinished += 1
-                                                if !assign.isFinished {
-                                                    totalSeconds += Int(assign.secondStop)                                                }
-                                            }
-                                            .onDisappear {
-                                                checkFinished -= 1
-                                                if !assign.isFinished {
-                                                    totalSeconds -= Int(assign.secondStop)
-                                                }
-                                            }
-                                    }
-                                }
-                            }
-                            Group {
-                                if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 && checkUnplanned == 0{
-                                    HStack {
-                                        Text("No assignments! Swipe down to sync or create new assignment.".lower())
-                                            .padding([.top, .leading])
-                                        Spacer()
-                                    }
-                                }
-//                                FormattedTime(secondStop: totalSeconds)
-                            }
-                            Spacer().frame(height: 100)
                         }
                     }
-                    VStack {
-                        Spacer().frame(height:geometry.size.height-150)
-                        DateSelector(selectedDate: $selectedDate)
-                            .frame(width: UIScreen.screenWidth - 10)
+                        
+                        // MARK: In Progress
+                        if checkInProgress != 0 {
+                            HStack {
+                                Text("In Progress".lower())
+                                    .padding([.top, .leading])
+                                Spacer()
+                            }
+                        }
+                        ForEach(allAssignments) { assign in
+                            if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                if assign.status == "In Progress" && assign.isPlanned && assign.assignmentType == "Homework" {
+                                    AssignmentViewNew(assignment: assign)
+                                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        .onAppear {
+                                            checkInProgress += 1
+                                            if !assign.isFinished {
+                                                totalSeconds += Int(assign.secondStop)
+                                            }
+                                        }
+                                        .onDisappear {
+                                            checkInProgress -= 1
+                                            if !assign.isFinished {
+                                                totalSeconds -= Int(assign.secondStop)
+                                            
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                        
+                        // MARK: To Do
+                        if checkToDo != 0 {
+                            HStack {
+                                Text("To Do".lower())
+                                    .padding([.top, .leading])
+                                Spacer()
+                            }
+                        }
+                        
+                        ForEach(allAssignments) { assign in
+                            if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                if assign.status == "To Do" && assign.isPlanned && assign.assignmentType == "Homework" {
+                                    AssignmentViewNew(assignment: assign)
+                                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        .onAppear {
+                                            checkToDo += 1
+                                            if !assign.isFinished {
+                                                totalSeconds += Int(assign.secondStop)
+                                            }
+                                        }
+                                        .onDisappear {
+                                            checkToDo -= 1
+                                            if !assign.isFinished {
+                                                totalSeconds -= Int(assign.secondStop)
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                        
+                        // MARK: Completed
+                        if checkFinished != 0 {
+                            HStack {
+                                Text("Completed Things!".lower())
+                                    .padding([.top, .leading])
+                                Spacer()
+                            }
+                        }
+                        
+                        ForEach(allAssignments) { assign in
+                            if assign.datePlanned!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
+                                if assign.status == "Finished!" && assign.isPlanned && assign.assignmentType == "Homework" {
+                                    AssignmentViewNew(assignment: assign)
+                                        .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                        .onAppear {
+                                            checkFinished += 1
+                                            if !assign.isFinished {
+                                                totalSeconds += Int(assign.secondStop)                                                }
+                                        }
+                                        .onDisappear {
+                                            checkFinished -= 1
+                                            if !assign.isFinished {
+                                                totalSeconds -= Int(assign.secondStop)
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                        Group {
+                            if checkFinished == 0 && checkToDo == 0 && checkInProgress == 0 && checkUnplanned == 0{
+                                HStack {
+                                    Text("No assignments! Swipe down to sync or create new assignment.".lower())
+                                        .padding([.top, .leading])
+                                    Spacer()
+                                }
+                            }
+//                                FormattedTime(secondStop: totalSeconds)
+                        }
+                        Spacer().frame(height: 100)
                     }
                 }
-                .navigationTitle(title.lower())
-                .refreshable {
-                    if initialSync {
-                        syncAssignments()
-                    } else {
-                        print("not initial synced yet!")
-                    }
+            }
+            .navigationTitle(title.lower())
+            .refreshable {
+                if initialSync {
+                    syncAssignments()
+                } else {
+                    print("not initial synced yet!")
                 }
             }
         }
     }
     
-    func add() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
-    }
-    func subtract() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
-    }
 }
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        Home().environment(\.managedObjectContext, persistedContainer.viewContext)
+        Home(selectedDate: Date()).environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }
 

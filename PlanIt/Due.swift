@@ -19,7 +19,7 @@ struct Due: View {
     var assignmentSpacing: CGFloat = 5
     
     @State private var currentDate: Date = Date.now
-    @State private var selectedDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+    var selectedDate: Date
     let calendar = Calendar.current
 
     let impactMedium = UIImpactFeedbackGenerator(style: .medium)
@@ -258,10 +258,6 @@ struct Due: View {
                             Spacer().frame(height: 100)
                         }
                     }
-                    VStack {
-                        Spacer().frame(height:geometry.size.height-150)
-                        DateSelector(selectedDate: $selectedDate)
-                    }
                 }
                 .navigationTitle("Due \(title)".lower())
                 .refreshable {
@@ -274,19 +270,12 @@ struct Due: View {
             }
         }
     }
-    
-    func add() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
-    }
-    func subtract() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
-    }
 }
 
 
 struct Due_Previews: PreviewProvider {
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        Due().environment(\.managedObjectContext, persistedContainer.viewContext)
+        Due(selectedDate: Date()).environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }

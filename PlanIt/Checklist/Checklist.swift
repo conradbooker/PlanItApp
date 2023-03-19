@@ -8,14 +8,7 @@
 import SwiftUI
 
 struct Checklist: View {
-    
-    func add() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate)!
-    }
-    func subtract() {
-        selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
-    }
-    
+        
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
@@ -23,9 +16,9 @@ struct Checklist: View {
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: true)]) private var allCourses: FetchedResults<Course>
 
+    @AppStorage("accentColor") var accentColor: String = "aMint"
     
-    
-    @State private var selectedDate: Date = Date.now
+    var selectedDate: Date
     @State private var currentDate: Date = Date.now
     
     @State private var isPresented: Bool = false
@@ -58,6 +51,20 @@ struct Checklist: View {
         return "Agenda \(weekday), \(String(selectedDate.formatted(date: .abbreviated, time: .omitted)).dropLast(6))"
     }
     
+    @State var rotation = 0.0
+    
+    func rotate() {
+        if rotation < 45 {
+            while rotation < 45 {
+                withAnimation(.linear) { rotation += 1 }
+            }
+        } else {
+            while rotation > 0 {
+                withAnimation(.linear) { rotation -= 1 }
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -66,9 +73,11 @@ struct Checklist: View {
                 ScrollView {
                     
                     if isPresented {
-                        NewTask(selectedDate: selectedDate, isPresented: $isPresented)
-                            .environment(\.managedObjectContext, persistedContainer.viewContext)
-                            .padding(.vertical)
+                        withAnimation(.linear) {
+                            NewTask(selectedDate: selectedDate, isPresented: $isPresented)
+                                .environment(\.managedObjectContext, persistedContainer.viewContext)
+                                .padding(.vertical)
+                        }
                     }
                     
                     HStack {
@@ -98,21 +107,26 @@ struct Checklist: View {
                     HStack {
                         Spacer()
                         Button {
-                            isPresented = true
+                            withAnimation(.linear) {
+                                isPresented.toggle()
+                            }
+                            rotate()
                         } label: {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 50)
-                                    .frame(width: 50,height: 50)
-                                    .shadow(radius: 2)
+                                RoundedRectangle(cornerRadius: 100)
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(Color(accentColor))
                                 Image(systemName: "plus")
                                     .foregroundColor(.white)
                                     .font(.title)
                             }
-                            .padding([.top, .bottom, .trailing], 6.0)
                         }
+                        .buttonStyle(CircleButton(color: Color(accentColor)))
+                        .rotationEffect(.degrees(rotation))
+                        .padding([.top, .bottom, .trailing], 20)
+
                     }
-                    DateSelector(selectedDate: $selectedDate)
-                        .frame(width: UIScreen.screenWidth - 10)
+                    Spacer().frame(height:125)
                 }
             }
             .navigationTitle(title.lower())
@@ -125,6 +139,6 @@ struct Checklist: View {
 struct Checklist_Previews: PreviewProvider {
     static var previews: some View {
         let persistedContainer = CoreDataManager.shared.persistentContainer
-        Checklist().environment(\.managedObjectContext, persistedContainer.viewContext)
+        Checklist(selectedDate: Date()).environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }

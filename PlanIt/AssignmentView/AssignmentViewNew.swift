@@ -9,8 +9,27 @@ import SwiftUI
 
 struct AssignmentViewNew: View {
     
-    var assignment: Assignment
+    private func courseNames() -> [String] {
+        @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var allCourses: FetchedResults<Course>
+        var array = [String]()
+        for course in allCourses {
+            array.append(course.title ?? "")
+        }
+        return array
+    }
     
+    var assignment: Assignment
+        
+    @State var allCourses1: [String] = []
+    @State var course: String = ""
+    
+    init(assignment: Assignment) {
+        self.assignment = assignment
+        
+        self.allCourses1 = courseNames()
+        self.course = assignment.course ?? ""
+    }
+
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
         
@@ -23,6 +42,12 @@ struct AssignmentViewNew: View {
     @State var titleSize = CGSize()
     @State var dueDateSize = CGSize()
     @State var timerSize = CGSize()
+    
+    @State var showRename: Bool = false
+    @State var renameTitle: String = ""
+    
+    @State var showDueDate: Bool = false
+    @State var dueDate: Date = Date()
 
     var text: String = "Read sections 1-7 of \"Song of Myself\"--also, please read attached excerpts from his \"Preface\""
     
@@ -38,15 +63,15 @@ struct AssignmentViewNew: View {
     var body: some View {
         HStack(spacing: 0) {
             // MARK: course color
-            NavigationLink {
-                ExpandedCourse(assignment: assignment)
-                    .environment(\.managedObjectContext, persistedContainer.viewContext)
-            } label: {
+//            NavigationLink {
+//                ExpandedCourse(assignment: assignment)
+//                    .environment(\.managedObjectContext, persistedContainer.viewContext)
+//            } label: {
                 RoundedRectangle(cornerRadius: 8)
                     .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + timerSize.height)
                     .shadow(radius: 3)
                     .foregroundColor(Color(red: CGFloat(assignment.red), green: CGFloat(assignment.green), blue: CGFloat(assignment.blue)))
-            }
+//            }
             
             Spacer()
                 .frame(width: 5)
@@ -126,6 +151,41 @@ struct AssignmentViewNew: View {
                     }
                     
                 }
+                .alert("Rename".lower(), isPresented: $showRename) {
+                    TextField("Username", text: $renameTitle)
+
+                    
+                    Button("OK") {
+                        assignment.title = renameTitle
+                        do {
+                            try viewContext.save()
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Rename assignment title".lower())
+                }
+                .alert("Due Date".lower(), isPresented: $showDueDate) {
+                    DatePicker("Due Date:", selection: $dueDate,  displayedComponents: [.date])
+                        .padding(.horizontal)
+                    
+                    Button("OK") {
+                        assignment.dueDate = dueDate
+                        do {
+                            try viewContext.save()
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Change assignment Due Date".lower())
+                }
+
+
+
 //                .frame(height: findHeight(assignment.title ?? ""))
             }
             .contextMenu {
@@ -137,23 +197,35 @@ struct AssignmentViewNew: View {
                 
                 Menu {
                     Button {
-                        
+                        showRename = true
+                        print(showRename)
                     } label: {
                         Label("rename", systemImage: "square.and.pencil")
                     }
                     
                     Button {
-                        
+                        showDueDate = true
+                    } label: {
+                        Label("Change Due Date".lower(), systemImage: "exclamationmark.triangle.fill")
+                    }
+
+                    Menu {
+                        Picker("Select a course", selection: $course) {
+                            ForEach(allCourses1, id: \.self) { course in
+                                HStack {
+                                    Text(course)
+//                                    Spacer()
+//                                    Circle()
+                                }
+                                .onTapGesture {
+                                    
+                                }
+                            }
+                        }
                     } label: {
                         Label("change class", systemImage: "arrow.2.squarepath")
                     }
                     
-                    Button {
-                        
-                    } label: {
-                        Label("change due date", systemImage: "exclamationmark.triangle.fill")
-                    }
-
                 } label: {
                     Label("quick settings", systemImage: "gearshape.2.fill")
                 }

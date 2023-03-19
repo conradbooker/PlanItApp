@@ -11,7 +11,7 @@ func screenRadius() -> CGFloat {
     let currentScreenWidth = Int(UIScreen.screenWidth)
     switch currentScreenWidth {
         /// iPhone 14 Pro Max
-        case 430: return 20
+        case 430: return 30
         
         /// iPhone 14 Pro
         case 393: return 30
@@ -23,41 +23,52 @@ func screenRadius() -> CGFloat {
         case 390: return 20
                 
         /// iPhone 13/12 Mini/XS/X
-        case 375: return 20
+        case 375: return 30
                 
         /// iPhone 11/Pro/XS Max
         case 414: return 20
                                 
-        default: return 20
+        default: return 30
     }
 }
 
 struct test: View {
     @State var selectedTab: String = "Home"
+    @State var showSheet: Bool = false
+    @State var selectedDate: Date = Date()
+
     var body: some View {
         ZStack {
             switch selectedTab {
-            case "Home": Home()
-            case "Agenda": Checklist()
-            case "New": New() // should pop up
-            case "Due": Due()
+            case "Home": Home(selectedDate: selectedDate)
+            case "Agenda": Checklist(selectedDate: selectedDate)
+            case "Due": Due(selectedDate: selectedDate)
             case "Settings": Settings()
-            default: Home()
+            default: Home(selectedDate: selectedDate)
             }
-            TabBar(selectedTab: $selectedTab)
+            TabBar(selectedTab: $selectedTab, showSheet: $showSheet, selectedDate: $selectedDate)
+        }
+        .sheet(isPresented: $showSheet) {
+            New(isPresented: .constant(true))
         }
     }
 }
 
 struct TabBar: View {
     @Binding var selectedTab: String
-    
+    @Binding var showSheet: Bool
+    @Binding var selectedDate: Date
+    @AppStorage("accentColor") var accentColor: String = "aMint"
+
     var body: some View {
         VStack {
             Spacer()
+            if ["Home","Due","Agenda"].contains(selectedTab) {
+                DateSelector(selectedDate: $selectedDate)
+            }
             ZStack {
                 RoundedRectangle(cornerRadius: screenRadius())
-                    .foregroundColor(Color("cDarkGray"))
+                    .foregroundColor(Color("cLessDarkGray"))
                     .shadow(radius: 2)
                 HStack {
                     Group {
@@ -65,9 +76,11 @@ struct TabBar: View {
                     TabBarButton(selectedTab: $selectedTab, imageName: "house", name: "Home")
                     Spacer()
                     TabBarButton(selectedTab: $selectedTab, imageName: "list.bullet.rectangle", name: "Agenda")
-                    Spacer()
-                    TabBarButton(selectedTab: $selectedTab, imageName: "plus.circle", name: "New")
+                        Spacer()
+                        Spacer()
+                    PopUp(showSheet: $showSheet, imageName: "plus.circle.fill", name: "New")
                         // this should pop up
+                        Spacer()
                     }
                     Spacer()
                     //implement button here
@@ -84,10 +97,31 @@ struct TabBar: View {
     }
 }
 
+struct PopUp: View {
+    @Binding var showSheet: Bool
+    var imageName: String
+    var name: String
+    @AppStorage("accentColor") var accentColor: String = "aMint"
+    
+    var body: some View {
+        Button {
+            showSheet = true
+            mediumHaptics()
+        } label: {
+            Image(systemName: imageName)
+                .font(.title)
+                .foregroundColor(.white)
+                .fontWeight(.semibold)
+        }
+        .buttonStyle(CircleButton(color: Color(accentColor)))
+    }
+}
+
 struct TabBarButton: View {
     @Binding var selectedTab: String
     var imageName: String
     var name: String
+    @AppStorage("accentColor") var accentColor: String = "aMint"
     
     private func checkFilled() -> String {
         if selectedTab == name {
@@ -102,21 +136,27 @@ struct TabBarButton: View {
             print(selectedTab)
         } label: {
             ZStack {
-                if selectedTab == name {
-                    RoundedRectangle(cornerRadius: 20)
-                        .inset(by: 5)
-                        .stroke(.secondary, lineWidth: 3)
-                        .shadow(radius: 2)
-                        .frame(width: 60, height: 60)
-                } else {
-                    RoundedRectangle(cornerRadius: 15)
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(Color("cDarkGray"))
-                }
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color("cLessDarkGray"))
                 VStack {
+                    RoundedRectangle(cornerRadius: 200)
+                        .frame(width: 15,height:4)
+                        .foregroundColor(Color("cLessDarkGray"))
                     Image(systemName: imageName + checkFilled())
                         .font(.title2)
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("bw"))
+                    Spacer().frame(height: 5)
+                    if selectedTab == name {
+                        RoundedRectangle(cornerRadius: 200)
+                            .frame(width: 20,height:4)
+                            .shadow(radius: 2)
+                            .foregroundColor(Color(accentColor))
+                    } else {
+                        RoundedRectangle(cornerRadius: 200)
+                            .frame(width: 0,height:4)
+                            .foregroundColor(Color("cLessDarkGray"))
+                    }
 //                    Text(name)
 //                        .font(.subheadline)
                 }
