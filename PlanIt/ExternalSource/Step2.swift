@@ -60,24 +60,17 @@ struct Step2: View {
                 Text("Please note: if you are missing a class, this is because your teacher has not assigned you work in this class. PlanIt will notify you in the future for any class updates. In the mean time, add assignments under this class manualy.".lower())
                     .padding(.horizontal,12)
                     .font(.subheadline)
-                
-                HStack {
-                    VStack(alignment: .leading, spacing: 0) {
-                        ForEach(courses) { course in
-                            Text(course.onlineCourse)
-                                .padding(.vertical, 12)
-                                .font(.subheadline)
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 0) {
-                        ForEach($courses) { course in
+                                
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach($courses) { course in
+                        HStack {
+                            Text(course.onlineCourse.wrappedValue)
                             Picker("New Type", selection: course.userCourse) {
                                 ForEach(allCourses, id: \.self) { cours in
-                                        Text(cours.title ?? "")
-                                            .tag(cours.title ?? "")
+                                    Text(cours.title ?? "")
+                                        .tag(cours.title ?? "")
                                 }
                             }.font(.subheadline)
-
                         }
                     }
                 }

@@ -257,3 +257,111 @@ struct AssignmentViewNew_Previews: PreviewProvider {
 //            .previewLayout(.fixed(width: 400, height: 250))
     }
 }
+
+struct AssignmentViewStatic: View {
+    @State private var showEdit: Bool = false
+        
+    @State var contentSize = CGSize()
+    @State var courseSize = CGSize()
+    @State var titleSize = CGSize()
+    @State var dueDateSize = CGSize()
+    @State var timerSize = CGSize()
+    
+    @State var showRename: Bool = false
+    @State var renameTitle: String = ""
+    
+    @State var showDueDate: Bool = false
+    @State var dueDate: Date = Date()
+    
+    var title: String
+    var course: String
+    var type: String
+    var due: Date
+    var seconds: Int
+    var color: Color
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            // MARK: course color
+//            NavigationLink {
+//                ExpandedCourse(assignment: assignment)
+//                    .environment(\.managedObjectContext, persistedContainer.viewContext)
+//            } label: {
+                RoundedRectangle(cornerRadius: 8)
+                    .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + timerSize.height)
+                    .shadow(radius: 3)
+                    .foregroundColor(color)
+//            }
+            
+            Spacer()
+                .frame(width: 5)
+            
+            ZStack {
+                // MARK: for reading text
+                HStack {
+                    Text(title)
+                        .fontWeight(.medium)
+                        .padding(.leading, 6)
+                        .opacity(0)
+                    Spacer()
+                }
+                .padding(.top, 4)
+                .readSize { size in
+                    titleSize = size
+                }
+                
+                // MARK: background rectangle
+                NavigationLink {
+                } label: {
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color("cLessDarkGray"))
+                        .shadow(radius: 3)
+                        .frame(height: courseSize.height + titleSize.height + dueDateSize.height + timerSize.height + 5)
+                    // courseSize + etc
+                }
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    // MARK: course
+                    HStack {
+                        Text(course + " - " + type)
+                            .font(.subheadline)
+                            .padding(.leading, 6)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        courseSize = size
+                    }
+                    
+                    // MARK: title
+                    HStack {
+                        Text(title)
+                            .fontWeight(.medium)
+                            .padding(.leading, 6)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                    HStack(spacing: 0) {
+                        // MARK: due date
+                        Text("Due: ")
+                            .padding(.leading, 6)
+                            .font(.subheadline)
+                        Text(due.formatted(.dateTime.weekday(.wide)) + ", ")
+                            .font(.subheadline)
+                        Text(due, style: .date)
+                            .font(.subheadline)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        dueDateSize = size
+                    }
+                }
+//                .frame(height: findHeight(assignment.title ?? ""))
+            }
+            .frame(width: UIScreen.screenWidth * 5.5/6)
+            
+        }
+        .frame(width: UIScreen.screenWidth - 10)
+    }
+}

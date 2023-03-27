@@ -14,7 +14,7 @@ import PythonSupport
 struct PlanItApp: App {
     
     let persistentContainer = CoreDataManager.shared.persistentContainer
-    @AppStorage("darkMode") var darkMode: Int = 0
+    @AppStorage("darkMode") var darkMode: Int = 3
     
 //    private func hasConnection() -> Bool {
 //        let monitor = NWPathMonitor()
@@ -30,36 +30,30 @@ struct PlanItApp: App {
 //        return isConnected
 //        
 //    }
+    @Environment(\.colorScheme) var colorScheme
+
+    private func getColorScheme() -> ColorScheme {
+        if darkMode == 0 {
+            return .light
+        } else if darkMode == 1 {
+            return .dark
+        }
+        if colorScheme == .dark {
+            return .dark
+        }
+        return .light
+    }
 
     var body: some Scene {
         WindowGroup {
-            if darkMode == 0 {
                 withAnimation(.linear) {
-                    ContentView()
+                    SplashScreen()
                         .environment(\.managedObjectContext, persistentContainer.viewContext)
-                        .preferredColorScheme(.light)
+                        .preferredColorScheme(getColorScheme())
                         .onAppear {
                             PythonSupport.initialize()
                         }
                 }
-            } else if darkMode == 1 {
-                withAnimation(.linear) {
-                    ContentView()
-                        .environment(\.managedObjectContext, persistentContainer.viewContext)
-                        .preferredColorScheme(.dark)
-                        .onAppear {
-                            PythonSupport.initialize()
-                        }
-                }
-            } else {
-                withAnimation(.linear) {
-                    ContentView()
-                        .environment(\.managedObjectContext, persistentContainer.viewContext)
-                        .onAppear {
-                            PythonSupport.initialize()
-                        }
-                }
-            }
         }
     }
 }

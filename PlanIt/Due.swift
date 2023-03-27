@@ -189,7 +189,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "In Progress" {
-                                        PlannerRow(assignment: assign)
+                                        AssignmentRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkInProgress += 1
@@ -213,7 +213,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "To Do" {
-                                        PlannerRow(assignment: assign)
+                                        AssignmentRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkToDo += 1
@@ -237,7 +237,7 @@ struct Due: View {
                             ForEach(allAssignments) { assign in
                                 if assign.dueDate!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                     if assign.status == "Finished!" {
-                                        PlannerRow(assignment: assign)
+                                        AssignmentRow(assignment: assign)
                                             .environment(\.managedObjectContext, persistedContainer.viewContext)
                                             .onAppear {
                                                 checkFinished += 1

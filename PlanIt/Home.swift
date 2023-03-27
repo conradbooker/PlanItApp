@@ -166,6 +166,9 @@ struct Home: View {
     }
 
 //    In the Future, days that the school day ends, add weekends, and allow user to configure breaks, also allow users to configure which days do not have
+//      also add "main thing" where the user can input something like "NO SCHOOL" or "WEEKEND" or something like that
+// and change it to be you have 5 tasks to today, 2 assessments to study for, and 4 assignments, in these classes you have nothing planned
+// also add field: school, work, home, sport, etc.
 
     var body: some View {
         NavigationView {
@@ -197,7 +200,7 @@ struct Home: View {
                         ForEach(allAssignments) { assign in
                             if Calendar.current.date(byAdding: .day, value: -1, to: assign.datePlanned!)!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) {
                                 if assign.isPlanned == true && assign.assignmentType != "Homework" && assign.assignmentType != "Studying" {
-                                    PlannerRow(assignment: assign)
+                                    AssignmentRow(assignment: assign)
                                         .environment(\.managedObjectContext, persistedContainer.viewContext)
                                         .onAppear {
                                             checkAssessments += 1
@@ -352,7 +355,8 @@ struct Home: View {
                         }
                         Spacer().frame(height: 100)
                     }
-                }
+                    Spacer().frame(height: 100)
+                }/// end of scrollview
             }
             .navigationTitle(title.lower())
             .refreshable {

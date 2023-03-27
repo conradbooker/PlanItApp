@@ -87,6 +87,13 @@ struct CircleButton: ButtonStyle {
     }
 }
 
+struct upDown: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+    }
+}
+
 
 struct DateSelector_Previews: PreviewProvider {
     static var previews: some View {

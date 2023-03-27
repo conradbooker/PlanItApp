@@ -89,6 +89,8 @@ struct New: View {
     @State var amPM: Bool = false
     @State var set: Set = Set<String>()
     
+    @FocusState var inputIsActive: Bool
+    
     let days = ["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"]
 
     // MARK: tapCourse
@@ -330,11 +332,26 @@ struct New: View {
                                 TextField("Enter title", text: $title)
                                     .textFieldStyle(.roundedBorder)
                                     .padding(.horizontal)
+                                    .focused($inputIsActive)
                                 
                                 // MARK: description
-                                TextField("Enter description", text: $summary)
-                                    .textFieldStyle(.roundedBorder)
+                                TextEditor(text: $summary)
+                                    .frame(height: 150)
+                                    .lineSpacing(6)
                                     .padding(.horizontal)
+                                    .focused($inputIsActive)
+                                    .toolbar {
+                                        ToolbarItemGroup(placement: .keyboard) {
+                                            Spacer()
+                                            Button("done") {
+                                                inputIsActive = false
+                                                if summary == "" {
+                                                    summary = "Enter description"
+                                                }
+                                            }
+                                        }
+                                    }
+
                                 
                                 // MARK: assignment type
                                 Picker("Assignment Type", selection: $assignmentType) {
@@ -504,12 +521,29 @@ struct New: View {
                     // MARK: new course
                     else if newType == "Course" { /// if user wants a new course
                         Group {
+                            // MARK: title
                             TextField("Enter title", text: $title)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
-                            TextField("Enter description", text: $summary)
-                                .textFieldStyle(.roundedBorder)
+                                .focused($inputIsActive)
+                            
+                            // MARK: description
+                            TextEditor(text: $summary)
+                                .frame(height: 150)
+                                .lineSpacing(6)
                                 .padding(.horizontal)
+                                .focused($inputIsActive)
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        Spacer()
+                                        Button("done") {
+                                            inputIsActive = false
+                                            if summary == "" {
+                                                summary = "Enter description"
+                                            }
+                                        }
+                                    }
+                                }
                             ColorPicker("Pick a color for the course", selection: $color)
                                 .padding()
                         

@@ -251,7 +251,7 @@ struct EditAssignment: View {
                             VStack {
                                 TextEditor(text: $summary)
                                     .frame(height: 150)
-                                    .lineSpacing(10)
+                                    .lineSpacing(6)
                                     .padding(.horizontal, 2)
                                     .foregroundColor(returnColor())
                                     .focused($inputIsActive)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7900863D29B5A193003A061E /* CourseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7900863C29B5A193003A061E /* CourseRow.swift */; };
+		790C0A3229D24B4C00E3E355 /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790C0A3129D24B4C00E3E355 /* Email.swift */; };
 		791325B029809AD700A826B6 /* timerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791325AF29809AD700A826B6 /* timerClass.swift */; };
 		791410FA297AE1FE007F1DE2 /* ExpandedAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */; };
 		791BE996297DF9A700DF724E /* DateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791BE995297DF9A700DF724E /* DateSelector.swift */; };
@@ -27,6 +28,8 @@
 		791F604D2960BE6000076509 /* Tester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791F604C2960BE6000076509 /* Tester.swift */; };
 		791F604F2960BE8C00076509 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 791F604E2960BE8B00076509 /* data.json */; };
 		791F60582960C1BE00076509 /* pullJSon.py in Resources */ = {isa = PBXBuildFile; fileRef = 791F60572960C1BE00076509 /* pullJSon.py */; };
+		7930186429C7BE2F002E51BF /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7930186329C7BE2F002E51BF /* SplashScreen.swift */; };
+		7930186629C7C31A002E51BF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7930186529C7C31A002E51BF /* OnboardingView.swift */; };
 		7948931229ABD66400428F04 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7948931129ABD66400428F04 /* TabBar.swift */; };
 		795257DE29B14D3800D7183A /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DD29B14D3800D7183A /* Checklist.swift */; };
 		795257E029B2D12900D7183A /* ChecklistRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795257DF29B2D12900D7183A /* ChecklistRow.swift */; };
@@ -52,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		7900863C29B5A193003A061E /* CourseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRow.swift; sourceTree = "<group>"; };
+		790C0A3129D24B4C00E3E355 /* Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
 		791325AF29809AD700A826B6 /* timerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timerClass.swift; sourceTree = "<group>"; };
 		791410F9297AE1FE007F1DE2 /* ExpandedAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedAssignment.swift; sourceTree = "<group>"; };
 		791BE995297DF9A700DF724E /* DateSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelector.swift; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 		791F604C2960BE6000076509 /* Tester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tester.swift; sourceTree = "<group>"; };
 		791F604E2960BE8B00076509 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		791F60572960C1BE00076509 /* pullJSon.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pullJSon.py; sourceTree = "<group>"; };
+		7930186329C7BE2F002E51BF /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		7930186529C7C31A002E51BF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		7948931129ABD66400428F04 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		795257DD29B14D3800D7183A /* Checklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
 		795257DF29B2D12900D7183A /* ChecklistRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistRow.swift; sourceTree = "<group>"; };
@@ -140,6 +146,8 @@
 				791F603F2960BDF100076509 /* Data */,
 				7953807929B44F52007B30B7 /* Views */,
 				791F60212960BB4300076509 /* ContentView.swift */,
+				7930186329C7BE2F002E51BF /* SplashScreen.swift */,
+				7930186529C7C31A002E51BF /* OnboardingView.swift */,
 				791F601F2960BB4300076509 /* PlanItApp.swift */,
 				791F60232960BB4400076509 /* Assets.xcassets */,
 				791F60252960BB4400076509 /* PlanIt.entitlements */,
@@ -165,6 +173,7 @@
 				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
+				790C0A3129D24B4C00E3E355 /* Email.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 			);
 			name = "Main Views";
@@ -384,6 +393,7 @@
 				791F60382960BD6300076509 /* Due.swift in Sources */,
 				791F604B2960BE5100076509 /* TimerView.swift in Sources */,
 				7948931229ABD66400428F04 /* TabBar.swift in Sources */,
+				790C0A3229D24B4C00E3E355 /* Email.swift in Sources */,
 				797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */,
 				791F604D2960BE6000076509 /* Tester.swift in Sources */,
 				791BE996297DF9A700DF724E /* DateSelector.swift in Sources */,
@@ -393,9 +403,11 @@
 				791F60442960BE2600076509 /* jsonParser.swift in Sources */,
 				795257DE29B14D3800D7183A /* Checklist.swift in Sources */,
 				7953807F29B45525007B30B7 /* Step1.swift in Sources */,
+				7930186629C7C31A002E51BF /* OnboardingView.swift in Sources */,
 				791F60422960BE0600076509 /* CoreDataManager.swift in Sources */,
 				791F603A2960BD6300076509 /* Home.swift in Sources */,
 				791325B029809AD700A826B6 /* timerClass.swift in Sources */,
+				7930186429C7BE2F002E51BF /* SplashScreen.swift in Sources */,
 				79656470296A35DA003D230F /* AssignmentViewNew.swift in Sources */,
 				791F60472960BE3700076509 /* AssignmentModel.xcdatamodeld in Sources */,
 				796FFDF52974BC45007DF816 /* New.swift in Sources */,
@@ -540,7 +552,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -554,7 +567,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -580,7 +593,8 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -594,7 +608,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

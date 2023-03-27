@@ -34,7 +34,8 @@ struct NewTask: View {
     var selectedDate: Date
     
     @Binding var isPresented: Bool
-
+    
+    @Binding var rotation: Double
     
     private func getColor(_ title: String) -> Color {
         for course in allCourses {
@@ -119,31 +120,34 @@ struct NewTask: View {
                                 .padding(.bottom, 4)
                             }
                             Button {
-                                do {
-                                    let dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "YYYYMMdd"
-
-                                    let agenda = Agenda(context: viewContext)
-                                    agenda.date = selectedDate
-                                    
-                                    agenda.isCompleted = false
-                                    agenda.group = tapCourse()
-                                    agenda.assignmentID = ""
-                                    agenda.title = title
-                                    agenda.id = title + dateFormatter.string(from: selectedDate)
-                                    agenda.red = Float(getColor(tapCourse()).components.red)
-                                    agenda.green = Float(getColor(tapCourse()).components.green)
-                                    agenda.blue = Float(getColor(tapCourse()).components.blue)
-                                    agenda.order = 0
-                                    agenda.summary = ""
-                                    
-                                    isPresented = false
-                                    
-                                    try viewContext.save()
-                                    print("saved")
-                                    print(agenda.date ?? Date())
-                                } catch {
-                                    print(error.localizedDescription)
+                                if title != "" {
+                                    do {
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "YYYYMMdd"
+                                        
+                                        let agenda = Agenda(context: viewContext)
+                                        agenda.date = selectedDate
+                                        
+                                        agenda.isCompleted = false
+                                        agenda.group = tapCourse()
+                                        agenda.assignmentID = ""
+                                        agenda.title = title
+                                        agenda.id = title + dateFormatter.string(from: selectedDate)
+                                        agenda.red = Float(getColor(tapCourse()).components.red)
+                                        agenda.green = Float(getColor(tapCourse()).components.green)
+                                        agenda.blue = Float(getColor(tapCourse()).components.blue)
+                                        agenda.order = 0
+                                        agenda.summary = ""
+                                        
+                                        isPresented = false
+                                        
+                                        try viewContext.save()
+                                        print("saved")
+                                        print(agenda.date ?? Date())
+                                    } catch {
+                                        print(error.localizedDescription)
+                                    }
+                                    withAnimation(.linear(duration: 0.18)) { rotation -= 45 }
                                 }
                             } label: {
                                 Image(systemName: "checkmark.square")
@@ -331,6 +335,167 @@ struct TaskRow: View {
         }
     }
 }
+
+struct TaskRowStatic: View {
+    var title: String
+    var group: String
+    var color: Color
+
+    @Environment(\.managedObjectContext) private var viewContext
+    let persistedContainer = CoreDataManager.shared.persistentContainer
+    
+    @State private var completed: Bool = false
+            
+    @State private var showEdit: Bool = false
+    @State private var courseSize = CGSize()
+    @State private var titleSize = CGSize()
+    @State private var dueDateSize = CGSize()
+    @State private var offset = CGFloat()
+    
+    @State private var showDeleteButton: Bool = false
+    @State private var toggled: Bool = false
+    @State private var toggled2: Bool = false
+    @State private var revert: Bool = false
+    let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+    
+    private func deleteAgenda(_ agenda: Agenda) {
+        withAnimation(.linear) { viewContext.delete(agenda) }
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            HStack(spacing: 0) {
+                RoundedRectangle(cornerRadius: 8)
+                    .frame(width: 15, height: courseSize.height + titleSize.height + dueDateSize.height + 5)
+                    .shadow(radius: 3)
+                    .foregroundColor(color)
+                
+                Spacer()
+                    .frame(width: 5)
+                
+                ZStack {
+                    HStack {
+                        Text(title)
+                            .fontWeight(.medium)
+                            .padding(.leading, 6)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                    .readSize { size in
+                        titleSize = size
+                    }
+                    .opacity(0)
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color("cLessDarkGray"))
+                        .shadow(radius: 3)
+                        .frame(height: courseSize.height + titleSize.height + 5)
+                    VStack(alignment: .leading, spacing: 0) {
+                        
+                        // MARK: course
+                        HStack {
+                            VStack(spacing: 0) {
+                            HStack {
+                                Text(group)
+                                    .font(.subheadline)
+                                    .padding(.leading, 6)
+                                Spacer()
+                            }
+                            .padding(.top, 4)
+                            .readSize { size in
+                                courseSize = size
+                            }
+                            
+                            // MARK: title
+                            HStack {
+                                Text(title)
+                                    .fontWeight(.medium)
+                                    .padding(.leading, 6)
+                                Spacer()
+                            }
+                            .readSize { size in
+                                titleSize = size
+                            }
+                            .padding(.top, 4)
+                            .padding(.bottom, 6)
+                        }
+                        Button {
+                            successHaptics()
+                        } label: {
+                            if completed {
+                                Image(systemName: "checkmark.square.fill")
+                            } else {
+                                Image(systemName: "square")
+                            }
+                        }
+                        .buttonStyle(TimerButton(color: Color("timerDone")))
+                    
+                        Spacer()
+                        }
+                    }
+                    
+                }
+                .frame(width: UIScreen.screenWidth * 5.5/6)
+                
+            }
+            .offset(x: offset, y: 0)
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        if gesture.translation.width < 0 && gesture.translation.width > -20 {
+                            if gesture.translation.width <= -15 {
+                                impactMedium.impactOccurred()
+                            }
+                            offset = gesture.translation.width
+                            print(gesture.translation)
+                        } else if gesture.translation.width > 0 && showDeleteButton {
+                            revert = true
+                            withAnimation(.easeOut) { showDeleteButton = false }
+                        }
+                        
+                    }
+                    .onEnded { _ in
+                        if offset <= -15 && !revert {
+                            print("doing")
+                            let count = 1...500
+                            withAnimation(.easeIn) { showDeleteButton = true }
+                            for _ in count {
+                                withAnimation(.easeIn(duration: 0.1)) {
+                                    if offset > -50 { offset -= 1 }
+                                }
+//                                impactMedium.impactOccurred()
+                            }
+                            // remove the card
+                        } else if offset > -15 && !revert {
+                            withAnimation(.easeOut) { showDeleteButton = false }
+                            offset = .zero
+                            toggled = false
+                        } else if revert {
+                            withAnimation(.easeOut) { showDeleteButton = false }
+                            withAnimation(.easeIn(duration: 0.1)) { offset = .zero }
+                            toggled = false
+                            revert = false
+                        }
+                    }
+            )
+            .frame(width: UIScreen.screenWidth - 10)
+            if showDeleteButton {
+                Button {
+                    successHaptics()
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.title2)
+                }
+                .padding(.leading, -38)
+            }
+        }
+    }
+}
+
 
 struct TaskRow_Previews: PreviewProvider {
     @Environment(\.managedObjectContext) static var viewContext

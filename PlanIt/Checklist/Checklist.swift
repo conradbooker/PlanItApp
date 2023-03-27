@@ -22,7 +22,11 @@ struct Checklist: View {
     @State private var currentDate: Date = Date.now
     
     @State private var isPresented: Bool = false
-    
+    @State private var showAlert: Bool = false
+
+    @State private var toDo: Int = 0
+    @State private var completed: Int = 0
+
     private func getColor(_ title: String) -> Color {
         for course in allCourses {
             let colored = Color(red: CGFloat(course.red),green: CGFloat(course.green),blue: CGFloat(course.blue))
@@ -54,14 +58,10 @@ struct Checklist: View {
     @State var rotation = 0.0
     
     func rotate() {
-        if rotation < 45 {
-            while rotation < 45 {
-                withAnimation(.linear) { rotation += 1 }
-            }
+        if isPresented {
+            withAnimation(.linear(duration: 0.18)) { rotation += 45 }
         } else {
-            while rotation > 0 {
-                withAnimation(.linear) { rotation -= 1 }
-            }
+            withAnimation(.linear(duration: 0.18)) { rotation -= 45 }
         }
     }
     
@@ -74,30 +74,52 @@ struct Checklist: View {
                     
                     if isPresented {
                         withAnimation(.linear) {
-                            NewTask(selectedDate: selectedDate, isPresented: $isPresented)
+                            NewTask(selectedDate: selectedDate, isPresented: $isPresented, rotation: $rotation)
                                 .environment(\.managedObjectContext, persistedContainer.viewContext)
                                 .padding(.vertical)
                         }
                     }
-                    
-                    HStack {
-                        Text("Things To Do!".lower()).padding(.horizontal)
-                        Spacer()
-                    }
-                                        
-                    ForEach(allAgendas) { agenda in
-                        if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && !agenda.isCompleted {
-                            withAnimation(.easeIn) { TaskRow(agenda: agenda) }
+                    if toDo > 0 {
+                        HStack {
+                            Text("Things To Do!".lower()).padding(.horizontal)
+                            Spacer()
+                        }
+                    } else if completed == 0 {
+                        HStack {
+                            Text("Nothing To Do.".lower()).padding(.horizontal)
+                            Spacer()
                         }
                     }
-                    HStack {
-                        Text("Completed!".lower()).padding(.horizontal)
-                        Spacer()
+                    ForEach(allAgendas) { agenda in
+                        if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && !agenda.isCompleted {
+                            withAnimation(.easeIn) {
+                                TaskRow(agenda: agenda)
+                                    .onAppear {
+                                        toDo += 1
+                                    }
+                                    .onDisappear {
+                                        toDo -= 1
+                                    }
+                            }
+                        }
                     }
-                                        
+                    if completed > 0 {
+                        HStack {
+                            Text("Completed!".lower()).padding(.horizontal)
+                            Spacer()
+                        }
+                    }
                     ForEach(allAgendas) { agenda in
                         if agenda.date!.formatted(.dateTime.day().month().year()) == selectedDate.formatted(.dateTime.day().month().year()) && agenda.isCompleted {
-                            withAnimation(.easeIn) { TaskRow(agenda: agenda) }
+                            withAnimation(.easeIn) {
+                                TaskRow(agenda: agenda)
+                                    .onAppear {
+                                        completed += 1
+                                    }
+                                    .onDisappear {
+                                        completed -= 1
+                                    }
+                            }
                         }
                     }
                 }
@@ -107,10 +129,14 @@ struct Checklist: View {
                     HStack {
                         Spacer()
                         Button {
-                            withAnimation(.linear) {
-                                isPresented.toggle()
+                            if allCourses.count > 0 {
+                                withAnimation(.linear) {
+                                    isPresented.toggle()
+                                }
+                                rotate()
+                            } else {
+                                showAlert = true
                             }
-                            rotate()
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 100)
@@ -124,7 +150,12 @@ struct Checklist: View {
                         .buttonStyle(CircleButton(color: Color(accentColor)))
                         .rotationEffect(.degrees(rotation))
                         .padding([.top, .bottom, .trailing], 20)
-
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text("Error".lower()),
+                                message: Text("Please add a course first".lower())
+                            )
+                        }
                     }
                     Spacer().frame(height:125)
                 }

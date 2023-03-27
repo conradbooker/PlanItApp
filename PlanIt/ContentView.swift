@@ -7,12 +7,23 @@
 
 import SwiftUI
 
+var PlanItVersion: Double = 0.95
+var PlanItVersionStr: String = String(format: "%.2f", PlanItVersion)
+
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     @State var selectedTab: String = "Home"
     @State var showSheet: Bool = false
     @State var selectedDate: Date = Date()
+    @State var show: Bool = true
+    
+    private func hideTaskBar() {
+        withAnimation(.linear) { show = false }
+    }
+    private func showTaskBar() {
+        withAnimation(.linear) { show = false }
+    }
 
     var body: some View {
         ZStack {
@@ -29,8 +40,10 @@ struct ContentView: View {
                 default: Home(selectedDate: selectedDate)
                         .environment(\.managedObjectContext, persistedContainer.viewContext)
                 }
-        }
-            TabBar(selectedTab: $selectedTab, showSheet: $showSheet, selectedDate: $selectedDate)
+            }
+            if show {
+                TabBar(selectedTab: $selectedTab, showSheet: $showSheet, selectedDate: $selectedDate)
+            }
         }
         .sheet(isPresented: $showSheet) {
             New(isPresented: $showSheet)
