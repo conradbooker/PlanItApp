@@ -13,6 +13,8 @@ public func findCourses() -> [courseMatch] {
     var dict: [String: String] = [:]
     var courseMatches: [courseMatch] = []
     
+    @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var allCourses: FetchedResults<Course>
+    
     for assignment in assignments {
         dict[assignment.course] = ""
     }
@@ -32,7 +34,6 @@ public class courseMatch: ObservableObject, Identifiable {
     var onlineCourse: String = ""
     @Published public var userCourse: String = ""
 }
-
 
 struct Step2: View {
     
@@ -54,23 +55,27 @@ struct Step2: View {
                 /// Video
                 HStack {
                     Text("Match classes.".lower())
-                        .padding(12)
+                        .padding()
                     Spacer()
                 }
                 Text("Please note: if you are missing a class, this is because your teacher has not assigned you work in this class. PlanIt will notify you in the future for any class updates. In the mean time, add assignments under this class manualy.".lower())
-                    .padding(.horizontal,12)
+                    .padding(.horizontal)
                     .font(.subheadline)
                                 
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach($courses) { course in
-                        HStack {
+                        VStack(alignment: .leading) {
                             Text(course.onlineCourse.wrappedValue)
+                                .multilineTextAlignment(.leading)
+                                .padding([.leading, .trailing,.top])
+                                .padding(.bottom, -4.0)
                             Picker("New Type", selection: course.userCourse) {
                                 ForEach(allCourses, id: \.self) { cours in
                                     Text(cours.title ?? "")
                                         .tag(cours.title ?? "")
                                 }
-                            }.font(.subheadline)
+                            }
+                            .padding(.leading, 5.0)
                         }
                     }
                 }
@@ -92,6 +97,11 @@ struct Step2: View {
                     
                     Button {
                         state = "Step3"
+                        for course in courses {
+                            if course.userCourse == "" {
+                                course.userCourse = allCourses[0].title ?? "Error"
+                            }
+                        }
                     } label: {
                         HStack(spacing: 0) {
                             Text("Next Step  ".lower())

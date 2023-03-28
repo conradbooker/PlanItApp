@@ -56,14 +56,6 @@ struct Onboarding1: View { // Assignments
                     VStack {
                         VStack(spacing: 0) {
                             HStack {
-                                Text("All homework assignments in one place!")
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .padding(10)
-                                Spacer()
-                            }
-                            .padding(.top, 20.0)
-                            HStack {
                                 Text("Some peace from the chaos of school")
                                     .padding(.horizontal, 10)
                                 Spacer()
@@ -247,10 +239,6 @@ struct Onboarding4: View { // Quick start
     @AppStorage("onBoarding") var onBoarded: Bool = false
     
     @FocusState private var inputIsActive: Bool
-    
-    @State private var isPressed1: Bool = false
-    @State private var isPressed2: Bool = false
-    @State private var isPressed3: Bool = true
 
     @Binding var done: Bool
 
@@ -378,9 +366,6 @@ struct Onboarding4: View { // Quick start
                                     VStack {
                                         Button {
                                             withAnimation(.linear(duration: 0.1)) {
-                                                isPressed1 = false
-                                                isPressed2 = false
-                                                isPressed3 = true
                                                 darkMode = 2
                                             }
                                         } label: {

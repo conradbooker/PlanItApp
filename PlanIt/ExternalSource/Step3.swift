@@ -152,8 +152,11 @@ struct Step3: View {
                     Spacer()
                 }
                 ForEach(courses) { course in
-                    Text("\(course.onlineCourse): \(course.userCourse)")
-                        .padding(.vertical, 5)
+                    HStack {
+                        Text("\(course.onlineCourse): \(course.userCourse)")
+                            .padding()
+                        Spacer()
+                    }
                 }
                 HStack {
                     Button {
