@@ -52,6 +52,7 @@
 		798BF0C3297606E0005D7ED5 /* ChildAssignmentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */; };
 		79B1CBE62977926400377357 /* NumTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE52977926400377357 /* NumTextField.swift */; };
 		79B1CBE829788A5F00377357 /* AssignmentViewSupports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */; };
+		79BCE8A929D5FFAF00042F1F /* schoology.mov in Resources */ = {isa = PBXBuildFile; fileRef = 79BCE8A829D5FFAF00042F1F /* schoology.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,7 +103,7 @@
 		79B1CBE52977926400377357 /* NumTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTextField.swift; sourceTree = "<group>"; };
 		79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewSupports.swift; sourceTree = "<group>"; };
 		79BCE8A629D5F49400042F1F /* myschoolapp.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = myschoolapp.mp4; sourceTree = "<group>"; };
-		79BCE8A729D5F49400042F1F /* schoology.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = schoology.mp4; sourceTree = "<group>"; };
+		79BCE8A829D5FFAF00042F1F /* schoology.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = schoology.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +155,7 @@
 				7930186529C7C31A002E51BF /* OnboardingView.swift */,
 				791F601F2960BB4300076509 /* PlanItApp.swift */,
 				79BCE8A629D5F49400042F1F /* myschoolapp.mp4 */,
-				79BCE8A729D5F49400042F1F /* schoology.mp4 */,
+				79BCE8A829D5FFAF00042F1F /* schoology.mov */,
 				791F60232960BB4400076509 /* Assets.xcassets */,
 				791F60252960BB4400076509 /* PlanIt.entitlements */,
 				791F60262960BB4400076509 /* Preview Content */,
@@ -370,6 +371,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79BCE8A929D5FFAF00042F1F /* schoology.mov in Resources */,
 				795958C72960D78900CA6CEF /* test.py in Resources */,
 				791F60282960BB4400076509 /* Preview Assets.xcassets in Resources */,
 				795958C52960D78600CA6CEF /* icsJSonFinal.py in Resources */,

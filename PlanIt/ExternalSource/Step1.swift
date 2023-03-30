@@ -23,17 +23,20 @@ struct Step1: View {
     }
     @State private var showingAlert: Bool = false
     @State private var isEmpty: Bool = false
+    
+    @State private var vidOption: Int = 0
 
     @Binding var state: String
     @Binding var courses: [courseMatch]
     @Binding var isPresented: Bool
-
-    @State var myschoolapp = AVPlayer(url: Bundle.main.url(forResource: "myschoolapp", withExtension: "mp4")!)
-    @State var schoology = AVPlayer(url: Bundle.main.url(forResource: "schoology", withExtension: "mp4")!)
+    
+    @State var myschoolapp = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/myschoolapp.mp4?raw=true")!)
+    @State var schoology = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/schoology.mov?raw=true")!)
 
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
+    @AppStorage("accentColor") var accentColor: String = "aMint"
 
     
     private func syncAssignments() {
@@ -128,15 +131,32 @@ struct Step1: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                /// Video
-//                Rectangle()
-//                    .frame(width: UIScreen.screenWidth-100, height: (UIScreen.screenWidth-100)*3/4)
-//                    .padding(.vertical)
-                HStack {
+                Picker("", selection: $vidOption) {
+                    Text("myschoolapp")
+                        .tag(0)
+                    Text("schoology")
+                        .tag(1)
+                }.pickerStyle(.segmented)
+                
+                if vidOption == 0 {
                     VideoPlayer(player: myschoolapp)
-                        .frame(width: 400, height: 300, alignment: .center) //4
+                        .frame( /*width: 180,*/ height: 400)
+                        .onAppear() {
+                            myschoolapp.play()
+                        }
+                        .onDisappear() {
+                            myschoolapp.pause()
+                        }
+                }
+                else {
                     VideoPlayer(player: schoology)
-                        .frame(width: 400, height: 300, alignment: .center) //4
+                        .frame(height: 400)
+                        .onAppear() {
+                            myschoolapp.play()
+                        }
+                        .onDisappear() {
+                            myschoolapp.pause()
+                        }
                 }
 
                 
