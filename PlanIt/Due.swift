@@ -9,9 +9,13 @@ import SwiftUI
 
 struct Due: View {
     
+    @ObservedObject var monitor = Network()
+        
     @AppStorage("initialSync") var initialSync: Bool = false
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
+    
+    @State private var showNetworkAlert: Bool = false
     
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
@@ -261,12 +265,21 @@ struct Due: View {
                 }
                 .navigationTitle("Due \(title)".lower())
                 .refreshable {
-                    if initialSync {
-                        syncAssignments()
+                    if monitor.isConnected {
+                        if initialSync {
+                            syncAssignments()
+                        } else {
+                            print("not initial synced yet!")
+                        }
                     } else {
-                        print("not initial synced yet!")
+                        showNetworkAlert = true
                     }
                 }
+                .alert("No Internet Connection".lower(), isPresented: $showNetworkAlert, actions: {
+                    Button("OK".lower(), role: .cancel) { }
+                }, message: {
+                    Text("An internet connection is required to sync PlanIt with myschoolapp or Schoology.".lower())
+                })
             }
         }
     }

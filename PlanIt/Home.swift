@@ -11,8 +11,12 @@ struct Home: View {
     
     // Future: change fetch request so that it is not in 1million if statements!!
     
+    @ObservedObject var monitor = Network()
+    
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
+    
+    @State private var showNetworkAlert: Bool = false
         
     @AppStorage("initialSync") var initialSync: Bool = false
     
@@ -360,12 +364,19 @@ struct Home: View {
             }
             .navigationTitle(title.lower())
             .refreshable {
-                if initialSync {
-                    syncAssignments()
+                if monitor.isConnected {
+                    if initialSync {
+                        syncAssignments()
+                    }
                 } else {
-                    print("not initial synced yet!")
+                    showNetworkAlert = true
                 }
             }
+            .alert("No Internet Connection".lower(), isPresented: $showNetworkAlert, actions: {
+                Button("OK".lower(), role: .cancel) { }
+            }, message: {
+                Text("An internet connection is required to sync PlanIt with myschoolapp or Schoology.".lower())
+            })
         }
     }
     

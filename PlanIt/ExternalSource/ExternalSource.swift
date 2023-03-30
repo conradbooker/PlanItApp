@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExternalSource: View {
     @State var state: String = "Step1"
-    @State var courses: [courseMatch] = findCourses()
+    @State var courses: [courseMatch] = findCourses1()
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     @Binding var isPresented: Bool

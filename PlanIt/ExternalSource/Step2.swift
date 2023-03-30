@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+public func findCourses1() -> [courseMatch] {
+    var courseMatches: [courseMatch] = []
+    return courseMatches
+}
+
 public func findCourses() -> [courseMatch] {
     let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
     let assignments = things[0].VCALENDAR[0].VEVENT

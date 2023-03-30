@@ -20,12 +20,16 @@ extension String {
 var aColors: [String] = ["aRed","aOrange","aYellow","aGreen","aMint","aCyan","aBlue","aIndigo","aPurple","aPink"]
 
 struct Settings: View {
+    
+    @ObservedObject var monitor = Network()
+        
     @State private var link: String = ""
     @State private var showSync: Bool = false
     @State private var showQuickStart: Bool = false
     @State private var about: Bool = false
 
     @State private var showAlertOnline: Bool = false
+    @State private var showNetworkAlert: Bool = false
     @State private var showAlertNotOnline: Bool = false
     @State private var isShowingMailView: Bool = false
     @State private var alertNoMail: Bool = false
@@ -92,7 +96,11 @@ struct Settings: View {
                             VStack {
                                 HStack {
                                     Button {
-                                        showSync.toggle()
+                                        if monitor.isConnected {
+                                            showSync.toggle()
+                                        } else {
+                                            showNetworkAlert = true
+                                        }
                                     } label: {
                                         Text("Sync Assignments from external source".lower())
                                     }
@@ -102,6 +110,12 @@ struct Settings: View {
                             }
                         }
                         .padding([.top, .leading, .trailing])
+                        .alert("No Internet Connection".lower(), isPresented: $showNetworkAlert, actions: {
+                            Button("OK".lower(), role: .cancel) { }
+                        }, message: {
+                            Text("An internet connection is required to sync PlanIt with myschoolapp or Schoology.".lower())
+                        })
+
 
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)

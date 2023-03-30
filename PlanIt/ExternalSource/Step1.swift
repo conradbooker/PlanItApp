@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct Step1: View {
     
@@ -21,13 +22,15 @@ struct Step1: View {
         return false
     }
     @State private var showingAlert: Bool = false
-    
+    @State private var isEmpty: Bool = false
+
     @Binding var state: String
     @Binding var courses: [courseMatch]
     @Binding var isPresented: Bool
 
+    @State var myschoolapp = AVPlayer(url: Bundle.main.url(forResource: "myschoolapp", withExtension: "mp4")!)
+    @State var schoology = AVPlayer(url: Bundle.main.url(forResource: "schoology", withExtension: "mp4")!)
 
-    
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
     @FetchRequest(entity: Course.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allCourses: FetchedResults<Course>
@@ -36,6 +39,9 @@ struct Step1: View {
     private func syncAssignments() {
         let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
         let onlineAssignments = things[0].VCALENDAR[0].VEVENT
+        if things.count < 1 {
+            isEmpty = true
+        }
         
         /// assignment IDs
         var existingAssignmentIDs: [String] = []
@@ -123,9 +129,17 @@ struct Step1: View {
         NavigationView {
             ScrollView {
                 /// Video
-                Rectangle()
-                    .frame(width: UIScreen.screenWidth-100, height: (UIScreen.screenWidth-100)*3/4)
-                    .padding(.vertical)
+//                Rectangle()
+//                    .frame(width: UIScreen.screenWidth-100, height: (UIScreen.screenWidth-100)*3/4)
+//                    .padding(.vertical)
+                HStack {
+                    VideoPlayer(player: myschoolapp)
+                        .frame(width: 400, height: 300, alignment: .center) //4
+                    VideoPlayer(player: schoology)
+                        .frame(width: 400, height: 300, alignment: .center) //4
+                }
+
+                
                 Text("Please type in the link to your school calendar here. Please note that PlanIt app supports \"myschoolapp\" and \"schoology\" right now.\n\n**Invalid URLs may crash PlanIt.**".lower())
                     .padding(.horizontal,12)
                 
@@ -151,8 +165,7 @@ struct Step1: View {
                                         state = "Step2"
                                         
                                     } else if sourceURL.contains("webcal://") {
-                                        sourceURL = sourceURL.replacingOccurrences(of: "webcal://", with: "")
-                                        sourceURL = "https://" + sourceURL
+                                        sourceURL = sourceURL.replacingOccurrences(of: "webcal://", with: "https://")
                                         state = "Step2"
                                     } else {
                                         sourceURL = "https://" + sourceURL
@@ -201,6 +214,12 @@ struct Step1: View {
                             .disabled(myschoolappSource)
                             .buttonStyle(TimerButton(color: Color("timerDone")))
                             .padding()
+                            .alert("Error", isPresented: $isEmpty) {
+                                  
+                                } message: {
+                                  Text("Unfortunatly your school's schoology calendar is not supported for the time being. Full schoology support will be implented soon.")
+                            }
+
                         }
                     }
                 }
