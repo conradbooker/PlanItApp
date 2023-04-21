@@ -18,8 +18,6 @@ func runPythonICSJSon(_ URL: String) -> PythonObject {
     sys.path.append(path)
     let file = Python.import("icsJSon")
     
-    //network error handling here
-    
     let response = file.returnicsJSon(URL)
     return response
 }

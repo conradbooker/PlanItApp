@@ -14,7 +14,7 @@ import PythonSupport
 struct PlanItApp: App {
     
     let persistentContainer = CoreDataManager.shared.persistentContainer
-    @AppStorage("darkMode") var darkMode: Int = 3
+    @AppStorage("darkMode") var darkMode: Int = 2
     
 //    private func hasConnection() -> Bool {
 //        let monitor = NWPathMonitor()
@@ -38,7 +38,8 @@ struct PlanItApp: App {
         } else if darkMode == 1 {
             return .dark
         }
-        if colorScheme == .dark {
+        print(colorScheme)
+        if !(colorScheme == .dark) {
             return .dark
         }
         return .light

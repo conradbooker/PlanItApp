@@ -8,7 +8,7 @@
 import SwiftUI
 
 public func findCourses1() -> [courseMatch] {
-    var courseMatches: [courseMatch] = []
+    let courseMatches: [courseMatch] = []
     return courseMatches
 }
 

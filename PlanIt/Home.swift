@@ -13,6 +13,8 @@ struct Home: View {
     
     @ObservedObject var monitor = Network()
     
+    @AppStorage("sourceURL") var sourceURL: String = ""
+    
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
@@ -60,6 +62,7 @@ struct Home: View {
     }
     
     private func syncAssignments() {
+        print(sourceURL)
         var allCoursesDict: [String: String] = [:]
         
         for course in allCourses {
@@ -365,7 +368,8 @@ struct Home: View {
             .navigationTitle(title.lower())
             .refreshable {
                 if monitor.isConnected {
-                    if initialSync {
+                    if initialSync && sourceURL != "" {
+                        
                         syncAssignments()
                     }
                 } else {

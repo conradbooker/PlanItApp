@@ -30,8 +30,8 @@ struct Step1: View {
     @Binding var courses: [courseMatch]
     @Binding var isPresented: Bool
     
-    @State var myschoolapp = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/myschoolapp.mp4?raw=true")!)
-    @State var schoology = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/schoology.mov?raw=true")!)
+    @State var myschoolapp = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/myschoolapp.mov?raw=true")!)
+    @State var schoology = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/main/PlanIt/schoology.mov?raw=true")!)
 
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
     
@@ -42,8 +42,10 @@ struct Step1: View {
     private func syncAssignments() {
         let things: [ICSCal] = returnString().decodeJson([ICSCal].self)
         let onlineAssignments = things[0].VCALENDAR[0].VEVENT
-        if things.count < 1 {
+        if things.count < 2 {
             isEmpty = true
+            sourceURL = ""
+            return
         }
         
         /// assignment IDs
@@ -147,6 +149,7 @@ struct Step1: View {
                         .onDisappear() {
                             myschoolapp.pause()
                         }
+                    Text("Go to Calendar -> Options -> WebCal Feed -> \"individual filter feeds\" -> Assignments -> Copy WebCal link from Calendar\n").padding()
                 }
                 else {
                     VideoPlayer(player: schoology)
@@ -157,12 +160,9 @@ struct Step1: View {
                         .onDisappear() {
                             myschoolapp.pause()
                         }
+                    Text("Click on profile -> Settings -> and under Share Your Schoology Calendar copy the iCal link\n").padding()
                 }
 
-                
-                Text("Please type in the link to your school calendar here. Please note that PlanIt app supports \"myschoolapp\" and \"schoology\" right now.\n\n**Invalid URLs may crash PlanIt.**".lower())
-                    .padding(.horizontal,12)
-                
                 TextField("Link".lower(), text: $sourceURL)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal,12)

@@ -50,6 +50,7 @@
 		796FFDF52974BC45007DF816 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796FFDF42974BC45007DF816 /* New.swift */; };
 		797A79B5297F0CA700799769 /* PlannerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797A79B4297F0CA700799769 /* PlannerRow.swift */; };
 		798BF0C3297606E0005D7ED5 /* ChildAssignmentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */; };
+		79A78C2829F2438600BEA8DE /* myschoolapp.mov in Resources */ = {isa = PBXBuildFile; fileRef = 79A78C2729F2438600BEA8DE /* myschoolapp.mov */; };
 		79B1CBE62977926400377357 /* NumTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE52977926400377357 /* NumTextField.swift */; };
 		79B1CBE829788A5F00377357 /* AssignmentViewSupports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */; };
 		79BCE8A929D5FFAF00042F1F /* schoology.mov in Resources */ = {isa = PBXBuildFile; fileRef = 79BCE8A829D5FFAF00042F1F /* schoology.mov */; };
@@ -100,9 +101,9 @@
 		797A79B4297F0CA700799769 /* PlannerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerRow.swift; sourceTree = "<group>"; };
 		7980B88629A3D244003AC967 /* Python3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python3.framework; path = Library/Frameworks/Python3.framework; sourceTree = DEVELOPER_DIR; };
 		798BF0C2297606E0005D7ED5 /* ChildAssignmentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAssignmentRow.swift; sourceTree = "<group>"; };
+		79A78C2729F2438600BEA8DE /* myschoolapp.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = myschoolapp.mov; sourceTree = "<group>"; };
 		79B1CBE52977926400377357 /* NumTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTextField.swift; sourceTree = "<group>"; };
 		79B1CBE729788A5F00377357 /* AssignmentViewSupports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentViewSupports.swift; sourceTree = "<group>"; };
-		79BCE8A629D5F49400042F1F /* myschoolapp.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = myschoolapp.mp4; sourceTree = "<group>"; };
 		79BCE8A829D5FFAF00042F1F /* schoology.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = schoology.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,7 +155,7 @@
 				7930186329C7BE2F002E51BF /* SplashScreen.swift */,
 				7930186529C7C31A002E51BF /* OnboardingView.swift */,
 				791F601F2960BB4300076509 /* PlanItApp.swift */,
-				79BCE8A629D5F49400042F1F /* myschoolapp.mp4 */,
+				79A78C2729F2438600BEA8DE /* myschoolapp.mov */,
 				79BCE8A829D5FFAF00042F1F /* schoology.mov */,
 				791F60232960BB4400076509 /* Assets.xcassets */,
 				791F60252960BB4400076509 /* PlanIt.entitlements */,
@@ -379,6 +380,7 @@
 				795958C92960D79800CA6CEF /* icsJSon.py in Resources */,
 				791F60242960BB4400076509 /* Assets.xcassets in Resources */,
 				795958CF2960F32A00CA6CEF /* Example.py in Resources */,
+				79A78C2829F2438600BEA8DE /* myschoolapp.mov in Resources */,
 				791F60582960C1BE00076509 /* pullJSon.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

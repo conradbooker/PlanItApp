@@ -41,81 +41,80 @@ struct OnboardingView: View { // Main
 
 struct Onboarding1: View { // Assignments
     @Binding var view: Int
-    @AppStorage("accentColor") var accentColor: String = "aMint"
+    @AppStorage("accentColor") var accentColor: String = "aRed"
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     let date = NSDate(timeIntervalSince1970: 1415637900)
 
     var body: some View {
-        ZStack {
-            Color("cDarkGray")
-                .ignoresSafeArea()
-            
-            NavigationView {
-                ScrollView {
-                    VStack {
-                        VStack(spacing: 0) {
-                            HStack {
-                                Text("Some peace from the chaos of school")
-                                    .padding(.horizontal, 10)
-                                Spacer()
-                            }
-                        }
-                        Spacer().frame(height: 20)
-                        
-                        Group {
-                            HStack {
-                                Text("Homework").padding(.leading,10)
-                                Spacer()
-                            }
-                            AssignmentViewStatic(title: "HW 5.3 - Forced Oscillations Worksheet", course: "Physics C - Period 2", type: "Homework", due: date as Date, seconds: 920, color: Color("aRed"))
-                            AssignmentViewStatic(title: "Introduction to integrals", course: "Calc - Period 4", type: "Homework", due: date as Date, seconds: 920, color: Color("aOrange"))
-                            HStack {
-                                Text("Assessments / Projects").padding([.leading,.top],10)
-                                Spacer()
-                            }
-                            AssignmentViewStatic(title: "新疆 PowerPoint 演示文稿", course: "中文 - Period 1", type: "Test", due: date as Date, seconds: 920, color: Color("aYellow"))
-                            AssignmentViewStatic(title: "Beloved Chapter 6-8 Quiz", course: "English - Period 3", type: "Quiz", due: date as Date, seconds: 920, color: Color("aGreen"))
-                            AssignmentViewStatic(title: "A* Path Finding project due via GradeScope", course: "CS 4 - Period 6", type: "Project", due: date as Date, seconds: 920, color: Color("aBlue"))
-                        }
-                        Spacer()
+        NavigationView {
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
+            ScrollView {
+                VStack {
+                    VStack(spacing: 0) {
                         HStack {
+                            Text("All your homework assignments in one place, on your phone.")
+                                .padding(.horizontal, 10)
                             Spacer()
-                            Button {
-                                withAnimation(.linear) { view = 1 }
-                            } label: {
-                                HStack {
-                                    Text("Next")
-                                    Image(systemName: "arrow.right")
-                                }
-                            }
-                            .padding()
-                            .buttonStyle(TimerButton(color: Color(accentColor)))
                         }
-                        .padding(.bottom, 20)
                     }
+                    Spacer().frame(height: 20)
+                    
+                    Group {
+                        HStack {
+                            Text("Homework").padding(.leading,10)
+                            Spacer()
+                        }
+                        AssignmentViewStatic(title: "HW 5.3 - Forced Oscillations Worksheet", course: "Physics C - Period 2", type: "Homework", due: date as Date, seconds: 920, color: Color("aRed"))
+                        AssignmentViewStatic(title: "Introduction to integrals", course: "Calc - Period 4", type: "Homework", due: date as Date, seconds: 920, color: Color("aOrange"))
+                        HStack {
+                            Text("Assessments / Projects").padding([.leading,.top],10)
+                            Spacer()
+                        }
+                        AssignmentViewStatic(title: "新疆 PowerPoint 演示文稿", course: "中文 - Period 1", type: "Test", due: date as Date, seconds: 920, color: Color("aYellow"))
+                        AssignmentViewStatic(title: "Beloved Chapter 6-8 Quiz", course: "English - Period 3", type: "Quiz", due: date as Date, seconds: 920, color: Color("aGreen"))
+                        AssignmentViewStatic(title: "A* Path Finding project due via GradeScope", course: "CS 4 - Period 6", type: "Project", due: date as Date, seconds: 920, color: Color("aBlue"))
+                    }
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation(.linear) { view = 1 }
+                        } label: {
+                            HStack {
+                                Text("Next")
+                                Image(systemName: "arrow.right")
+                            }
+                        }
+                        .padding()
+                        .buttonStyle(TimerButton(color: Color(accentColor)))
+                    }
+                    .padding(.bottom, 20)
                 }
-                .navigationTitle("All homework assignments in one place")
             }
+        }
+            .navigationTitle("All your homework")
         }
     }
 }
 
 struct Onboarding2: View { // Sync
     @Binding var view: Int
-    @AppStorage("accentColor") var accentColor: String = "aMint"
+    @AppStorage("accentColor") var accentColor: String = "aRed"
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
     
     var body: some View {
-        ZStack {
-            Color("cDarkGray")
-                .ignoresSafeArea()
-            NavigationView {
+        NavigationView {
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
                 ScrollView {
                     VStack {
                         HStack {
-                            Text("No need to rely on your school's homework website for assignments anymore! And all assignments are stored to this device.")
+                            Text("No need to rely on your school's homework website for assignments anymore! All assignments from an external source are stored to this device.\n\nCurrently supported platforms: Schoology, myschoolapp")
                                 .padding(.horizontal, 10)
                             Spacer()
                         }
@@ -150,28 +149,28 @@ struct Onboarding2: View { // Sync
                         .padding(.bottom, 20)
                     }
                 }
-                .navigationTitle("Sync from external source")
             }
+            .navigationTitle("Sync")
         }
     }
 }
 
 struct Onboarding3: View { // Agenda
     @Binding var view: Int
-    @AppStorage("accentColor") var accentColor: String = "aMint"
+    @AppStorage("accentColor") var accentColor: String = "aRed"
     @Environment(\.managedObjectContext) private var viewContext
     let persistedContainer = CoreDataManager.shared.persistentContainer
 
     var body: some View {
-        ZStack {
-            Color("cDarkGray")
-                .ignoresSafeArea()
-            NavigationView {
+        NavigationView {
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
                 ScrollView {
                     VStack {
                         VStack(spacing: 0) {
                             HStack {
-                                Text("Stay on top of things with the Agenda feature.")
+                                Text("You can use this for simple tasks, checklists, your agenda, a shopping list, and more!")
                                     .padding(.horizontal, 10)
                                 Spacer()
                             }
@@ -180,7 +179,7 @@ struct Onboarding3: View { // Agenda
                         
                         Group {
                             HStack {
-                                Text("Agenda").padding(.leading,10)
+                                Text("Things").padding(.leading,10)
                                 Spacer()
                             }
                             TaskRowStatic(title: "Clean room", group: "Tasks", color: .gray)
@@ -217,8 +216,8 @@ struct Onboarding3: View { // Agenda
                         .padding(.bottom, 20)
                     }
                 }
-                .navigationTitle("Plan out your day")
             }
+            .navigationTitle("Plan!")
         }
     }
 }
@@ -233,8 +232,8 @@ struct Onboarding4: View { // Quick start
     @AppStorage("twofourhourtime") var twofourhourtime: Bool = false
     @AppStorage("bgColor") var bgColor: String = ""
     @AppStorage("fgColor") var fgColor: String = ""
-    @AppStorage("darkMode") var darkMode: Int = 3
-    @AppStorage("accentColor") var accentColor: String = "aMint"
+    @AppStorage("darkMode") var darkMode: Int = 2
+    @AppStorage("accentColor") var accentColor: String = "aRed"
     @AppStorage("name") var name: String = "new user"
     @AppStorage("onBoarding") var onBoarded: Bool = false
     
@@ -243,10 +242,10 @@ struct Onboarding4: View { // Quick start
     @Binding var done: Bool
 
     var body: some View {
-        ZStack {
-            Color("cDarkGray")
-                .ignoresSafeArea()
-            NavigationView {
+        NavigationView {
+            ZStack {
+                Color("cDarkGray")
+                    .ignoresSafeArea()
                 ScrollView {
                     VStack {
                         ZStack {
@@ -389,23 +388,23 @@ struct Onboarding4: View { // Quick start
                                     }
                                 }
                                 .padding([.top, .leading, .trailing])
-
                                 
-            //                    HStack {
-            //                        Text("Add classes (you can always add classes later):".lower())
-            //                            .padding()
-            //                        Spacer()
-            //                        Button {
-            //
-            //                        } label: {
-            //                            Image(systemName: "plus")
-            //                                .font(.title2)
-            //                                .fontWeight(.semibold)
-            //                                .frame(width: 30,height: 30)
-            //                        }
-            //                        .buttonStyle(CircleButton(color: Color(accentColor)))
-            //                        .padding()
-            //                    }
+                                
+                                //                    HStack {
+                                //                        Text("Add classes (you can always add classes later):".lower())
+                                //                            .padding()
+                                //                        Spacer()
+                                //                        Button {
+                                //
+                                //                        } label: {
+                                //                            Image(systemName: "plus")
+                                //                                .font(.title2)
+                                //                                .fontWeight(.semibold)
+                                //                                .frame(width: 30,height: 30)
+                                //                        }
+                                //                        .buttonStyle(CircleButton(color: Color(accentColor)))
+                                //                        .padding()
+                                //                    }
                                 Spacer()
                                 Text("PlanIt App does not collect any user data.")
                                     .padding()
@@ -414,7 +413,7 @@ struct Onboarding4: View { // Quick start
                         }
                         .padding()
                         .frame(height: 550)
-
+                        
                         Spacer()
                         HStack {
                             Button {
@@ -444,8 +443,8 @@ struct Onboarding4: View { // Quick start
                         .padding(.bottom, 20)
                     }
                 }
-                .navigationTitle("Customiation!!".lower())
             }
+            .navigationTitle("Customiation!!".lower())
         }
     }
 }
