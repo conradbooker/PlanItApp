@@ -48,11 +48,11 @@ struct Checklist: View {
 
     var title: String {
         if selectedDate.formatted(.dateTime.day().month().year()) == currentDate.formatted(.dateTime.day().month().year()) {
-            return "Agenda For Today"
+            return "Things For Today".lower()
         }
         let weekdayIndex = Calendar.current.component(.weekday, from: selectedDate) - 1
         let weekday = DateFormatter().shortWeekdaySymbols[weekdayIndex]
-        return "Agenda \(weekday), \(String(selectedDate.formatted(date: .abbreviated, time: .omitted)).dropLast(6))"
+        return "Things \(weekday), \(String(selectedDate.formatted(date: .abbreviated, time: .omitted)).dropLast(6))".lower()
     }
     
     @State var rotation = 0.0

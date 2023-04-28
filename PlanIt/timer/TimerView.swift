@@ -357,8 +357,13 @@ struct TimerView: View {
         }
     }
     private func addTime() {
-        assignment.activeSeconds += Int64(Int(addHours)! * 3600 + Int(addMinutes)! * 60)
-//        Int(Int(addHours)! * 3600) + Int(Int(addMinutes)! * 60)))
+        let hour: Int? = Int(addHours)
+        let minute: Int? = Int(addMinutes)
+        let accumulation = Int64((hour ?? 0) * 3600 + (minute ?? 0) * 60)
+        assignment.activeSeconds += accumulation
+        
+        timer.totalAccumulatedTime += Double(Int(accumulation))
+        
         addHours = ""
         addMinutes = ""
         do {

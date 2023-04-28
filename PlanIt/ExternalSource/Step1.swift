@@ -30,7 +30,7 @@ struct Step1: View {
     @Binding var courses: [courseMatch]
     @Binding var isPresented: Bool
     
-    @State var myschoolapp = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/b2163a81e8058798defc4e223c818c183ae10fc8/PlanIt/myschoolapp.mov?raw=true")!)
+    @State var myschoolapp = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/main/PlanIt/myschoolapp.mov?raw=true")!)
     @State var schoology = AVPlayer(url:  URL(string: "https://github.com/conradbooker/PlanItApp/blob/main/PlanIt/schoology.mov?raw=true")!)
 
     @FetchRequest(entity: Assignment.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allAssignments: FetchedResults<Assignment>
