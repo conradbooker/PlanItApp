@@ -178,9 +178,9 @@
 				79A8CA7229B547C400B46988 /* Checklist */,
 				7953807829B44F3C007B30B7 /* ExternalSource */,
 				791F60352960BD6300076509 /* Home.swift */,
-				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				791F60332960BD6300076509 /* Due.swift */,
 				791F60342960BD6300076509 /* Settings.swift */,
+				791BE999297E08B800DF724E /* EditAssignment.swift */,
 				796FFDF42974BC45007DF816 /* New.swift */,
 			);
 			name = "Main Views";

@@ -409,6 +409,7 @@ struct New: View {
                                             .padding(.leading)
                                         Spacer()
                                         NumTextField(subText: "h", text: $hourStop)
+                                            .focused($inputIsActive)
                                             .frame(width: 40)
                                             .textFieldStyle(.roundedBorder)
                                             .padding(.leading, 2)
@@ -420,6 +421,7 @@ struct New: View {
                                             Text("hours")
                                         }
                                         NumTextField(subText: "m", text: $minuteStop)
+                                            .focused($inputIsActive)
                                             .frame(width: 40)
                                             .textFieldStyle(.roundedBorder)
                                             .padding(.horizontal, 7.0)
